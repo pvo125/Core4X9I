@@ -1,0 +1,9 @@
+.\output\brightness.o: ..\USER\icon\brightness.c
+.\output\brightness.o: E:\Keil\ARM\ARMCC\bin\..\include\stdlib.h
+.\output\brightness.o: ..\USER\GUI\inc\GUI.h
+.\output\brightness.o: ..\USER\GUI\inc\GUI_ConfDefaults.h
+.\output\brightness.o: ..\USER\GUI\inc\GUIConf.h
+.\output\brightness.o: ..\USER\GUI\inc\GUI_Type.h
+.\output\brightness.o: ..\USER\GUI\inc\LCD.h
+.\output\brightness.o: ..\USER\GUI\inc\Global.h
+.\output\brightness.o: ..\USER\GUI\inc\GUI_Version.h

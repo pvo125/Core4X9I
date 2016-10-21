@@ -1,0 +1,9 @@
+.\output\bmp.o: ..\USER\icon\bmp.c
+.\output\bmp.o: E:\Keil\ARM\ARMCC\bin\..\include\stdlib.h
+.\output\bmp.o: ..\USER\GUI\inc\GUI.h
+.\output\bmp.o: ..\USER\GUI\inc\GUI_ConfDefaults.h
+.\output\bmp.o: ..\USER\GUI\inc\GUIConf.h
+.\output\bmp.o: ..\USER\GUI\inc\GUI_Type.h
+.\output\bmp.o: ..\USER\GUI\inc\LCD.h
+.\output\bmp.o: ..\USER\GUI\inc\Global.h
+.\output\bmp.o: ..\USER\GUI\inc\GUI_Version.h

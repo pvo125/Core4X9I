@@ -1,0 +1,9 @@
+.\output\add_folder.o: ..\USER\icon\add_folder.c
+.\output\add_folder.o: E:\Keil\ARM\ARMCC\bin\..\include\stdlib.h
+.\output\add_folder.o: ..\USER\GUI\inc\GUI.h
+.\output\add_folder.o: ..\USER\GUI\inc\GUI_ConfDefaults.h
+.\output\add_folder.o: ..\USER\GUI\inc\GUIConf.h
+.\output\add_folder.o: ..\USER\GUI\inc\GUI_Type.h
+.\output\add_folder.o: ..\USER\GUI\inc\LCD.h
+.\output\add_folder.o: ..\USER\GUI\inc\Global.h
+.\output\add_folder.o: ..\USER\GUI\inc\GUI_Version.h

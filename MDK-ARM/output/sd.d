@@ -1,0 +1,9 @@
+.\output\sd.o: ..\USER\icon\sd.c
+.\output\sd.o: E:\Keil\ARM\ARMCC\bin\..\include\stdlib.h
+.\output\sd.o: ..\USER\GUI\inc\GUI.h
+.\output\sd.o: ..\USER\GUI\inc\GUI_ConfDefaults.h
+.\output\sd.o: ..\USER\GUI\inc\GUIConf.h
+.\output\sd.o: ..\USER\GUI\inc\GUI_Type.h
+.\output\sd.o: ..\USER\GUI\inc\LCD.h
+.\output\sd.o: ..\USER\GUI\inc\Global.h
+.\output\sd.o: ..\USER\GUI\inc\GUI_Version.h

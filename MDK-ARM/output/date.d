@@ -1,0 +1,9 @@
+.\output\date.o: ..\USER\icon\date.c
+.\output\date.o: E:\Keil\ARM\ARMCC\bin\..\include\stdlib.h
+.\output\date.o: ..\USER\GUI\inc\GUI.h
+.\output\date.o: ..\USER\GUI\inc\GUI_ConfDefaults.h
+.\output\date.o: ..\USER\GUI\inc\GUIConf.h
+.\output\date.o: ..\USER\GUI\inc\GUI_Type.h
+.\output\date.o: ..\USER\GUI\inc\LCD.h
+.\output\date.o: ..\USER\GUI\inc\Global.h
+.\output\date.o: ..\USER\GUI\inc\GUI_Version.h

@@ -1,0 +1,9 @@
+.\output\alarmb.o: ..\USER\icon\AlarmB.c
+.\output\alarmb.o: E:\Keil\ARM\ARMCC\bin\..\include\stdlib.h
+.\output\alarmb.o: ..\USER\GUI\inc\GUI.h
+.\output\alarmb.o: ..\USER\GUI\inc\GUI_ConfDefaults.h
+.\output\alarmb.o: ..\USER\GUI\inc\GUIConf.h
+.\output\alarmb.o: ..\USER\GUI\inc\GUI_Type.h
+.\output\alarmb.o: ..\USER\GUI\inc\LCD.h
+.\output\alarmb.o: ..\USER\GUI\inc\Global.h
+.\output\alarmb.o: ..\USER\GUI\inc\GUI_Version.h

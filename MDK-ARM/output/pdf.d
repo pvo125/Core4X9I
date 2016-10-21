@@ -1,0 +1,9 @@
+.\output\pdf.o: ..\USER\icon\pdf.c
+.\output\pdf.o: E:\Keil\ARM\ARMCC\bin\..\include\stdlib.h
+.\output\pdf.o: ..\USER\GUI\inc\GUI.h
+.\output\pdf.o: ..\USER\GUI\inc\GUI_ConfDefaults.h
+.\output\pdf.o: ..\USER\GUI\inc\GUIConf.h
+.\output\pdf.o: ..\USER\GUI\inc\GUI_Type.h
+.\output\pdf.o: ..\USER\GUI\inc\LCD.h
+.\output\pdf.o: ..\USER\GUI\inc\Global.h
+.\output\pdf.o: ..\USER\GUI\inc\GUI_Version.h
