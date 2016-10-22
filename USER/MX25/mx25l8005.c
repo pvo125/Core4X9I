@@ -1,4 +1,4 @@
-
+﻿
 #include "header.h"
 
 extern SPI_InitTypeDef						SPI_InitStruct;
@@ -31,7 +31,7 @@ void MX25_LowLevel_Init(void)
 	GPIO_Init(GPIOA,&GPIO_InitStruct);
 	CS_HIGH();
 	/*	SPI configuration */
-	SPI_InitStruct.SPI_BaudRatePrescaler=SPI_BaudRatePrescaler_8;  //APB2=90MHz  fPCLK/4=22.5MHz
+	SPI_InitStruct.SPI_BaudRatePrescaler=SPI_BaudRatePrescaler_8;  //APB2=90MHz  fPCLK/8=11.25MHz
 	SPI_InitStruct.SPI_CPHA=SPI_CPHA_1Edge;
 	SPI_InitStruct.SPI_CPOL=SPI_CPOL_Low;
 	SPI_InitStruct.SPI_CRCPolynomial=7;
