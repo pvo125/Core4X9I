@@ -1,5 +1,5 @@
 .\output\exit.o: ..\USER\icon\exit.c
-.\output\exit.o: E:\Keil\ARM\ARMCC\bin\..\include\stdlib.h
+.\output\exit.o: D:\Keil\ARM\ARMCC\bin\..\include\stdlib.h
 .\output\exit.o: ..\USER\GUI\inc\GUI.h
 .\output\exit.o: ..\USER\GUI\inc\GUI_ConfDefaults.h
 .\output\exit.o: ..\USER\GUI\inc\GUIConf.h

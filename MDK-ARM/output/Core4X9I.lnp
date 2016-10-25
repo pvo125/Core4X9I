@@ -1,5 +1,5 @@
 --cpu Cortex-M4.fp
-".\output\startup_stm32f429x.o"
+".\output\startup_stm32f429_439xx.o"
 ".\output\system_stm32f4xx.o"
 ".\output\stm32f4xx_crc.o"
 ".\output\stm32f4xx_fmc.o"

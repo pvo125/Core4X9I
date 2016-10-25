@@ -8,8 +8,8 @@ void assert_failed(uint8_t* file, uint32_t line)
 	while(1){};
 }
 
-
-
+//srec_cat input.bin -bin --crc32-l-e -max-addr input.bin -bin -o output.bin -output
+//D:\Keil\ARM\BIN\srec_cat Core4x9I.bin -BIN -offset 0x4 -crc32-l-e 0x0  -o Core4x9I.bin -BIN
 
 #define ID_BUTTON_YES (GUI_ID_USER + 0x01)
 #define ID_BUTTON_NO (GUI_ID_USER + 0x20)

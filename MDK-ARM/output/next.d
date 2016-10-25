@@ -1,5 +1,5 @@
 .\output\next.o: ..\USER\icon\next.c
-.\output\next.o: E:\Keil\ARM\ARMCC\bin\..\include\stdlib.h
+.\output\next.o: D:\Keil\ARM\ARMCC\bin\..\include\stdlib.h
 .\output\next.o: ..\USER\GUI\inc\GUI.h
 .\output\next.o: ..\USER\GUI\inc\GUI_ConfDefaults.h
 .\output\next.o: ..\USER\GUI\inc\GUIConf.h

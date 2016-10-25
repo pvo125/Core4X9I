@@ -1,5 +1,5 @@
 .\output\pdf.o: ..\USER\icon\pdf.c
-.\output\pdf.o: E:\Keil\ARM\ARMCC\bin\..\include\stdlib.h
+.\output\pdf.o: D:\Keil\ARM\ARMCC\bin\..\include\stdlib.h
 .\output\pdf.o: ..\USER\GUI\inc\GUI.h
 .\output\pdf.o: ..\USER\GUI\inc\GUI_ConfDefaults.h
 .\output\pdf.o: ..\USER\GUI\inc\GUIConf.h

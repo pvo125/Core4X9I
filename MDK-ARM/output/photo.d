@@ -1,5 +1,5 @@
 .\output\photo.o: ..\USER\icon\photo.c
-.\output\photo.o: E:\Keil\ARM\ARMCC\bin\..\include\stdlib.h
+.\output\photo.o: D:\Keil\ARM\ARMCC\bin\..\include\stdlib.h
 .\output\photo.o: ..\USER\GUI\inc\GUI.h
 .\output\photo.o: ..\USER\GUI\inc\GUI_ConfDefaults.h
 .\output\photo.o: ..\USER\GUI\inc\GUIConf.h

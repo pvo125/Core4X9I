@@ -16,7 +16,7 @@
 .\output\sd_file.o: ..\USER\GUI\inc\GUI_Private.h
 .\output\sd_file.o: ..\USER\GUI\inc\LCD_Protected.h
 .\output\sd_file.o: ..\USER\GUI\inc\GUI_Debug.h
-.\output\sd_file.o: E:\Keil\ARM\ARMCC\bin\..\include\stddef.h
+.\output\sd_file.o: D:\Keil\ARM\ARMCC\bin\..\include\stddef.h
 .\output\sd_file.o: ..\USER\GUI\inc\SCROLLBAR.h
 .\output\sd_file.o: ..\USER\GUI\inc\WIDGET.h
 .\output\sd_file.o: ..\USER\GUI\inc\CALENDAR.h
@@ -45,11 +45,11 @@
 .\output\sd_file.o: ..\USER\GUI\inc\TREEVIEW.h
 .\output\sd_file.o: ..\USER\main\header.h
 .\output\sd_file.o: ..\Libraries\CMSIS\Device\ST\STM32F4xx\Include\stm32f4xx.h
-.\output\sd_file.o: E:\Keil\ARM\CMSIS\Include\core_cm4.h
-.\output\sd_file.o: E:\Keil\ARM\ARMCC\bin\..\include\stdint.h
-.\output\sd_file.o: E:\Keil\ARM\CMSIS\Include\core_cmInstr.h
-.\output\sd_file.o: E:\Keil\ARM\CMSIS\Include\core_cmFunc.h
-.\output\sd_file.o: E:\Keil\ARM\CMSIS\Include\core_cm4_simd.h
+.\output\sd_file.o: D:\Keil\ARM\CMSIS\Include\core_cm4.h
+.\output\sd_file.o: D:\Keil\ARM\ARMCC\bin\..\include\stdint.h
+.\output\sd_file.o: D:\Keil\ARM\CMSIS\Include\core_cmInstr.h
+.\output\sd_file.o: D:\Keil\ARM\CMSIS\Include\core_cmFunc.h
+.\output\sd_file.o: D:\Keil\ARM\CMSIS\Include\core_cm4_simd.h
 .\output\sd_file.o: ..\Libraries\CMSIS\Device\ST\STM32F4xx\Include\system_stm32f4xx.h
 .\output\sd_file.o: ..\USER\main\stm32f4xx_conf.h
 .\output\sd_file.o: ..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_dma.h
@@ -71,6 +71,6 @@
 .\output\sd_file.o: ..\USER\GUI\LCDConf.h
 .\output\sd_file.o: ..\USER\TSC2046\tsc2046.h
 .\output\sd_file.o: ..\USER\SDRAM\SDRAM.h
-.\output\sd_file.o: E:\Keil\ARM\ARMCC\bin\..\include\string.h
-.\output\sd_file.o: E:\Keil\ARM\ARMCC\bin\..\include\stdio.h
-.\output\sd_file.o: E:\Keil\ARM\ARMCC\bin\..\include\stdlib.h
+.\output\sd_file.o: D:\Keil\ARM\ARMCC\bin\..\include\string.h
+.\output\sd_file.o: D:\Keil\ARM\ARMCC\bin\..\include\stdio.h
+.\output\sd_file.o: D:\Keil\ARM\ARMCC\bin\..\include\stdlib.h
