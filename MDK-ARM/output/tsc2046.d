@@ -1,10 +1,10 @@
 .\output\tsc2046.o: ..\USER\TSC2046\tsc2046.c
 .\output\tsc2046.o: ..\Libraries\CMSIS\Device\ST\STM32F4xx\Include\stm32f4xx.h
-.\output\tsc2046.o: D:\Keil\ARM\CMSIS\Include\core_cm4.h
-.\output\tsc2046.o: D:\Keil\ARM\ARMCC\bin\..\include\stdint.h
-.\output\tsc2046.o: D:\Keil\ARM\CMSIS\Include\core_cmInstr.h
-.\output\tsc2046.o: D:\Keil\ARM\CMSIS\Include\core_cmFunc.h
-.\output\tsc2046.o: D:\Keil\ARM\CMSIS\Include\core_cm4_simd.h
+.\output\tsc2046.o: E:\Keil\ARM\CMSIS\Include\core_cm4.h
+.\output\tsc2046.o: E:\Keil\ARM\ARMCC\bin\..\include\stdint.h
+.\output\tsc2046.o: E:\Keil\ARM\CMSIS\Include\core_cmInstr.h
+.\output\tsc2046.o: E:\Keil\ARM\CMSIS\Include\core_cmFunc.h
+.\output\tsc2046.o: E:\Keil\ARM\CMSIS\Include\core_cm4_simd.h
 .\output\tsc2046.o: ..\Libraries\CMSIS\Device\ST\STM32F4xx\Include\system_stm32f4xx.h
 .\output\tsc2046.o: ..\USER\main\stm32f4xx_conf.h
 .\output\tsc2046.o: ..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_dma.h
@@ -35,7 +35,7 @@
 .\output\tsc2046.o: ..\USER\GUI\inc\GUI_Private.h
 .\output\tsc2046.o: ..\USER\GUI\inc\LCD_Protected.h
 .\output\tsc2046.o: ..\USER\GUI\inc\GUI_Debug.h
-.\output\tsc2046.o: D:\Keil\ARM\ARMCC\bin\..\include\stddef.h
+.\output\tsc2046.o: E:\Keil\ARM\ARMCC\bin\..\include\stddef.h
 .\output\tsc2046.o: ..\USER\GUI\inc\SCROLLBAR.h
 .\output\tsc2046.o: ..\USER\GUI\inc\WIDGET.h
 .\output\tsc2046.o: ..\USER\GUI\inc\CALENDAR.h

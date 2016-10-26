@@ -16,7 +16,7 @@
 .\output\timerdlg.o: ..\USER\GUI\inc\GUI_Private.h
 .\output\timerdlg.o: ..\USER\GUI\inc\LCD_Protected.h
 .\output\timerdlg.o: ..\USER\GUI\inc\GUI_Debug.h
-.\output\timerdlg.o: D:\Keil\ARM\ARMCC\bin\..\include\stddef.h
+.\output\timerdlg.o: E:\Keil\ARM\ARMCC\bin\..\include\stddef.h
 .\output\timerdlg.o: ..\USER\GUI\inc\SCROLLBAR.h
 .\output\timerdlg.o: ..\USER\GUI\inc\WIDGET.h
 .\output\timerdlg.o: ..\USER\GUI\inc\CALENDAR.h
@@ -45,11 +45,11 @@
 .\output\timerdlg.o: ..\USER\GUI\inc\TREEVIEW.h
 .\output\timerdlg.o: ..\USER\main\header.h
 .\output\timerdlg.o: ..\Libraries\CMSIS\Device\ST\STM32F4xx\Include\stm32f4xx.h
-.\output\timerdlg.o: D:\Keil\ARM\CMSIS\Include\core_cm4.h
-.\output\timerdlg.o: D:\Keil\ARM\ARMCC\bin\..\include\stdint.h
-.\output\timerdlg.o: D:\Keil\ARM\CMSIS\Include\core_cmInstr.h
-.\output\timerdlg.o: D:\Keil\ARM\CMSIS\Include\core_cmFunc.h
-.\output\timerdlg.o: D:\Keil\ARM\CMSIS\Include\core_cm4_simd.h
+.\output\timerdlg.o: E:\Keil\ARM\CMSIS\Include\core_cm4.h
+.\output\timerdlg.o: E:\Keil\ARM\ARMCC\bin\..\include\stdint.h
+.\output\timerdlg.o: E:\Keil\ARM\CMSIS\Include\core_cmInstr.h
+.\output\timerdlg.o: E:\Keil\ARM\CMSIS\Include\core_cmFunc.h
+.\output\timerdlg.o: E:\Keil\ARM\CMSIS\Include\core_cm4_simd.h
 .\output\timerdlg.o: ..\Libraries\CMSIS\Device\ST\STM32F4xx\Include\system_stm32f4xx.h
 .\output\timerdlg.o: ..\USER\main\stm32f4xx_conf.h
 .\output\timerdlg.o: ..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_dma.h

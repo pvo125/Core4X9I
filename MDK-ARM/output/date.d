@@ -1,5 +1,5 @@
 .\output\date.o: ..\USER\icon\date.c
-.\output\date.o: D:\Keil\ARM\ARMCC\bin\..\include\stdlib.h
+.\output\date.o: E:\Keil\ARM\ARMCC\bin\..\include\stdlib.h
 .\output\date.o: ..\USER\GUI\inc\GUI.h
 .\output\date.o: ..\USER\GUI\inc\GUI_ConfDefaults.h
 .\output\date.o: ..\USER\GUI\inc\GUIConf.h

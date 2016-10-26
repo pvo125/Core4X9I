@@ -120,7 +120,7 @@ ARM Macro Assembler    Page 2
                                                             
    75 00000018 00000000        DCD              UsageFault_Handler ; Usage Faul
                                                             t Handler
-   76 0000001C 00000000        DCD              0           ; Reserved
+   76 0000001C 12345678        DCD              0x12345678  ; Reserved
    77 00000020 00000000        DCD              0           ; Reserved
    78 00000024 00000000        DCD              0           ; Reserved
    79 00000028 00000000        DCD              0           ; Reserved
@@ -905,8 +905,8 @@ ARM Macro Assembler    Page 14
               00000600 
               00000000 
 Command Line: --debug --xref --cpu=Cortex-M4.fp --apcs=interwork --depend=.\out
-put\startup_stm32f429_439xx.d -o.\output\startup_stm32f429_439xx.o -ID:\Keil\AR
-M\RV31\INC -ID:\Keil\ARM\CMSIS\Include -ID:\Keil\ARM\Inc\ST\STM32F4xx --list=.\
+put\startup_stm32f429_439xx.d -o.\output\startup_stm32f429_439xx.o -IE:\Keil\AR
+M\RV31\INC -IE:\Keil\ARM\CMSIS\Include -IE:\Keil\ARM\Inc\ST\STM32F4xx --list=.\
 startup_stm32f429_439xx.lst ..\Libraries\CMSIS\Device\ST\STM32F4xx\Source\Templ
 
 

@@ -1,11 +1,11 @@
 .\output\mx25l8005.o: ..\USER\MX25\mx25l8005.c
 .\output\mx25l8005.o: ..\USER\main\header.h
 .\output\mx25l8005.o: ..\Libraries\CMSIS\Device\ST\STM32F4xx\Include\stm32f4xx.h
-.\output\mx25l8005.o: D:\Keil\ARM\CMSIS\Include\core_cm4.h
-.\output\mx25l8005.o: D:\Keil\ARM\ARMCC\bin\..\include\stdint.h
-.\output\mx25l8005.o: D:\Keil\ARM\CMSIS\Include\core_cmInstr.h
-.\output\mx25l8005.o: D:\Keil\ARM\CMSIS\Include\core_cmFunc.h
-.\output\mx25l8005.o: D:\Keil\ARM\CMSIS\Include\core_cm4_simd.h
+.\output\mx25l8005.o: E:\Keil\ARM\CMSIS\Include\core_cm4.h
+.\output\mx25l8005.o: E:\Keil\ARM\ARMCC\bin\..\include\stdint.h
+.\output\mx25l8005.o: E:\Keil\ARM\CMSIS\Include\core_cmInstr.h
+.\output\mx25l8005.o: E:\Keil\ARM\CMSIS\Include\core_cmFunc.h
+.\output\mx25l8005.o: E:\Keil\ARM\CMSIS\Include\core_cm4_simd.h
 .\output\mx25l8005.o: ..\Libraries\CMSIS\Device\ST\STM32F4xx\Include\system_stm32f4xx.h
 .\output\mx25l8005.o: ..\USER\main\stm32f4xx_conf.h
 .\output\mx25l8005.o: ..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_dma.h
@@ -35,7 +35,7 @@
 .\output\mx25l8005.o: ..\USER\GUI\inc\GUI_Private.h
 .\output\mx25l8005.o: ..\USER\GUI\inc\LCD_Protected.h
 .\output\mx25l8005.o: ..\USER\GUI\inc\GUI_Debug.h
-.\output\mx25l8005.o: D:\Keil\ARM\ARMCC\bin\..\include\stddef.h
+.\output\mx25l8005.o: E:\Keil\ARM\ARMCC\bin\..\include\stddef.h
 .\output\mx25l8005.o: ..\USER\GUI\inc\SCROLLBAR.h
 .\output\mx25l8005.o: ..\USER\GUI\inc\WIDGET.h
 .\output\mx25l8005.o: ..\USER\GUI\inc\CALENDAR.h

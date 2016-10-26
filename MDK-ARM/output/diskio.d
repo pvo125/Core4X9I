@@ -3,11 +3,11 @@
 .\output\diskio.o: ..\USER\FatFS\integer.h
 .\output\diskio.o: ..\USER\SDCARD\sdcard.h
 .\output\diskio.o: ..\Libraries\CMSIS\Device\ST\STM32F4xx\Include\stm32f4xx.h
-.\output\diskio.o: D:\Keil\ARM\CMSIS\Include\core_cm4.h
-.\output\diskio.o: D:\Keil\ARM\ARMCC\bin\..\include\stdint.h
-.\output\diskio.o: D:\Keil\ARM\CMSIS\Include\core_cmInstr.h
-.\output\diskio.o: D:\Keil\ARM\CMSIS\Include\core_cmFunc.h
-.\output\diskio.o: D:\Keil\ARM\CMSIS\Include\core_cm4_simd.h
+.\output\diskio.o: E:\Keil\ARM\CMSIS\Include\core_cm4.h
+.\output\diskio.o: E:\Keil\ARM\ARMCC\bin\..\include\stdint.h
+.\output\diskio.o: E:\Keil\ARM\CMSIS\Include\core_cmInstr.h
+.\output\diskio.o: E:\Keil\ARM\CMSIS\Include\core_cmFunc.h
+.\output\diskio.o: E:\Keil\ARM\CMSIS\Include\core_cm4_simd.h
 .\output\diskio.o: ..\Libraries\CMSIS\Device\ST\STM32F4xx\Include\system_stm32f4xx.h
 .\output\diskio.o: ..\USER\main\stm32f4xx_conf.h
 .\output\diskio.o: ..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_dma.h
@@ -38,7 +38,7 @@
 .\output\diskio.o: ..\USER\GUI\inc\GUI_Private.h
 .\output\diskio.o: ..\USER\GUI\inc\LCD_Protected.h
 .\output\diskio.o: ..\USER\GUI\inc\GUI_Debug.h
-.\output\diskio.o: D:\Keil\ARM\ARMCC\bin\..\include\stddef.h
+.\output\diskio.o: E:\Keil\ARM\ARMCC\bin\..\include\stddef.h
 .\output\diskio.o: ..\USER\GUI\inc\SCROLLBAR.h
 .\output\diskio.o: ..\USER\GUI\inc\WIDGET.h
 .\output\diskio.o: ..\USER\GUI\inc\CALENDAR.h

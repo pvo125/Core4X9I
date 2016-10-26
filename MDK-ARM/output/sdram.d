@@ -1,10 +1,10 @@
 .\output\sdram.o: ..\USER\SDRAM\SDRAM.c
 .\output\sdram.o: ..\Libraries\CMSIS\Device\ST\STM32F4xx\Include\stm32f4xx.h
-.\output\sdram.o: D:\Keil\ARM\CMSIS\Include\core_cm4.h
-.\output\sdram.o: D:\Keil\ARM\ARMCC\bin\..\include\stdint.h
-.\output\sdram.o: D:\Keil\ARM\CMSIS\Include\core_cmInstr.h
-.\output\sdram.o: D:\Keil\ARM\CMSIS\Include\core_cmFunc.h
-.\output\sdram.o: D:\Keil\ARM\CMSIS\Include\core_cm4_simd.h
+.\output\sdram.o: E:\Keil\ARM\CMSIS\Include\core_cm4.h
+.\output\sdram.o: E:\Keil\ARM\ARMCC\bin\..\include\stdint.h
+.\output\sdram.o: E:\Keil\ARM\CMSIS\Include\core_cmInstr.h
+.\output\sdram.o: E:\Keil\ARM\CMSIS\Include\core_cmFunc.h
+.\output\sdram.o: E:\Keil\ARM\CMSIS\Include\core_cm4_simd.h
 .\output\sdram.o: ..\Libraries\CMSIS\Device\ST\STM32F4xx\Include\system_stm32f4xx.h
 .\output\sdram.o: ..\USER\main\stm32f4xx_conf.h
 .\output\sdram.o: ..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_dma.h
@@ -35,7 +35,7 @@
 .\output\sdram.o: ..\USER\GUI\inc\GUI_Private.h
 .\output\sdram.o: ..\USER\GUI\inc\LCD_Protected.h
 .\output\sdram.o: ..\USER\GUI\inc\GUI_Debug.h
-.\output\sdram.o: D:\Keil\ARM\ARMCC\bin\..\include\stddef.h
+.\output\sdram.o: E:\Keil\ARM\ARMCC\bin\..\include\stddef.h
 .\output\sdram.o: ..\USER\GUI\inc\SCROLLBAR.h
 .\output\sdram.o: ..\USER\GUI\inc\WIDGET.h
 .\output\sdram.o: ..\USER\GUI\inc\CALENDAR.h

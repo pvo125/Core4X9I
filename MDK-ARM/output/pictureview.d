@@ -16,7 +16,7 @@
 .\output\pictureview.o: ..\USER\GUI\inc\GUI_Private.h
 .\output\pictureview.o: ..\USER\GUI\inc\LCD_Protected.h
 .\output\pictureview.o: ..\USER\GUI\inc\GUI_Debug.h
-.\output\pictureview.o: D:\Keil\ARM\ARMCC\bin\..\include\stddef.h
+.\output\pictureview.o: E:\Keil\ARM\ARMCC\bin\..\include\stddef.h
 .\output\pictureview.o: ..\USER\GUI\inc\SCROLLBAR.h
 .\output\pictureview.o: ..\USER\GUI\inc\WIDGET.h
 .\output\pictureview.o: ..\USER\GUI\inc\CALENDAR.h
@@ -45,11 +45,11 @@
 .\output\pictureview.o: ..\USER\GUI\inc\TREEVIEW.h
 .\output\pictureview.o: ..\USER\main\header.h
 .\output\pictureview.o: ..\Libraries\CMSIS\Device\ST\STM32F4xx\Include\stm32f4xx.h
-.\output\pictureview.o: D:\Keil\ARM\CMSIS\Include\core_cm4.h
-.\output\pictureview.o: D:\Keil\ARM\ARMCC\bin\..\include\stdint.h
-.\output\pictureview.o: D:\Keil\ARM\CMSIS\Include\core_cmInstr.h
-.\output\pictureview.o: D:\Keil\ARM\CMSIS\Include\core_cmFunc.h
-.\output\pictureview.o: D:\Keil\ARM\CMSIS\Include\core_cm4_simd.h
+.\output\pictureview.o: E:\Keil\ARM\CMSIS\Include\core_cm4.h
+.\output\pictureview.o: E:\Keil\ARM\ARMCC\bin\..\include\stdint.h
+.\output\pictureview.o: E:\Keil\ARM\CMSIS\Include\core_cmInstr.h
+.\output\pictureview.o: E:\Keil\ARM\CMSIS\Include\core_cmFunc.h
+.\output\pictureview.o: E:\Keil\ARM\CMSIS\Include\core_cm4_simd.h
 .\output\pictureview.o: ..\Libraries\CMSIS\Device\ST\STM32F4xx\Include\system_stm32f4xx.h
 .\output\pictureview.o: ..\USER\main\stm32f4xx_conf.h
 .\output\pictureview.o: ..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_dma.h
@@ -71,4 +71,4 @@
 .\output\pictureview.o: ..\USER\GUI\LCDConf.h
 .\output\pictureview.o: ..\USER\TSC2046\tsc2046.h
 .\output\pictureview.o: ..\USER\SDRAM\SDRAM.h
-.\output\pictureview.o: D:\Keil\ARM\ARMCC\bin\..\include\string.h
+.\output\pictureview.o: E:\Keil\ARM\ARMCC\bin\..\include\string.h

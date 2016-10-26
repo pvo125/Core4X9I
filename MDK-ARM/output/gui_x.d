@@ -1,10 +1,10 @@
 .\output\gui_x.o: ..\USER\GUI\GUI_X.c
 .\output\gui_x.o: ..\Libraries\CMSIS\Device\ST\STM32F4xx\Include\stm32f4xx.h
-.\output\gui_x.o: D:\Keil\ARM\CMSIS\Include\core_cm4.h
-.\output\gui_x.o: D:\Keil\ARM\ARMCC\bin\..\include\stdint.h
-.\output\gui_x.o: D:\Keil\ARM\CMSIS\Include\core_cmInstr.h
-.\output\gui_x.o: D:\Keil\ARM\CMSIS\Include\core_cmFunc.h
-.\output\gui_x.o: D:\Keil\ARM\CMSIS\Include\core_cm4_simd.h
+.\output\gui_x.o: E:\Keil\ARM\CMSIS\Include\core_cm4.h
+.\output\gui_x.o: E:\Keil\ARM\ARMCC\bin\..\include\stdint.h
+.\output\gui_x.o: E:\Keil\ARM\CMSIS\Include\core_cmInstr.h
+.\output\gui_x.o: E:\Keil\ARM\CMSIS\Include\core_cmFunc.h
+.\output\gui_x.o: E:\Keil\ARM\CMSIS\Include\core_cm4_simd.h
 .\output\gui_x.o: ..\Libraries\CMSIS\Device\ST\STM32F4xx\Include\system_stm32f4xx.h
 .\output\gui_x.o: ..\USER\main\stm32f4xx_conf.h
 .\output\gui_x.o: ..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_dma.h

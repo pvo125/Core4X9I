@@ -16,7 +16,7 @@
 .\output\start_windowdlg.o: ..\USER\GUI\inc\GUI_Private.h
 .\output\start_windowdlg.o: ..\USER\GUI\inc\LCD_Protected.h
 .\output\start_windowdlg.o: ..\USER\GUI\inc\GUI_Debug.h
-.\output\start_windowdlg.o: D:\Keil\ARM\ARMCC\bin\..\include\stddef.h
+.\output\start_windowdlg.o: E:\Keil\ARM\ARMCC\bin\..\include\stddef.h
 .\output\start_windowdlg.o: ..\USER\GUI\inc\SCROLLBAR.h
 .\output\start_windowdlg.o: ..\USER\GUI\inc\WIDGET.h
 .\output\start_windowdlg.o: ..\USER\GUI\inc\CALENDAR.h
@@ -45,11 +45,11 @@
 .\output\start_windowdlg.o: ..\USER\GUI\inc\TREEVIEW.h
 .\output\start_windowdlg.o: ..\USER\main\header.h
 .\output\start_windowdlg.o: ..\Libraries\CMSIS\Device\ST\STM32F4xx\Include\stm32f4xx.h
-.\output\start_windowdlg.o: D:\Keil\ARM\CMSIS\Include\core_cm4.h
-.\output\start_windowdlg.o: D:\Keil\ARM\ARMCC\bin\..\include\stdint.h
-.\output\start_windowdlg.o: D:\Keil\ARM\CMSIS\Include\core_cmInstr.h
-.\output\start_windowdlg.o: D:\Keil\ARM\CMSIS\Include\core_cmFunc.h
-.\output\start_windowdlg.o: D:\Keil\ARM\CMSIS\Include\core_cm4_simd.h
+.\output\start_windowdlg.o: E:\Keil\ARM\CMSIS\Include\core_cm4.h
+.\output\start_windowdlg.o: E:\Keil\ARM\ARMCC\bin\..\include\stdint.h
+.\output\start_windowdlg.o: E:\Keil\ARM\CMSIS\Include\core_cmInstr.h
+.\output\start_windowdlg.o: E:\Keil\ARM\CMSIS\Include\core_cmFunc.h
+.\output\start_windowdlg.o: E:\Keil\ARM\CMSIS\Include\core_cm4_simd.h
 .\output\start_windowdlg.o: ..\Libraries\CMSIS\Device\ST\STM32F4xx\Include\system_stm32f4xx.h
 .\output\start_windowdlg.o: ..\USER\main\stm32f4xx_conf.h
 .\output\start_windowdlg.o: ..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_dma.h
@@ -71,5 +71,5 @@
 .\output\start_windowdlg.o: ..\USER\GUI\LCDConf.h
 .\output\start_windowdlg.o: ..\USER\TSC2046\tsc2046.h
 .\output\start_windowdlg.o: ..\USER\SDRAM\SDRAM.h
-.\output\start_windowdlg.o: D:\Keil\ARM\ARMCC\bin\..\include\string.h
+.\output\start_windowdlg.o: E:\Keil\ARM\ARMCC\bin\..\include\string.h
 .\output\start_windowdlg.o: ..\USER\bxCAN\CAN.h

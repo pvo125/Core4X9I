@@ -1,5 +1,5 @@
 .\output\pwm.o: ..\USER\icon\pwm.c
-.\output\pwm.o: D:\Keil\ARM\ARMCC\bin\..\include\stdlib.h
+.\output\pwm.o: E:\Keil\ARM\ARMCC\bin\..\include\stdlib.h
 .\output\pwm.o: ..\USER\GUI\inc\GUI.h
 .\output\pwm.o: ..\USER\GUI\inc\GUI_ConfDefaults.h
 .\output\pwm.o: ..\USER\GUI\inc\GUIConf.h

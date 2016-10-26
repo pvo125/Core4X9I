@@ -1,11 +1,11 @@
 .\output\stm32f4xx_rtc.o: ..\Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_rtc.c
 .\output\stm32f4xx_rtc.o: ..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_rtc.h
 .\output\stm32f4xx_rtc.o: ..\Libraries\CMSIS\Device\ST\STM32F4xx\Include\stm32f4xx.h
-.\output\stm32f4xx_rtc.o: D:\Keil\ARM\CMSIS\Include\core_cm4.h
-.\output\stm32f4xx_rtc.o: D:\Keil\ARM\ARMCC\bin\..\include\stdint.h
-.\output\stm32f4xx_rtc.o: D:\Keil\ARM\CMSIS\Include\core_cmInstr.h
-.\output\stm32f4xx_rtc.o: D:\Keil\ARM\CMSIS\Include\core_cmFunc.h
-.\output\stm32f4xx_rtc.o: D:\Keil\ARM\CMSIS\Include\core_cm4_simd.h
+.\output\stm32f4xx_rtc.o: E:\Keil\ARM\CMSIS\Include\core_cm4.h
+.\output\stm32f4xx_rtc.o: E:\Keil\ARM\ARMCC\bin\..\include\stdint.h
+.\output\stm32f4xx_rtc.o: E:\Keil\ARM\CMSIS\Include\core_cmInstr.h
+.\output\stm32f4xx_rtc.o: E:\Keil\ARM\CMSIS\Include\core_cmFunc.h
+.\output\stm32f4xx_rtc.o: E:\Keil\ARM\CMSIS\Include\core_cm4_simd.h
 .\output\stm32f4xx_rtc.o: ..\Libraries\CMSIS\Device\ST\STM32F4xx\Include\system_stm32f4xx.h
 .\output\stm32f4xx_rtc.o: ..\USER\main\stm32f4xx_conf.h
 .\output\stm32f4xx_rtc.o: ..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_dma.h
