@@ -25,6 +25,11 @@ extern WM_HWIN hWin_timer;
 #define ID_PROGBAR_1     (GUI_ID_USER + 0x17)
 #define ID_DROPDOWN_0    (GUI_ID_USER + 0x18)
 
+#define NAMBER_WORK_SECTOR			2						//	первый work сектор 				2
+																						//  последний work сектор   	7
+#define NAMBER_UPD_SECTOR				8						//	первый update	 сектор 		8
+#define NAMBER_SECT_U_END 			12					//  последний update сектор		11
+
 #define NETNAME_INDEX  01   //Core4X9I 
 
 void Flash_unlock(void);
@@ -151,11 +156,11 @@ void bxCAN_Init(void){
 																						//							 fmi 03 ID=0x287 IDE=0 RTR=1	// DISABLE ALARM_B
 	CAN1->sFilterRegister[4].FR1=0x51105100;	//Filters bank 4 fmi 04 ID=0x288 IDE=0 RTR=0	 
 																						//							 fmi 05 ID=0x288 IDE=0 RTR=1
-	CAN1->sFilterRegister[4].FR2=0x51305120;	//Filters bank 4 fmi 06 ID=0x289 IDE=0 RTR=0	 
-																						//							 fmi 07 ID=0x289 IDE=0 RTR=1
+	CAN1->sFilterRegister[4].FR2=0x51305120;	//Filters bank 4 fmi 06 ID=0x289 IDE=0 RTR=0	//	DOWNLOAD_FIRMWARW
+																						//							 fmi 07 ID=0x289 IDE=0 RTR=1	//  UPDATE_FIRMWARE_REQ 
 	
 	CAN1->sFilterRegister[5].FR1=0x10F010E0;	//Filters bank 5 fmi 08 ID=0x087 IDE=0 RTR=0	 
-																						//							 fmi 09 ID=0x087 IDE=0 RTR=1	// UPDATE_FIRMWARE
+																						//							 fmi 09 ID=0x087 IDE=0 RTR=1	// 
 	CAN1->sFilterRegister[5].FR2=0x11101100;	//Filters bank 5 fmi 10 ID=0x088 IDE=0 RTR=0	//  
 																						//							 fmi 11 ID=0x088 IDE=0 RTR=1	// 	GET_NET_NAME																			
 	
@@ -537,6 +542,23 @@ void CAN_RXProcess1(void){
 		case 3://(id=287 remote disable alarm_b)
 		//
 		break;
+		case 6:	//(id=289 DOWNLOAD_FIRMWARE)
+			
+		break;
+		case 7:	//(id=289 remote UPDATE_FIRMWARE_REQ)
+			// если получили запрос на обновление 
+		// * разблокировать flash 
+		// * стереть сектора второй половины flash 
+		// * отправить подтверждение по CAN для запроса UPDATE_FIRMWARE_REQ
+		Flash_unlock();
+		Flash_sect_erase(NAMBER_UPD_SECTOR,4);		// Очистим 8,9,10,11 сектора всего 4 сектора
+		CAN_Data_TX.ID=(NETNAME_INDEX<<8)|0x89;
+		CAN_Data_TX.DLC=3;
+		CAN_Data_TX.Data[0]=NETNAME_INDEX;
+		CAN_Data_TX.Data[1]='o';
+		CAN_Data_TX.Data[2]='k';
+		CAN_Transmit_DataFrame(&CAN_Data_TX);
+		break;		
 		
 		case 9: //(id=087 remote update firmware)
 			/* Если приняли данное сообщение выставляем во flash флаг обновления через CAN  и  перезагрузка для принятия прошивки */
@@ -609,7 +631,7 @@ void Flash_sect_erase(uint8_t numsect,uint8_t count){
 			FLASH->CR |=FLASH_CR_STRT;														// запуск очистки заданного сектора
 			while((FLASH->SR & FLASH_SR_BSY)==FLASH_SR_BSY)	{}		// ожидание готовности
 		}
-	FLASH->CR &= ~FLASH_CR_SER;																	// флаг  очистки сектора
+	FLASH->CR &= ~FLASH_CR_SER;																	//сбросим  флаг  очистки сектора
 }
 
 void Flash_prog(uint8_t *src,uint8_t *dst,uint32_t nbyte){
