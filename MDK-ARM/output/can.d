@@ -1,10 +1,10 @@
 .\output\can.o: ..\USER\bxCAN\CAN.c
 .\output\can.o: ..\Libraries\CMSIS\Device\ST\STM32F4xx\Include\stm32f4xx.h
-.\output\can.o: E:\Keil\ARM\CMSIS\Include\core_cm4.h
-.\output\can.o: E:\Keil\ARM\ARMCC\bin\..\include\stdint.h
-.\output\can.o: E:\Keil\ARM\CMSIS\Include\core_cmInstr.h
-.\output\can.o: E:\Keil\ARM\CMSIS\Include\core_cmFunc.h
-.\output\can.o: E:\Keil\ARM\CMSIS\Include\core_cm4_simd.h
+.\output\can.o: D:\Keil\ARM\CMSIS\Include\core_cm4.h
+.\output\can.o: D:\Keil\ARM\ARMCC\bin\..\include\stdint.h
+.\output\can.o: D:\Keil\ARM\CMSIS\Include\core_cmInstr.h
+.\output\can.o: D:\Keil\ARM\CMSIS\Include\core_cmFunc.h
+.\output\can.o: D:\Keil\ARM\CMSIS\Include\core_cm4_simd.h
 .\output\can.o: ..\Libraries\CMSIS\Device\ST\STM32F4xx\Include\system_stm32f4xx.h
 .\output\can.o: ..\USER\main\stm32f4xx_conf.h
 .\output\can.o: ..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_dma.h
@@ -36,7 +36,7 @@
 .\output\can.o: ..\USER\GUI\inc\GUI_Private.h
 .\output\can.o: ..\USER\GUI\inc\LCD_Protected.h
 .\output\can.o: ..\USER\GUI\inc\GUI_Debug.h
-.\output\can.o: E:\Keil\ARM\ARMCC\bin\..\include\stddef.h
+.\output\can.o: D:\Keil\ARM\ARMCC\bin\..\include\stddef.h
 .\output\can.o: ..\USER\GUI\inc\SCROLLBAR.h
 .\output\can.o: ..\USER\GUI\inc\WIDGET.h
 .\output\can.o: ..\USER\GUI\inc\CALENDAR.h

@@ -1,10 +1,10 @@
 .\output\ssd1963.o: ..\USER\SSD1963\ssd1963.c
 .\output\ssd1963.o: ..\Libraries\CMSIS\Device\ST\STM32F4xx\Include\stm32f4xx.h
-.\output\ssd1963.o: E:\Keil\ARM\CMSIS\Include\core_cm4.h
-.\output\ssd1963.o: E:\Keil\ARM\ARMCC\bin\..\include\stdint.h
-.\output\ssd1963.o: E:\Keil\ARM\CMSIS\Include\core_cmInstr.h
-.\output\ssd1963.o: E:\Keil\ARM\CMSIS\Include\core_cmFunc.h
-.\output\ssd1963.o: E:\Keil\ARM\CMSIS\Include\core_cm4_simd.h
+.\output\ssd1963.o: D:\Keil\ARM\CMSIS\Include\core_cm4.h
+.\output\ssd1963.o: D:\Keil\ARM\ARMCC\bin\..\include\stdint.h
+.\output\ssd1963.o: D:\Keil\ARM\CMSIS\Include\core_cmInstr.h
+.\output\ssd1963.o: D:\Keil\ARM\CMSIS\Include\core_cmFunc.h
+.\output\ssd1963.o: D:\Keil\ARM\CMSIS\Include\core_cm4_simd.h
 .\output\ssd1963.o: ..\Libraries\CMSIS\Device\ST\STM32F4xx\Include\system_stm32f4xx.h
 .\output\ssd1963.o: ..\USER\main\stm32f4xx_conf.h
 .\output\ssd1963.o: ..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_dma.h
@@ -35,7 +35,7 @@
 .\output\ssd1963.o: ..\USER\GUI\inc\GUI_Private.h
 .\output\ssd1963.o: ..\USER\GUI\inc\LCD_Protected.h
 .\output\ssd1963.o: ..\USER\GUI\inc\GUI_Debug.h
-.\output\ssd1963.o: E:\Keil\ARM\ARMCC\bin\..\include\stddef.h
+.\output\ssd1963.o: D:\Keil\ARM\ARMCC\bin\..\include\stddef.h
 .\output\ssd1963.o: ..\USER\GUI\inc\SCROLLBAR.h
 .\output\ssd1963.o: ..\USER\GUI\inc\WIDGET.h
 .\output\ssd1963.o: ..\USER\GUI\inc\CALENDAR.h

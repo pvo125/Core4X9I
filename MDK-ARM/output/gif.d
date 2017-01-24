@@ -1,5 +1,5 @@
 .\output\gif.o: ..\USER\icon\gif.c
-.\output\gif.o: E:\Keil\ARM\ARMCC\bin\..\include\stdlib.h
+.\output\gif.o: D:\Keil\ARM\ARMCC\bin\..\include\stdlib.h
 .\output\gif.o: ..\USER\GUI\inc\GUI.h
 .\output\gif.o: ..\USER\GUI\inc\GUI_ConfDefaults.h
 .\output\gif.o: ..\USER\GUI\inc\GUIConf.h

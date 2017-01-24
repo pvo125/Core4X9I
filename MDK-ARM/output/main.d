@@ -1,10 +1,10 @@
 .\output\main.o: ..\USER\main\main.c
 .\output\main.o: ..\Libraries\CMSIS\Device\ST\STM32F4xx\Include\stm32f4xx.h
-.\output\main.o: E:\Keil\ARM\CMSIS\Include\core_cm4.h
-.\output\main.o: E:\Keil\ARM\ARMCC\bin\..\include\stdint.h
-.\output\main.o: E:\Keil\ARM\CMSIS\Include\core_cmInstr.h
-.\output\main.o: E:\Keil\ARM\CMSIS\Include\core_cmFunc.h
-.\output\main.o: E:\Keil\ARM\CMSIS\Include\core_cm4_simd.h
+.\output\main.o: D:\Keil\ARM\CMSIS\Include\core_cm4.h
+.\output\main.o: D:\Keil\ARM\ARMCC\bin\..\include\stdint.h
+.\output\main.o: D:\Keil\ARM\CMSIS\Include\core_cmInstr.h
+.\output\main.o: D:\Keil\ARM\CMSIS\Include\core_cmFunc.h
+.\output\main.o: D:\Keil\ARM\CMSIS\Include\core_cm4_simd.h
 .\output\main.o: ..\Libraries\CMSIS\Device\ST\STM32F4xx\Include\system_stm32f4xx.h
 .\output\main.o: ..\USER\main\stm32f4xx_conf.h
 .\output\main.o: ..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_dma.h
@@ -17,7 +17,7 @@
 .\output\main.o: ..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_sdio.h
 .\output\main.o: ..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_spi.h
 .\output\main.o: ..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_fmc.h
-.\output\main.o: E:\Keil\ARM\ARMCC\bin\..\include\stdlib.h
+.\output\main.o: D:\Keil\ARM\ARMCC\bin\..\include\stdlib.h
 .\output\main.o: ..\USER\main\header.h
 .\output\main.o: ..\USER\GUI\inc\GUI.h
 .\output\main.o: ..\USER\GUI\inc\GUI_ConfDefaults.h
@@ -36,7 +36,7 @@
 .\output\main.o: ..\USER\GUI\inc\GUI_Private.h
 .\output\main.o: ..\USER\GUI\inc\LCD_Protected.h
 .\output\main.o: ..\USER\GUI\inc\GUI_Debug.h
-.\output\main.o: E:\Keil\ARM\ARMCC\bin\..\include\stddef.h
+.\output\main.o: D:\Keil\ARM\ARMCC\bin\..\include\stddef.h
 .\output\main.o: ..\USER\GUI\inc\SCROLLBAR.h
 .\output\main.o: ..\USER\GUI\inc\WIDGET.h
 .\output\main.o: ..\USER\GUI\inc\CALENDAR.h

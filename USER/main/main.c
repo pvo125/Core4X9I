@@ -3,25 +3,41 @@
 #include <header.h>
 #include "DIALOG.h"
 #include "CAN.h"
+#define ADDRESS_NAME (FLASH_BASE+0x20)
+
 void assert_failed(uint8_t* file, uint32_t line)
 {
 	while(1){};
 }
 
 //srec_cat input.bin -bin --crc32-l-e -max-addr input.bin -bin -o output.bin -output
-
+/***********************************************************************************************************************/
 //$K\ARM\BIN\srec_cat Core4x9I.bin -bin -offset 0x4 		\
-																				-crc32-l-e 0x0 	 \
--o Core4x9I.bin -bin	сдвинуть +4 байта и crc32 в начало		 
-//$K\ARM\BIN\srec_cat Core4x9I.bin -bin -crc32-l-e	\
-																				-max-addr 	\
-																				Core4x9I.bin -bin \
--o Core4x9Icrc.bin -bin crc32 записать в конец
-
+																				-crc32-l-e 0x0 -o Core4x9I.bin -bin	сдвинуть +4 байта и crc32 в начало		 
+/*************************************************************************************************************************/
+//$K\ARM\BIN\srec_cat Core4x9I.bin -bin -crc32-l-e -max-addr 	\
+																				Core4x9I.bin -bin -o Core4x9Icrc.bin -bin crc32 записать в конец
+/***************************************************************************************************************************/
 //$K\ARM\BIN\srec_cat Core4x9I.bin -bin  -exclude 0x1C 0x1F \
-																					-ex-max-l-e 0x1C 3 \
-																					-crc32-l-e -max-addr\
-Core4x9I.bin -bin   -o Core4x9Icrc.bin -bin размер bin в 0x1C crc32 в конец файла
+																				 -ex-max-l-e 0x1C 3 \
+																				 -crc32-l-e -max-addr\
+																					Core4x9I.bin -bin   -o Core4x9Icrc.bin -bin размер bin в 0x1C crc32 в конец файла
+/*************************************************************************************************/
+//$K\ARM\ARMCC\BIN\fromelf.exe --bin -o Core4x9I.bin !L
+//$K\ARM\BIN\srec_cat Core4x9I.bin -bin  -exclude 0x1C 0x1F \
+																				 -MAXimum_Little_Endian 0x1C 4\
+  																			 -crc32-l-e -max-addr \
+																				 Core4x9I.bin -bin   -o Core4x9Icrc.bin -bin
+/*****************************************************************************************************************************/	
+//$K\ARM\ARMCC\BIN\fromelf.exe --bin -o Core4x9I.bin !L
+//$K\ARM\BIN\srec_cat  Core4x9I.bin -bin  -exclude 0x1C 0x28 \
+																					-length-l-e 0x1C 4  \
+																					-generate 0x20 0x28 -repeat-string Core4x9I \
+																					-crc32-l-e -max-addr \
+																					Core4x9I.bin -bin	-o Core4x9crc.bin -bin
+
+
+
 
 
 #define ID_BUTTON_YES (GUI_ID_USER + 0x01)

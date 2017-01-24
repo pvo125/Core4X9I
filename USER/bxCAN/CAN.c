@@ -26,6 +26,12 @@ extern WM_HWIN hWin_timer;
 #define ID_DROPDOWN_0    (GUI_ID_USER + 0x18)
 
 #define NETNAME_INDEX  01   //Core4X9I 
+
+void Flash_unlock(void);
+void Flash_lock(void);
+void Flash_sect_erase(uint8_t numsect,uint8_t count);
+void Flash_prog(uint8_t *src,uint8_t *dst,uint32_t nbyte);
+
 /********************************************************************
 *
 *       LcdWriteReg
@@ -101,18 +107,18 @@ void bxCAN_Init(void){
 	CAN1->BTR&=~CAN_BTR_LBKM;	
 	CAN1->BTR&=~CAN_BTR_SILM;	
 
-	CAN1->BTR|=CAN_BTR_BRP&44;														/* tq=(44+1)*tPCLK1=1uS   */
+	CAN1->BTR|=CAN_BTR_BRP&29;														/* tq=(29+1)*tPCLK1=2/3 uS   */
 	CAN1->BTR|=CAN_BTR_SJW_0;															/*SJW[1:0]=1  (SJW[1:0]+1)*tCAN=tRJW PROP_SEG =+- 2* tq	*/		
 	
-	CAN1->BTR&=~CAN_BTR_TS1_0;
-	CAN1->BTR|=CAN_BTR_TS1_2|CAN_BTR_TS1_1;								/* TS1[3:0]=0X06 */ //tBS1=1*(6+1)=7uS
+	//CAN1->BTR&=~CAN_BTR_TS1_0;
+	CAN1->BTR|=CAN_BTR_TS1_2;													/* TS1[3:0]=0X07 */ //tBS1=tq*(7+1)=8*tq
 	
-	CAN1->BTR&=~CAN_BTR_TS2_1;
-	CAN1->BTR|=CAN_BTR_TS2_0;															/* TS2[2:0]=0X01 */ //tBS2=1*(1+1)=2uS
+	//CAN1->BTR&=~CAN_BTR_TS2_1;
+	//CAN1->BTR|=CAN_BTR_TS2_0;													/* TS2[2:0]=0X02 */ //tBS2=tq*(2+1)=3*tq
 	
-																												// | 1uS | 		7uS 				 |  2uS		| 		T=10uS f=100kHz
+																												// | 1tq | 		8tq 				 |  3tq		| 		T=12*tq=12*2/3=8uS f=125kHz
 																												// |-----------------------|---------|		
-																												// 								Sample point = 80%		
+																												// 								Sample point = 75%		
 		/*Init filters*/
 	
 	CAN1->FMR|=	CAN_FMR_FINIT;																		// Filter Init Mode
@@ -149,7 +155,7 @@ void bxCAN_Init(void){
 																						//							 fmi 07 ID=0x289 IDE=0 RTR=1
 	
 	CAN1->sFilterRegister[5].FR1=0x10F010E0;	//Filters bank 5 fmi 08 ID=0x087 IDE=0 RTR=0	 
-																						//							 fmi 09 ID=0x087 IDE=0 RTR=1	
+																						//							 fmi 09 ID=0x087 IDE=0 RTR=1	// UPDATE_FIRMWARE
 	CAN1->sFilterRegister[5].FR2=0x11101100;	//Filters bank 5 fmi 10 ID=0x088 IDE=0 RTR=0	//  
 																						//							 fmi 11 ID=0x088 IDE=0 RTR=1	// 	GET_NET_NAME																			
 	
@@ -516,7 +522,8 @@ void CAN_RXProcess0(void){
 ******************************************************************************************************************/
 
 void CAN_RXProcess1(void){
-	
+	uint16_t count;
+	uint8_t flag=0xA7;
 	switch(CAN_Data_RX[1].FMI) {
 		case 0://(id=286 data get alarm_b)
 		//
@@ -530,6 +537,28 @@ void CAN_RXProcess1(void){
 		case 3://(id=287 remote disable alarm_b)
 		//
 		break;
+		
+		case 9: //(id=087 remote update firmware)
+			/* Если приняли данное сообщение выставляем во flash флаг обновления через CAN  и  перезагрузка для принятия прошивки */
+			/* sector 0 0x0800 0000 - 0x0800 3FFF 
+				 sector 1 0x0800 4000 - 0x0800 7FFF	*/
+			while(*(uint8_t*)(0x08004000+count)!=0xff)
+				{
+				count++;
+				if(count>=0x3FFF)
+					/* делаем стирание sectora 1  и обнуление count */
+					{
+						count=0;
+						/* Подготовим flash для стирания и программирования */
+						Flash_unlock();		// Для доступа к FLASH->CR
+						Flash_sect_erase(1,1);	
+					}
+				}	
+			
+			Flash_prog(&flag,(uint8_t*)(0x08004000+count),1);
+			Flash_lock();
+			NVIC_SystemReset();		
+		break;	
 		case 11://(id=088 remote get net name)
 		//
 		CAN_Data_TX.ID=(NETNAME_INDEX<<8)|0x88;
@@ -561,3 +590,43 @@ void CAN_RXProcess1(void){
 	CAN1->IER|=CAN_IER_FMPIE1;
 }
 
+void Flash_unlock(void){
+
+	FLASH->KEYR=0x45670123;
+	FLASH->KEYR=0xCDEF89AB;
+}
+
+void Flash_sect_erase(uint8_t numsect,uint8_t count){
+	uint8_t i;
+	
+	FLASH->CR |= FLASH_CR_PSIZE_1;			// 10 program/erase x32
+	FLASH->CR |=FLASH_CR_SER;																	// флаг  очистки сектора
+	for(i=numsect;i<numsect+count;i++)
+		{
+			while((FLASH->SR & FLASH_SR_BSY)==FLASH_SR_BSY)	{}
+			FLASH->CR &= ~(FLASH_CR_SNB<<3);											// очистим биты SNB[3:7] 
+			FLASH->CR|=(uint32_t)(i<<3);													// запишем номер сектора для erase
+			FLASH->CR |=FLASH_CR_STRT;														// запуск очистки заданного сектора
+			while((FLASH->SR & FLASH_SR_BSY)==FLASH_SR_BSY)	{}		// ожидание готовности
+		}
+	FLASH->CR &= ~FLASH_CR_SER;																	// флаг  очистки сектора
+}
+
+void Flash_prog(uint8_t *src,uint8_t *dst,uint32_t nbyte){
+	uint32_t i;
+	
+	FLASH->CR |=FLASH_CR_PG;
+	FLASH->CR &= ~FLASH_CR_PSIZE_1;			// 00 program x8
+	for(i=0;i<(nbyte/4+1);i++)
+	{
+		while((FLASH->SR & FLASH_SR_BSY)==FLASH_SR_BSY) {}
+		*(dst+i)=*(src+i);
+	}
+	FLASH->CR &= ~FLASH_CR_PG;
+
+}
+void Flash_lock(void){
+
+	FLASH->KEYR=0xFFFFFFFF;
+	FLASH->KEYR=0xFFFFFFFF;
+}
