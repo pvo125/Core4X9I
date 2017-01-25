@@ -5,6 +5,7 @@
 CANTX_TypeDef CAN_Data_TX;
 CANRX_TypeDef CAN_Data_RX[2];
 
+volatile int size_firmware;
 extern RTC_TimeTypeDef								RTC_Time;
 extern RTC_DateTypeDef								RTC_Date;
 extern RTC_AlarmTypeDef							RTC_AlarmA,RTC_AlarmB;
@@ -154,10 +155,10 @@ void bxCAN_Init(void){
 																						//							 fmi 01 ID=0x286 IDE=0 RTR=1	// ENABLE ALARM_B
 	CAN1->sFilterRegister[3].FR2=0x50F050E0;	//Filters bank 3 fmi 02 ID=0x287 IDE=0 RTR=0	// SET_ALARM_B
 																						//							 fmi 03 ID=0x287 IDE=0 RTR=1	// DISABLE ALARM_B
-	CAN1->sFilterRegister[4].FR1=0x51105100;	//Filters bank 4 fmi 04 ID=0x288 IDE=0 RTR=0	 
+	CAN1->sFilterRegister[4].FR1=0x51105100;	//Filters bank 4 fmi 04 ID=0x288 IDE=0 RTR=0	//  UPDATE_FIRMWARE_REQ 
 																						//							 fmi 05 ID=0x288 IDE=0 RTR=1
 	CAN1->sFilterRegister[4].FR2=0x51305120;	//Filters bank 4 fmi 06 ID=0x289 IDE=0 RTR=0	//	DOWNLOAD_FIRMWARW
-																						//							 fmi 07 ID=0x289 IDE=0 RTR=1	//  UPDATE_FIRMWARE_REQ 
+																						//							 fmi 07 ID=0x289 IDE=0 RTR=1	
 	
 	CAN1->sFilterRegister[5].FR1=0x10F010E0;	//Filters bank 5 fmi 08 ID=0x087 IDE=0 RTR=0	 
 																						//							 fmi 09 ID=0x087 IDE=0 RTR=1	// 
@@ -542,14 +543,18 @@ void CAN_RXProcess1(void){
 		case 3://(id=287 remote disable alarm_b)
 		//
 		break;
-		case 6:	//(id=289 DOWNLOAD_FIRMWARE)
-			
-		break;
-		case 7:	//(id=289 remote UPDATE_FIRMWARE_REQ)
+		
+		case 4:	//(id=289 remote UPDATE_FIRMWARE_REQ)
 			// если получили запрос на обновление 
+		// * вытащить из CAN_Data_RX[1].Data[0]-CAN_Data_RX[1].Data[3] размер прошивки и записать в size_firmware;
 		// * разблокировать flash 
 		// * стереть сектора второй половины flash 
 		// * отправить подтверждение по CAN для запроса UPDATE_FIRMWARE_REQ
+		size_firmware=0;
+		size_firmware=CAN_Data_RX[1].Data[0];
+		size_firmware|=CAN_Data_RX[1].Data[1]<<8;
+		size_firmware|=CAN_Data_RX[1].Data[2]<<16;
+		size_firmware|=CAN_Data_RX[1].Data[3]<<24;
 		Flash_unlock();
 		Flash_sect_erase(NAMBER_UPD_SECTOR,4);		// Очистим 8,9,10,11 сектора всего 4 сектора
 		CAN_Data_TX.ID=(NETNAME_INDEX<<8)|0x89;
@@ -559,7 +564,9 @@ void CAN_RXProcess1(void){
 		CAN_Data_TX.Data[2]='k';
 		CAN_Transmit_DataFrame(&CAN_Data_TX);
 		break;		
-		
+		case 6:	//(id=289 DOWNLOAD_FIRMWARE)
+			
+		break;
 		case 9: //(id=087 remote update firmware)
 			/* Если приняли данное сообщение выставляем во flash флаг обновления через CAN  и  перезагрузка для принятия прошивки */
 			/* sector 0 0x0800 0000 - 0x0800 3FFF 
