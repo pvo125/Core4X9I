@@ -155,10 +155,11 @@ void bxCAN_Init(void){
 																						//							 fmi 01 ID=0x286 IDE=0 RTR=1	// ENABLE ALARM_B
 	CAN1->sFilterRegister[3].FR2=0x50F050E0;	//Filters bank 3 fmi 02 ID=0x287 IDE=0 RTR=0	// SET_ALARM_B
 																						//							 fmi 03 ID=0x287 IDE=0 RTR=1	// DISABLE ALARM_B
-	CAN1->sFilterRegister[4].FR1=0x51105100;	//Filters bank 4 fmi 04 ID=0x288 IDE=0 RTR=0	//  UPDATE_FIRMWARE_REQ 
-																						//							 fmi 05 ID=0x288 IDE=0 RTR=1
-	CAN1->sFilterRegister[4].FR2=0x51305120;	//Filters bank 4 fmi 06 ID=0x289 IDE=0 RTR=0	//	DOWNLOAD_FIRMWARW
-																						//							 fmi 07 ID=0x289 IDE=0 RTR=1	
+																						
+	CAN1->sFilterRegister[4].FR1=0x4E304E20;	//Filters bank 4 fmi 04 ID=0x271 IDE=0 RTR=0	//  UPDATE_FIRMWARE_REQ 
+																						//							 fmi 05 ID=0x271 IDE=0 RTR=1
+	CAN1->sFilterRegister[4].FR2=0x4E704E60;	//Filters bank 4 fmi 06 ID=0x273 IDE=0 RTR=0	//	DOWNLOAD_FIRMWARW
+																						//							 fmi 07 ID=0x273 IDE=0 RTR=1	
 	
 	CAN1->sFilterRegister[5].FR1=0x10F010E0;	//Filters bank 5 fmi 08 ID=0x087 IDE=0 RTR=0	 
 																						//							 fmi 09 ID=0x087 IDE=0 RTR=1	// 
@@ -544,7 +545,7 @@ void CAN_RXProcess1(void){
 		//
 		break;
 		
-		case 4:	//(id=289 remote UPDATE_FIRMWARE_REQ)
+		case 4:	//(id=271 UPDATE_FIRMWARE_REQ)
 			// если получили запрос на обновление 
 		// * вытащить из CAN_Data_RX[1].Data[0]-CAN_Data_RX[1].Data[3] размер прошивки и записать в size_firmware;
 		// * разблокировать flash 
@@ -557,7 +558,7 @@ void CAN_RXProcess1(void){
 		size_firmware|=CAN_Data_RX[1].Data[3]<<24;
 		Flash_unlock();
 		Flash_sect_erase(NAMBER_UPD_SECTOR,4);		// Очистим 8,9,10,11 сектора всего 4 сектора
-		CAN_Data_TX.ID=(NETNAME_INDEX<<8)|0x89;
+		CAN_Data_TX.ID=(NETNAME_INDEX<<8)|0x72;
 		CAN_Data_TX.DLC=3;
 		CAN_Data_TX.Data[0]=NETNAME_INDEX;
 		CAN_Data_TX.Data[1]='o';
