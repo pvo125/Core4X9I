@@ -859,10 +859,10 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>2</ColumnNumber>
+      <ColumnNumber>42</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>122</TopLine>
-      <CurrentLine>163</CurrentLine>
+      <TopLine>425</TopLine>
+      <CurrentLine>298</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\USER\bxCAN\CAN.c</PathWithFileName>
       <FilenameWithoutPath>CAN.c</FilenameWithoutPath>
