@@ -550,7 +550,7 @@ void CAN_RXProcess1(void){
 		
 		case 4:	//(id=271 UPDATE_FIRMWARE_REQ)
 			// если получили запрос на обновление 
-		// * вытащить из CAN_Data_RX[1].Data[0]-CAN_Data_RX[1].Data[3] размер прошивки и записать в size_firmware;
+		// * вытащить из CAN_Data_RX[1].Data[0]...CAN_Data_RX[1].Data[3] размер прошивки и записать в size_firmware;
 		// * разблокировать flash 
 		// * стереть сектора второй половины flash 
 		// * отправить подтверждение по CAN для запроса UPDATE_FIRMWARE_REQ
@@ -575,10 +575,9 @@ void CAN_RXProcess1(void){
 				Flash_prog(&CAN_Data_RX[1].Data[0],(uint8_t*)(NAMBER_UPD_SECTOR+count),8,4);		
 				count+=8;
 				CAN_Data_TX.ID=(NETNAME_INDEX<<8)|0x72;
-				CAN_Data_TX.DLC=3;
+				CAN_Data_TX.DLC=2;
 				CAN_Data_TX.Data[0]=NETNAME_INDEX;
-				CAN_Data_TX.Data[1]='o';
-				CAN_Data_TX.Data[2]='k';
+				CAN_Data_TX.Data[1]='g';								// GET_DATA!
 				CAN_Transmit_DataFrame(&CAN_Data_TX);
 			}
 			else
@@ -589,13 +588,17 @@ void CAN_RXProcess1(void){
 				if(crc==*(uint32_t*)(NAMBER_UPD_SECTOR+size_firmware-4))
 				{
 					CAN_Data_TX.ID=(NETNAME_INDEX<<8)|0x72;
-					CAN_Data_TX.DLC=6;
+					CAN_Data_TX.DLC=2;
 					CAN_Data_TX.Data[0]=NETNAME_INDEX;
-					CAN_Data_TX.Data[1]='c';
-					CAN_Data_TX.Data[2]='r';
-					CAN_Data_TX.Data[3]='c';
-					CAN_Data_TX.Data[4]='o';
-					CAN_Data_TX.Data[5]='k';
+					CAN_Data_TX.Data[1]='c';								// CRC OK!	
+					CAN_Transmit_DataFrame(&CAN_Data_TX);
+				}
+				else
+				{
+					CAN_Data_TX.ID=(NETNAME_INDEX<<8)|0x72;
+					CAN_Data_TX.DLC=2;
+					CAN_Data_TX.Data[0]=NETNAME_INDEX;
+					CAN_Data_TX.Data[1]='e';								// CRC ERROR!		
 					CAN_Transmit_DataFrame(&CAN_Data_TX);
 				}
 			

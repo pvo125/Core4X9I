@@ -421,7 +421,7 @@
       <Focus>0</Focus>
       <ColumnNumber>48</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>1</TopLine>
+      <TopLine>481</TopLine>
       <CurrentLine>8</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\USER\main\main.c</PathWithFileName>
@@ -859,9 +859,9 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>56</ColumnNumber>
+      <ColumnNumber>9</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>101</TopLine>
+      <TopLine>96</TopLine>
       <CurrentLine>589</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\USER\bxCAN\CAN.c</PathWithFileName>

@@ -409,7 +409,7 @@
 
   <Group>
     <GroupName>main</GroupName>
-    <tvExp>0</tvExp>
+    <tvExp>1</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <RteFlg>0</RteFlg>
@@ -419,10 +419,10 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>45</ColumnNumber>
+      <ColumnNumber>48</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>0</TopLine>
-      <CurrentLine>0</CurrentLine>
+      <TopLine>1</TopLine>
+      <CurrentLine>8</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\USER\main\main.c</PathWithFileName>
       <FilenameWithoutPath>main.c</FilenameWithoutPath>
@@ -859,10 +859,10 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>42</ColumnNumber>
+      <ColumnNumber>56</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>425</TopLine>
-      <CurrentLine>298</CurrentLine>
+      <TopLine>101</TopLine>
+      <CurrentLine>589</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\USER\bxCAN\CAN.c</PathWithFileName>
       <FilenameWithoutPath>CAN.c</FilenameWithoutPath>
