@@ -4,9 +4,87 @@
 <h1>µVision Build Log</h1>
 <h2>Project:</h2>
 D:\STM32_ïðîåêòû\Core4X9I\MDK-ARM\Core4X9I.uvproj
-Project File Date:  01/24/2017
+Project File Date:  11/28/2016
 
 <h2>Output:</h2>
+Build target 'Core4X9I'
+compiling CAN.c...
+linking...
+Program Size: Code=107526 RO-data=24294 RW-data=2528 ZI-data=653372  
+FromELF: creating hex file...
+After Build - User command #1: D:\Keil\\ARM\ARMCC\BIN\fromelf.exe --bin -o Core4x9I.bin .\output\Core4X9I.axf
+After Build - User command #2: D:\STM32_ïðîåêòû\Core4X9I\MDK-ARM\user.bat
+D:\STM32_¯à®¥ªâë\Core4X9I\MDK-ARM>srec_cat Core4x9I.bin -bin -exclude 0x1C 0x28 -length-l-e 0x1C 4 -generate 0x20 0x28 -repeat-string Core4x9I -o Core4x9I.bin -bin  
+D:\STM32_¯à®¥ªâë\Core4X9I\MDK-ARM>srec_cat Core4x9I.bin -bin -crc32-l-e  -max-addr Core4x9I.bin -bin -o Core4x9Icrc.bin -bin 
+".\output\Core4X9I.axf" - 0 Error(s), 0 Warning(s).
 </pre>
 </body>
 </html>
+".\output\Core4X9I.axf" - 0 Error(s), 0 Warning(s).
+Error: Target DLL has been cancelled. Debugger aborted !
+t never used
+        uint16_t temp;
+..\USER\MX25\mx25l8005.c: 4 warnings, 0 errors
+compiling ssd1963.c...
+compiling tsc2046.c...
+compiling SDRAM.c...
+compiling CAN.c...
+linking...
+Program Size: Code=107454 RO-data=24294 RW-data=2528 ZI-data=653372  
+FromELF: creating hex file...
+After Build - User command #1: D:\Keil\\ARM\ARMCC\BIN\fromelf.exe --bin -o Core4x9I.bin .\output\Core4X9I.axf
+After Build - User command #2: D:\STM32_ïðîåêòû\Core4X9I\MDK-ARM\user.bat
+D:\STM32_¯à®¥ªâë\Core4X9I\MDK-ARM>srec_cat Core4x9I.bin -bin -exclude 0x1C 0x28 -length-l-e 0x1C 4 -generate 0x20 0x28 -repeat-string Core4x9I -o Core4x9I.bin -bin  
+D:\STM32_¯à®¥ªâë\Core4X9I\MDK-ARM>srec_cat Core4x9I.bin -bin -crc32-l-e  -max-addr Core4x9I.bin -bin -o Core4x9Icrc.bin -bin 
+".\output\Core4X9I.axf" - 0 Error(s), 4 Warning(s).
+gs, 1 error
+compiling TIME_DATEDLG.c...
+..\USER\main\header.h(20): error:  #11-D: unrecognized preprocessing directive
+  #defibe FLASHCODE
+..\USER\GUI_DIALOG\TIME_DATEDLG.c: 0 warnings, 1 error
+compiling SD_File.c...
+..\USER\main\header.h(20): error:  #11-D: unrecognized preprocessing directive
+  #defibe FLASHCODE
+..\USER\GUI_DIALOG\SD_File.c: 0 warnings, 1 error
+compiling KEYDLG.c...
+..\USER\main\header.h(20): error:  #11-D: unrecognized preprocessing directive
+  #defibe FLASHCODE
+..\USER\GUI_DIALOG\KEYDLG.c: 0 warnings, 1 error
+compiling PictureView.c...
+..\USER\main\header.h(20): error:  #11-D: unrecognized preprocessing directive
+  #defibe FLASHCODE
+..\USER\GUI_DIALOG\PictureView.c: 0 warnings, 1 error
+compiling diskio.c...
+..\USER\main\header.h(20): error:  #11-D: unrecognized preprocessing directive
+  #defibe FLASHCODE
+..\USER\FatFS\diskio.c: 0 warnings, 1 error
+compiling mx25l8005.c...
+..\USER\main\header.h(20): error:  #11-D: unrecognized preprocessing directive
+  #defibe FLASHCODE
+..\USER\MX25\mx25l8005.c(92): warning:  #550-D: variable "temp" was set but never used
+        uint16_t temp;
+..\USER\MX25\mx25l8005.c(102): warning:  #550-D: variable "temp" was set but never used
+        uint16_t temp;
+..\USER\MX25\mx25l8005.c(112): warning:  #550-D: variable "temp" was set but never used
+        uint16_t temp;
+..\USER\MX25\mx25l8005.c(281): warning:  #550-D: variable "temp" was set but never used
+        uint16_t temp;
+..\USER\MX25\mx25l8005.c: 4 warnings, 1 error
+compiling ssd1963.c...
+..\USER\main\header.h(20): error:  #11-D: unrecognized preprocessing directive
+  #defibe FLASHCODE
+..\USER\SSD1963\ssd1963.c: 0 warnings, 1 error
+compiling tsc2046.c...
+..\USER\main\header.h(20): error:  #11-D: unrecognized preprocessing directive
+  #defibe FLASHCODE
+..\USER\TSC2046\tsc2046.c: 0 warnings, 1 error
+compiling SDRAM.c...
+..\USER\main\header.h(20): error:  #11-D: unrecognized preprocessing directive
+  #defibe FLASHCODE
+..\USER\SDRAM\SDRAM.c: 0 warnings, 1 error
+compiling CAN.c...
+..\USER\main\header.h(20): error:  #11-D: unrecognized preprocessing directive
+  #defibe FLASHCODE
+..\USER\bxCAN\CAN.c: 0 warnings, 1 error
+".\output\Core4X9I.axf" - 19 Error(s), 4 Warning(s).
+Target not created

@@ -17,6 +17,7 @@
 
 #define MY_MESSAGE     (WM_USER + 0x01)
 
+//#define FLASHCODE
 
 //#define SRAM
 #define NAND

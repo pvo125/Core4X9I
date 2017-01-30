@@ -5,6 +5,7 @@
 CANTX_TypeDef CAN_Data_TX;
 CANRX_TypeDef CAN_Data_RX[2];
 
+volatile uint32_t count;
 volatile int size_firmware;
 extern RTC_TimeTypeDef								RTC_Time;
 extern RTC_DateTypeDef								RTC_Date;
@@ -25,6 +26,9 @@ extern WM_HWIN hWin_timer;
 #define ID_SPINBOX_1     (GUI_ID_USER + 0x16)
 #define ID_PROGBAR_1     (GUI_ID_USER + 0x17)
 #define ID_DROPDOWN_0    (GUI_ID_USER + 0x18)
+
+#define FLAG_STATUS_SECTOR	0x08004000		//sector 1
+#define FIRM_UPD_SECTOR 		0x08080000			//sector12		firmware update base
 
 #define NAMBER_WORK_SECTOR			2						//	первый work сектор 				2
 																						//  последний work сектор   	7
@@ -531,7 +535,7 @@ void CAN_RXProcess0(void){
 ******************************************************************************************************************/
 
 void CAN_RXProcess1(void){
-	static uint32_t count;
+	
 	uint32_t crc;
 	uint8_t flag=0xA7;
 	switch(CAN_Data_RX[1].FMI) {
@@ -560,96 +564,84 @@ void CAN_RXProcess1(void){
 		size_firmware|=CAN_Data_RX[1].Data[1]<<8;
 		size_firmware|=CAN_Data_RX[1].Data[2]<<16;
 		size_firmware|=CAN_Data_RX[1].Data[3]<<24;
+		
 		Flash_unlock();
-		Flash_sect_erase(NAMBER_UPD_SECTOR,4);		// Очистим 8,9,10,11 сектора всего 4 сектора
+		Flash_sect_erase(NAMBER_UPD_SECTOR,(size_firmware/131072+1));		// Очистим 8,9... сектора ((размер bin)/128K)+1 max 4 сектора
 		CAN_Data_TX.ID=(NETNAME_INDEX<<8)|0x72;
-		CAN_Data_TX.DLC=3;
+		CAN_Data_TX.DLC=2;
 		CAN_Data_TX.Data[0]=NETNAME_INDEX;
-		CAN_Data_TX.Data[1]='o';
-		CAN_Data_TX.Data[2]='k';
+		CAN_Data_TX.Data[1]='g';								// GET_DATA!
 		CAN_Transmit_DataFrame(&CAN_Data_TX);
 		break;		
 		case 6:	//(id=273 DOWNLOAD_FIRMWARE)
 			if((size_firmware-count)>=8)
 			{
-				Flash_prog(&CAN_Data_RX[1].Data[0],(uint8_t*)(NAMBER_UPD_SECTOR+count),8,4);		
+				Flash_prog(&CAN_Data_RX[1].Data[0],(uint8_t*)(FIRM_UPD_SECTOR+count),2,4);		
 				count+=8;
 				CAN_Data_TX.ID=(NETNAME_INDEX<<8)|0x72;
 				CAN_Data_TX.DLC=2;
 				CAN_Data_TX.Data[0]=NETNAME_INDEX;
 				CAN_Data_TX.Data[1]='g';								// GET_DATA!
-				CAN_Transmit_DataFrame(&CAN_Data_TX);
+				CAN_Transmit_DataFrame(&CAN_Data_TX);	
 			}
-			else
+			else if((size_firmware-count)!=4)
 			{
-				Flash_prog(&CAN_Data_RX[1].Data[0],(uint8_t*)(NAMBER_UPD_SECTOR+count),(size_firmware-count),4);
-				count=0;
-				crc=crc32_check((const uint8_t*)NAMBER_UPD_SECTOR,(size_firmware-4));
-				if(crc==*(uint32_t*)(NAMBER_UPD_SECTOR+size_firmware-4))
+				Flash_prog(&CAN_Data_RX[1].Data[0],(uint8_t*)(FIRM_UPD_SECTOR+count),((size_firmware-count)/4+1),4);
+				count+=(size_firmware-count);
+			}
+			else if((size_firmware-count)==4)
+			{
+				Flash_prog(&CAN_Data_RX[1].Data[0],(uint8_t*)(FIRM_UPD_SECTOR+count),1,4);
+				count+=4;
+			}				
+			if(size_firmware==count)	
+			{
+				
+				crc=crc32_check((const uint8_t*)FIRM_UPD_SECTOR,(size_firmware-4));
+				if(crc==*(uint32_t*)(FIRM_UPD_SECTOR+size_firmware-4))
 				{
 					CAN_Data_TX.ID=(NETNAME_INDEX<<8)|0x72;
 					CAN_Data_TX.DLC=2;
 					CAN_Data_TX.Data[0]=NETNAME_INDEX;
 					CAN_Data_TX.Data[1]='c';								// CRC OK!	
 					CAN_Transmit_DataFrame(&CAN_Data_TX);
+					
+					count=0;
+					while(*(uint8_t*)(FLAG_STATUS_SECTOR+count)!=0xFF)		// Перебираем байты пока не дойдем до неписанного поля 0xFF 
+						count++;
+					Flash_prog(&flag,(uint8_t*)(FLAG_STATUS_SECTOR+count),1,1);		// В ячейке где 0xFF лежит запишем значения флага для bootloader flag=0xA7
+					NVIC_SystemReset();			// Перезагрузка длч передачи управления бутлоадеру закончить обновление
+					
 				}
 				else
 				{
+					FLASH->CR |=FLASH_CR_LOCK;
+					
 					CAN_Data_TX.ID=(NETNAME_INDEX<<8)|0x72;
 					CAN_Data_TX.DLC=2;
 					CAN_Data_TX.Data[0]=NETNAME_INDEX;
 					CAN_Data_TX.Data[1]='e';								// CRC ERROR!		
 					CAN_Transmit_DataFrame(&CAN_Data_TX);
 				}
-			
 			}
 			
 		break;
-		case 9: //(id=087 remote update firmware)
-			/* Если приняли данное сообщение выставляем во flash флаг обновления через CAN  и  перезагрузка для принятия прошивки */
-			/* sector 0 0x0800 0000 - 0x0800 3FFF 
-				 sector 1 0x0800 4000 - 0x0800 7FFF	*/
-			while(*(uint8_t*)(0x08004000+count)!=0xff)
-				{
-				count++;
-				if(count>=0x3FFF)
-					/* делаем стирание sectora 1  и обнуление count */
-					{
-						count=0;
-						/* Подготовим flash для стирания и программирования */
-						Flash_unlock();		// Для доступа к FLASH->CR
-						Flash_sect_erase(1,1);	
-					}
-				}	
-			
-			Flash_prog(&flag,(uint8_t*)(0x08004000+count),1,1);
-			Flash_lock();
-			NVIC_SystemReset();		
-		break;	
 		case 11://(id=088 remote get net name)
 		//
-		CAN_Data_TX.ID=(NETNAME_INDEX<<8)|0x88;
-		CAN_Data_TX.DLC=1;
-		CAN_Data_TX.Data[0]=NETNAME_INDEX;  // // netname_index для Core4X9I
-		/*CAN_Data_TX.Data[1]='o';
-		CAN_Data_TX.Data[2]='r';
-		CAN_Data_TX.Data[3]='e';
-		CAN_Data_TX.Data[4]='4';
-		CAN_Data_TX.Data[5]='X';
-		CAN_Data_TX.Data[6]='9';
-		CAN_Data_TX.Data[7]='I';*/
-		CAN_Transmit_DataFrame(&CAN_Data_TX);
-		
-		GUI_SetFont(&GUI_Font6x8);
-		GUI_DispStringAt("REC ",120,5);
-		GUI_DispDec((uint8_t)((CAN1->ESR)>>24),3);
-		GUI_DispStringAt("TEC ",190,5);
-		GUI_DispDec((uint8_t)((CAN1->ESR)>>16),3);
-		GUI_DispStringAt("ERF ",260,5);
-		GUI_DispDec((uint8_t)(CAN1->ESR),1);
-		
-		
+			CAN_Data_TX.ID=(NETNAME_INDEX<<8)|0x88;
+			CAN_Data_TX.DLC=1;
+			CAN_Data_TX.Data[0]=NETNAME_INDEX;  // // netname_index для Core4X9I
+			CAN_Transmit_DataFrame(&CAN_Data_TX);
+			
+			GUI_SetFont(&GUI_Font6x8);
+			GUI_DispStringAt("REC ",120,5);
+			GUI_DispDec((uint8_t)((CAN1->ESR)>>24),3);
+			GUI_DispStringAt("TEC ",190,5);
+			GUI_DispDec((uint8_t)((CAN1->ESR)>>16),3);
+			GUI_DispStringAt("ERF ",260,5);
+			GUI_DispDec((uint8_t)(CAN1->ESR),1);
 		break;
+		
 		default:
 		break;
 	}
@@ -670,11 +662,12 @@ void Flash_sect_erase(uint8_t numsect,uint8_t count){
 	if(FLASH->SR & FLASH_SR_EOP)	// если EOP установлен в 1 значит erase/program complete
 		FLASH->SR=FLASH_SR_EOP;		// сбросим его для следующей индикации записи
 	
+	FLASH->CR |=FLASH_CR_EOPIE;					// включим прерывание для индикации флага EOP 
 	FLASH->CR |= FLASH_CR_PSIZE_1;			// 10 program/erase x32
 	FLASH->CR |=FLASH_CR_SER;																	// флаг  очистки сектора
 	for(i=numsect;i<numsect+count;i++)
 		{
-			FLASH->CR &= ~(FLASH_CR_SNB<<3);											// очистим биты SNB[3:7] 
+			FLASH->CR &= ~FLASH_CR_SNB;														// очистим биты SNB[3:7] 
 			FLASH->CR|=(uint32_t)(i<<3);													// запишем номер сектора для erase
 			FLASH->CR |=FLASH_CR_STRT;														// запуск очистки заданного сектора
 			while((FLASH->SR & FLASH_SR_EOP)!=FLASH_SR_EOP) {}		// ожидание готовности
@@ -686,9 +679,12 @@ void Flash_sect_erase(uint8_t numsect,uint8_t count){
 void Flash_prog(uint8_t * src,uint8_t * dst,uint32_t nbyte,uint8_t psize){
 	uint32_t i;
 	
+	
 	while((FLASH->SR & FLASH_SR_BSY)==FLASH_SR_BSY) {}
 	if(FLASH->SR & FLASH_SR_EOP)	// если EOP установлен в 1 значит erase/program complete
 		FLASH->SR=FLASH_SR_EOP;		// сбросим его для следующей индикации записи
+	
+	FLASH->CR |=FLASH_CR_EOPIE;					// включим прерывание для индикации флага EOP 
 	switch(psize){
 		case 1:
 			FLASH->CR &= ~FLASH_CR_PSIZE;			// 00 program x8
@@ -703,9 +699,9 @@ void Flash_prog(uint8_t * src,uint8_t * dst,uint32_t nbyte,uint8_t psize){
 		case 2:
 			FLASH->CR |= FLASH_CR_PSIZE_0;			// 01 program x16
 			FLASH->CR |=FLASH_CR_PG;	
-			for(i=0;i<(nbyte/2+1);i++)
+			for(i=0;i<nbyte;i++)
 			{
-				*(uint16_t*)(dst+i)=*(uint16_t*)(src+i);
+				*(uint16_t*)(dst+i*2)=*(uint16_t*)(src+i*2);
 				while((FLASH->SR & FLASH_SR_EOP)!=FLASH_SR_EOP) {}
 				FLASH->SR=FLASH_SR_EOP;	
 			}
@@ -713,9 +709,9 @@ void Flash_prog(uint8_t * src,uint8_t * dst,uint32_t nbyte,uint8_t psize){
 		case 4:
 			FLASH->CR |= FLASH_CR_PSIZE_1;			// 10 program x32
 			FLASH->CR |=FLASH_CR_PG;	
-			for(i=0;i<(nbyte/4+1);i++)
+			for(i=0;i<nbyte;i++)
 			{
-				*(uint32_t*)(dst+i)=*(uint32_t*)(src+i);
+				*(uint32_t*)(dst+i*4)=*(uint32_t*)(src+i*4);
 				while((FLASH->SR & FLASH_SR_EOP)!=FLASH_SR_EOP) {}
 				FLASH->SR=FLASH_SR_EOP;
 		  }

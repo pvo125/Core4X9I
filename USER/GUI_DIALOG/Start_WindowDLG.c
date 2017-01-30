@@ -168,7 +168,9 @@ static void _cbSTART(WM_MESSAGE* pMsg) {
 									WM_HideWindow(hALARMA);
 									WM_HideWindow(hALARMB);
 									WM_HideWindow(PROGBAR_MEM);
-									PictureView();
+									#ifdef FLASHCODE
+										PictureView();
+									#endif
 									}	
 									
 								}
@@ -190,8 +192,9 @@ static void _cbSTART(WM_MESSAGE* pMsg) {
 							WM_HideWindow(hALARMB);
 							WM_HideWindow(PROGBAR_MEM);
 							WM_HideWindow(hWin_start);
-						
-							Touch_calibration();
+							#ifdef FLASHCODE
+								Touch_calibration();
+							#endif
 						break;
 					}
 					break;
@@ -204,7 +207,9 @@ static void _cbSTART(WM_MESSAGE* pMsg) {
 							WM_HideWindow(hWin_start);
 							if(hWin_menu==0)
 								{__disable_irq();
-									CreateMENU();
+									#ifdef FLASHCODE
+										CreateMENU();
+									#endif
 								 __enable_irq(); }
 							else
 								{__disable_irq();
