@@ -29,7 +29,7 @@ extern GUI_PID_STATE State;
 extern void PictureView(void);
 extern FIL pFile;
 extern GUI_JPEG_INFO Info;
-
+extern volatile uint8_t write_flashflag;
 extern volatile uint8_t new_message;
 //extern uint8_t cycle_start_pwm;
 
@@ -70,7 +70,8 @@ extern RTC_AlarmTypeDef								RTC_AlarmA,RTC_AlarmB;
 #define ID_ICON_WHITE     (GUI_ID_USER + 0x26)
 
 
-	
+#define FLAG_STATUS_SECTOR	0x08004000		//sector 1
+
 // USER START (Optionally insert additional defines)
 
 uint8_t sd_insert;
@@ -524,6 +525,9 @@ void CreateStart(void)
 
 void MainTask(void)
 {
+	uint8_t flag=0xA7;
+	uint16_t count;
+	
 	NVIC_SetPriority(SysTick_IRQn,1);
 	WM_SetCallback(WM_HBKWIN, _cbBkWin);
 	
@@ -617,6 +621,16 @@ void MainTask(void)
 			NVIC_EnableIRQ(TIM7_IRQn);
 			NVIC_EnableIRQ(RTC_WKUP_IRQn);
 			sleep_mode=0;
+		}
+		if(write_flashflag)
+		{
+			count=0;
+			while(*(uint8_t*)(FLAG_STATUS_SECTOR+count)!=0xFF)		// Перебираем байты пока не дойдем до неписанного поля 0xFF 
+				count++;
+			Flash_prog(&flag,(uint8_t*)(FLAG_STATUS_SECTOR+count),1,1);		// В ячейке где 0xFF лежит запишем значения флага для bootloader flag=0xA7
+					//reset=1;//NVIC_SystemReset();	
+			GUI_Delay(1000);
+			NVIC_SystemReset();
 		}
 	}
 }

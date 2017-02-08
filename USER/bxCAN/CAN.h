@@ -56,6 +56,7 @@ void CAN_Receive_IRQHandler(uint8_t FIFONumber);
 void CAN_RXProcess0(void);
 void CAN_RXProcess1(void);
 
+extern void Flash_prog(uint8_t * src,uint8_t * dst,uint32_t nbyte,uint8_t psize);
 
 
 

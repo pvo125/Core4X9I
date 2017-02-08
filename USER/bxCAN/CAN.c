@@ -11,7 +11,7 @@ extern RTC_TimeTypeDef								RTC_Time;
 extern RTC_DateTypeDef								RTC_Date;
 extern RTC_AlarmTypeDef							RTC_AlarmA,RTC_AlarmB;
 extern int maskA,maskB;
-//volatile uint8_t count_message;
+volatile uint8_t write_flashflag=0;
 //volatile uint8_t new_message;
 extern ICONVIEW_Handle hALARMA, hALARMB;
 
@@ -537,7 +537,8 @@ void CAN_RXProcess0(void){
 void CAN_RXProcess1(void){
 	
 	uint32_t crc;
-	uint8_t flag=0xA7;
+	//uint8_t temp;
+	//uint8_t flag=0xA7;
 	switch(CAN_Data_RX[1].FMI) {
 		case 0://(id=286 data get alarm_b)
 		//
@@ -605,12 +606,24 @@ void CAN_RXProcess1(void){
 					CAN_Data_TX.Data[0]=NETNAME_INDEX;
 					CAN_Data_TX.Data[1]='c';								// CRC OK!	
 					CAN_Transmit_DataFrame(&CAN_Data_TX);
-					
-					count=0;
-					while(*(uint8_t*)(FLAG_STATUS_SECTOR+count)!=0xFF)		// Перебираем байты пока не дойдем до неписанного поля 0xFF 
-						count++;
-					Flash_prog(&flag,(uint8_t*)(FLAG_STATUS_SECTOR+count),1,1);		// В ячейке где 0xFF лежит запишем значения флага для bootloader flag=0xA7
-					NVIC_SystemReset();			// Перезагрузка длч передачи управления бутлоадеру закончить обновление
+					/*if(temp==0)
+					{
+						while((CAN1->TSR&CAN_TSR_RQCP0)!=CAN_TSR_RQCP0);
+					}
+					else if(temp==1)
+					{
+						while((CAN1->TSR&CAN_TSR_RQCP1)!=CAN_TSR_RQCP1);
+					}
+					else if(temp==2)	
+					{
+						while((CAN1->TSR&CAN_TSR_RQCP2)!=CAN_TSR_RQCP2);
+					}*/
+					write_flashflag=1;
+					//count=0;
+					//while(*(uint8_t*)(FLAG_STATUS_SECTOR+count)!=0xFF)		// Перебираем байты пока не дойдем до неписанного поля 0xFF 
+					//	count++;
+				//	Flash_prog(&flag,(uint8_t*)(FLAG_STATUS_SECTOR+count),1,1);		// В ячейке где 0xFF лежит запишем значения флага для bootloader flag=0xA7
+					//reset=1;//NVIC_SystemReset();			// Перезагрузка длч передачи управления бутлоадеру закончить обновление
 					
 				}
 				else

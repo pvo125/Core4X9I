@@ -3,7 +3,7 @@
 <title>Static Call Graph - [.\output\Core4X9I.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\output\Core4X9I.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5.03 [Build 76]: Last Updated: Sun Jan 29 22:11:56 2017
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5.03 [Build 76]: Last Updated: Mon Jan 30 21:15:59 2017
 <BR><P>
 <H3>Maximum Stack Usage =        736 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -1068,7 +1068,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[39]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN1_RX0_IRQHandler
 </UL>
 
-<P><STRONG><a name="[1bb]"></a>CAN_RXProcess1</STRONG> (Thumb, 654 bytes, Stack size 16 bytes, can.o(i.CAN_RXProcess1))
+<P><STRONG><a name="[1bb]"></a>CAN_RXProcess1</STRONG> (Thumb, 572 bytes, Stack size 16 bytes, can.o(i.CAN_RXProcess1))
 <BR><BR>[Stack]<UL><LI>Max Depth = 240<LI>Call Chain = CAN_RXProcess1 &rArr; GUI_DispDec &rArr; GUI_DispDecShift &rArr; GUI_DispString &rArr; GUI__DispLine &rArr; WM__InitIVRSearch &rArr; WM__GetNextIVR &rArr; WM__ActivateClipRect &rArr; _SetClipRectUserIntersect &rArr; LCD_SetClipRectEx &rArr; GUI__IntersectRects
 </UL>
 <BR>[Calls]<UL><LI><a href="#[197]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_SetFont
@@ -1773,10 +1773,10 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[264]"></a>GUI_ALLOC_FreeFixedBlock</STRONG> (Thumb, 18 bytes, Stack size 0 bytes, gui_alloc.o(i.GUI_ALLOC_FreeFixedBlock))
-<BR><BR>[Called By]<UL><LI><a href="#[263]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_DEVICE_Delete
-<LI><a href="#[c9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_OnExit
+<BR><BR>[Called By]<UL><LI><a href="#[c9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_OnExit
 <LI><a href="#[2e7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_InitAlpha
 <LI><a href="#[9b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_OnExit
+<LI><a href="#[263]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_DEVICE_Delete
 <LI><a href="#[a7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_OnExit
 <LI><a href="#[a2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_OnExit
 </UL>
@@ -2938,9 +2938,9 @@ Global Symbols
 <P><STRONG><a name="[2a7]"></a>GUI_GetCharDistX</STRONG> (Thumb, 12 bytes, Stack size 0 bytes, gui_char.o(i.GUI_GetCharDistX))
 <BR><BR>[Called By]<UL><LI><a href="#[271]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI__GetLineDistX
 <LI><a href="#[2a5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_GetTextExtend
-<LI><a href="#[16]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_GetCharWrap
 <LI><a href="#[318]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI__WrapGetNumCharsToNextLine
 <LI><a href="#[15]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_GetWordWrap
+<LI><a href="#[16]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_GetCharWrap
 </UL>
 
 <P><STRONG><a name="[311]"></a>GUI_GetCharDistXEx</STRONG> (Thumb, 10 bytes, Stack size 0 bytes, gui_char.o(i.GUI_GetCharDistXEx))
@@ -3141,10 +3141,10 @@ Global Symbols
 <P><STRONG><a name="[2bb]"></a>GUI_MEMDEV_Delete</STRONG> (Thumb, 58 bytes, Stack size 16 bytes, guidev.o(i.GUI_MEMDEV_Delete))
 <BR><BR>[Stack]<UL><LI>Max Depth = 72<LI>Call Chain = GUI_MEMDEV_Delete &rArr; GUI_USAGE_DecUseCnt &rArr; GUI_ALLOC_Free &rArr; _AddFreeMemory &rArr; _RemoveFreeBlock
 </UL>
-<BR>[Calls]<UL><LI><a href="#[263]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_DEVICE_Delete
-<LI><a href="#[182]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_ALLOC_UnlockH
+<BR>[Calls]<UL><LI><a href="#[182]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_ALLOC_UnlockH
 <LI><a href="#[181]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_ALLOC_LockH
 <LI><a href="#[23f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_ALLOC_Free
+<LI><a href="#[263]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_DEVICE_Delete
 <LI><a href="#[2bd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_USAGE_DecUseCnt
 <LI><a href="#[2bc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_SelectLCD
 </UL>
@@ -3299,14 +3299,14 @@ Global Symbols
 <P><STRONG><a name="[2ba]"></a>GUI_MEMDEV__CreateFixed</STRONG> (Thumb, 230 bytes, Stack size 64 bytes, guidev.o(i.GUI_MEMDEV__CreateFixed))
 <BR><BR>[Stack]<UL><LI>Max Depth = 232<LI>Call Chain = GUI_MEMDEV__CreateFixed &rArr; GUI_USAGE_BM_Create &rArr; GUI_ALLOC_AllocZero &rArr; GUI_ALLOC_AllocNoInit &rArr; _Alloc &rArr; _InitOnce &rArr; _EnlargeBlocks &rArr;  _Alloc (Cycle)
 </UL>
-<BR>[Calls]<UL><LI><a href="#[263]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_DEVICE_Delete
-<LI><a href="#[260]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_DEVICE_Create
+<BR>[Calls]<UL><LI><a href="#[260]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_DEVICE_Create
 <LI><a href="#[182]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_ALLOC_UnlockH
 <LI><a href="#[249]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_ALLOC_RequestSize
 <LI><a href="#[181]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_ALLOC_LockH
 <LI><a href="#[23f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_ALLOC_Free
 <LI><a href="#[23c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_ALLOC_AllocNoInit
 <LI><a href="#[23e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_ALLOC_AllocZero
+<LI><a href="#[263]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_DEVICE_Delete
 <LI><a href="#[2c6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD__GetBPPDevice
 <LI><a href="#[2d2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_USAGE_BM_Create
 </UL>
@@ -3754,9 +3754,9 @@ Global Symbols
 <LI><a href="#[2a4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI__GetNumChars
 <LI><a href="#[2a5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_GetTextExtend
 <LI><a href="#[305]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_DispLine
-<LI><a href="#[16]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_GetCharWrap
 <LI><a href="#[318]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI__WrapGetNumCharsToNextLine
 <LI><a href="#[15]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_GetWordWrap
+<LI><a href="#[16]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_GetCharWrap
 </UL>
 
 <P><STRONG><a name="[273]"></a>GUI_UC__NumChars2NumBytes</STRONG> (Thumb, 36 bytes, Stack size 24 bytes, gui_uc.o(i.GUI_UC__NumChars2NumBytes))
@@ -4819,7 +4819,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[16d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[34f]"></a>MainTask</STRONG> (Thumb, 810 bytes, Stack size 24 bytes, start_windowdlg.o(i.MainTask))
+<P><STRONG><a name="[34f]"></a>MainTask</STRONG> (Thumb, 812 bytes, Stack size 24 bytes, start_windowdlg.o(i.MainTask))
 <BR><BR>[Stack]<UL><LI>Max Depth = 712<LI>Call Chain = MainTask &rArr; GUI_MessageBox &rArr; GUI_ExecCreatedDialog &rArr; GUI_Exec &rArr; GUI_Exec1 &rArr; WM_Exec &rArr; _DrawNext &rArr; WM__Paint &rArr; GUI_MEMDEV_Draw &rArr; GUI_MEMDEV_CopyToLCD &rArr; GUI_MEMDEV_CopyToLCDAt &rArr; GUI_MEMDEV__WriteToActiveOpaque &rArr; _WriteToActiveOpaque_8 &rArr; GUI_ALLOC_AllocNoInit &rArr; _Alloc &rArr; _InitOnce &rArr; _EnlargeBlocks &rArr;  _Alloc (Cycle)
 </UL>
 <BR>[Calls]<UL><LI><a href="#[1f1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_ReadInputDataBit
@@ -8977,12 +8977,12 @@ Local Symbols
 <P><STRONG><a name="[2e7]"></a>_InitAlpha</STRONG> (Thumb, 140 bytes, Stack size 16 bytes, gui_setalpha.o(i._InitAlpha))
 <BR><BR>[Stack]<UL><LI>Max Depth = 160<LI>Call Chain = _InitAlpha &rArr; GUI_DEVICE_Create &rArr; GUI_ALLOC_GetFixedBlock &rArr; _InitOnce &rArr; _EnlargeBlocks &rArr;  _Alloc (Cycle)
 </UL>
-<BR>[Calls]<UL><LI><a href="#[263]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_DEVICE_Delete
-<LI><a href="#[260]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_DEVICE_Create
+<BR>[Calls]<UL><LI><a href="#[260]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_DEVICE_Create
 <LI><a href="#[289]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI__RegisterExit
 <LI><a href="#[234]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_ALLOC_GetFixedBlock
 <LI><a href="#[264]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_ALLOC_FreeFixedBlock
 <LI><a href="#[28a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_GetVXSizeMax
+<LI><a href="#[263]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_DEVICE_Delete
 </UL>
 <BR>[Called By]<UL><LI><a href="#[1dd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_SetAlpha
 </UL>
@@ -9002,8 +9002,8 @@ Local Symbols
 <P><STRONG><a name="[c9]"></a>_OnExit</STRONG> (Thumb, 50 bytes, Stack size 16 bytes, gui_setalpha.o(i._OnExit))
 <BR><BR>[Stack]<UL><LI>Max Depth = 16<LI>Call Chain = _OnExit
 </UL>
-<BR>[Calls]<UL><LI><a href="#[263]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_DEVICE_Delete
-<LI><a href="#[264]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_ALLOC_FreeFixedBlock
+<BR>[Calls]<UL><LI><a href="#[264]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_ALLOC_FreeFixedBlock
+<LI><a href="#[263]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_DEVICE_Delete
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> gui_setalpha.o(i._InitAlpha)
 </UL>
