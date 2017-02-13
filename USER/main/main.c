@@ -583,6 +583,7 @@ int main(void){
 	//pBoot_menu=(SD_Error(*)(void))Boot_menu;
 	//pGUI_Init=(void(*)(void))GUI_Init;
 	
+	
 	SSD1963_LowLevel_Init();
 	RTC_init();	
 	Periph_Init();
