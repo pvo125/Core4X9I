@@ -3,7 +3,7 @@
 <title>Static Call Graph - [.\output\Core4X9I.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\output\Core4X9I.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5.03 [Build 76]: Last Updated: Tue Feb 14 20:43:30 2017
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5.03 [Build 76]: Last Updated: Wed Feb 15 11:22:23 2017
 <BR><P>
 <H3>Maximum Stack Usage =       1800 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -1114,9 +1114,9 @@ Global Symbols
 <LI><a href="#[da]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_cbButtonNEXT
 </UL>
 <BR>[Address Reference Count : 5]<UL><LI> start_windowdlg.o(i.MainTask)
-<LI> keydlg.o(i._cbBUTTON_KEY)
 <LI> main.o(i.Boot_menu)
 <LI> timerdlg.o(i._cbTIMER)
+<LI> keydlg.o(i._cbBUTTON_KEY)
 <LI> can.o(i.CAN_RXProcess0)
 </UL>
 <P><STRONG><a name="[1ed]"></a>BUTTON_KEY</STRONG> (Thumb, 32 bytes, Stack size 16 bytes, keydlg.o(i.BUTTON_KEY))
@@ -1287,16 +1287,16 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[41]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN1_RX0_IRQHandler
 </UL>
 
-<P><STRONG><a name="[212]"></a>CAN_RXProcess1</STRONG> (Thumb, 572 bytes, Stack size 16 bytes, can.o(i.CAN_RXProcess1))
+<P><STRONG><a name="[212]"></a>CAN_RXProcess1</STRONG> (Thumb, 600 bytes, Stack size 16 bytes, can.o(i.CAN_RXProcess1))
 <BR><BR>[Stack]<UL><LI>Max Depth = 240<LI>Call Chain = CAN_RXProcess1 &rArr; GUI_DispDec &rArr; GUI_DispDecShift &rArr; GUI_DispString &rArr; GUI__DispLine &rArr; WM__InitIVRSearch &rArr; WM__GetNextIVR &rArr; WM__ActivateClipRect &rArr; _SetClipRectUserIntersect &rArr; LCD_SetClipRectEx &rArr; GUI__IntersectRects
 </UL>
 <BR>[Calls]<UL><LI><a href="#[1e7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_SetFont
 <LI><a href="#[201]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_DispStringAt
 <LI><a href="#[20b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_DispDec
+<LI><a href="#[226]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Flash_sect_erase
 <LI><a href="#[227]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Flash_prog
 <LI><a href="#[228]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;crc32_check
 <LI><a href="#[225]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Flash_unlock
-<LI><a href="#[226]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Flash_sect_erase
 <LI><a href="#[213]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN_Transmit_DataFrame
 </UL>
 <BR>[Called By]<UL><LI><a href="#[42]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN1_RX1_IRQHandler
@@ -2055,10 +2055,10 @@ Global Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 296<LI>Call Chain = FRAMEWIN_OwnerDraw &rArr; WIDGET__FillStringInRect &rArr; GUI_DispStringAt &rArr; GUI_DispString &rArr; GUI__DispLine &rArr; WM__InitIVRSearch &rArr; WM__GetNextIVR &rArr; WM__ActivateClipRect &rArr; _SetClipRectUserIntersect &rArr; LCD_SetClipRectEx &rArr; GUI__IntersectRects
 </UL>
 <BR>[Calls]<UL><LI><a href="#[1e7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_SetFont
-<LI><a href="#[2b2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_SetBkColor
 <LI><a href="#[2b3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_SetColor
 <LI><a href="#[1d1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_ALLOC_UnlockH
 <LI><a href="#[1d0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_ALLOC_LockH
+<LI><a href="#[2b2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_SetBkColor
 <LI><a href="#[2b4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WIDGET__FillStringInRect
 <LI><a href="#[2b1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI__CalcTextRect
 </UL>
@@ -2237,6 +2237,7 @@ Global Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = Flash_sect_erase
 </UL>
 <BR>[Called By]<UL><LI><a href="#[212]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN_RXProcess1
+<LI><a href="#[489]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MainTask
 </UL>
 
 <P><STRONG><a name="[225]"></a>Flash_unlock</STRONG> (Thumb, 12 bytes, Stack size 0 bytes, can.o(i.Flash_unlock))
@@ -2692,10 +2693,10 @@ Global Symbols
 <LI><a href="#[e3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TREEVIEW_Callback
 <LI><a href="#[4e8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WM_DeleteTimer
 <LI><a href="#[53e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WM_CreateTimer
-<LI><a href="#[186]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_GUI_USAGE_BM_Delete
 <LI><a href="#[3ee]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_TIMER_Delete
 <LI><a href="#[3d7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_WriteToActiveOpaque_HT
 <LI><a href="#[3d6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_WriteToActiveOpaque_8
+<LI><a href="#[186]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_GUI_USAGE_BM_Delete
 <LI><a href="#[22]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_NextPixel_End
 <LI><a href="#[62f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_ReleaseBuffer
 </UL>
@@ -4087,12 +4088,12 @@ Global Symbols
 <P><STRONG><a name="[3b7]"></a>GUI_DEVICE__GetpDriver</STRONG> (Thumb, 32 bytes, Stack size 0 bytes, gui_device.o(i.GUI_DEVICE__GetpDriver))
 <BR><BR>[Called By]<UL><LI><a href="#[43d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_SetVSizeEx
 <LI><a href="#[43c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_SetSizeEx
-<LI><a href="#[38c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;emWin_LCD_Init
-<LI><a href="#[38e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WM_Init
 <LI><a href="#[433]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_GetpfColor2IndexEx
 <LI><a href="#[3ea]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_SetPosEx
 <LI><a href="#[436]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_SetLUTEntryEx
 <LI><a href="#[380]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_GetPosEx
+<LI><a href="#[38c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;emWin_LCD_Init
+<LI><a href="#[38e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WM_Init
 <LI><a href="#[3b6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_MEMDEV_CreateEx
 <LI><a href="#[429]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_GetNumLayers
 <LI><a href="#[435]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_InitLUT
@@ -4679,9 +4680,9 @@ Global Symbols
 <P><STRONG><a name="[b2]"></a>GUI_GIF__GetData</STRONG> (Thumb, 32 bytes, Stack size 12 bytes, gui_gif.o(i.GUI_GIF__GetData))
 <BR><BR>[Stack]<UL><LI>Max Depth = 12<LI>Call Chain = GUI_GIF__GetData
 </UL>
-<BR>[Address Reference Count : 4]<UL><LI> gui_gif.o(i.GUI_GIF_DrawSub)
-<LI> gui_gif.o(i.GUI_GIF_GetImageInfo)
+<BR>[Address Reference Count : 4]<UL><LI> gui_gif.o(i.GUI_GIF_GetImageInfo)
 <LI> gui_gif.o(i.GUI_GIF_GetInfo)
+<LI> gui_gif.o(i.GUI_GIF_DrawSub)
 <LI> gui_gif_drawscaled.o(i.GUI_GIF_DrawSubScaled)
 </UL>
 <P><STRONG><a name="[376]"></a>GUI_GIF__GetNextByte</STRONG> (Thumb, 406 bytes, Stack size 48 bytes, gui_gif.o(i.GUI_GIF__GetNextByte))
@@ -4929,11 +4930,11 @@ Global Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 312<LI>Call Chain = GUI_Init &rArr; GUI__Config &rArr; LCD_X_Config &rArr; GUI_DEVICE_CreateAndLink &rArr; GUI_DEVICE_Create &rArr; GUI_ALLOC_GetFixedBlock &rArr; _InitOnce &rArr; _EnlargeBlocks &rArr;  _Alloc (Cycle)
 </UL>
 <BR>[Calls]<UL><LI><a href="#[38a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_X_Init
+<LI><a href="#[389]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI__Config
+<LI><a href="#[38b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_InitContext
 <LI><a href="#[38c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;emWin_LCD_Init
 <LI><a href="#[38e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WM_Init
 <LI><a href="#[38d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_SetOrg
-<LI><a href="#[389]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI__Config
-<LI><a href="#[38b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_InitContext
 </UL>
 <BR>[Called By]<UL><LI><a href="#[1bc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
@@ -6361,10 +6362,10 @@ Global Symbols
 
 <P><STRONG><a name="[2fa]"></a>GUI__RegisterExit</STRONG> (Thumb, 10 bytes, Stack size 0 bytes, gui_core.o(i.GUI__RegisterExit))
 <BR><BR>[Called By]<UL><LI><a href="#[356]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_EnableAlpha
-<LI><a href="#[38e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WM_Init
 <LI><a href="#[389]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI__Config
 <LI><a href="#[303]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_InitOnce
 <LI><a href="#[3e7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_InitAlpha
+<LI><a href="#[38e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WM_Init
 <LI><a href="#[434]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_InitColors
 <LI><a href="#[3fe]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI__GetAlphaBuffer
 <LI><a href="#[2f8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_AA_Init
@@ -6662,8 +6663,8 @@ Global Symbols
 <LI><a href="#[40e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_FillTrippleArc
 <LI><a href="#[40c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_DrawTwinArc4
 </UL>
-<BR>[Address Reference Count : 2]<UL><LI> gui_drawgradient.o(i.GUI_DrawGradientV)
-<LI> gui_core.o(.constdata)
+<BR>[Address Reference Count : 2]<UL><LI> gui_core.o(.constdata)
+<LI> gui_drawgradient.o(i.GUI_DrawGradientV)
 </UL>
 <P><STRONG><a name="[121]"></a>LCD_DrawPixel</STRONG> (Thumb, 96 bytes, Stack size 8 bytes, lcd.o(i.LCD_DrawPixel))
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = LCD_DrawPixel
@@ -6693,7 +6694,6 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[360]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_FillRoundedRect
 <LI><a href="#[328]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_ClearRect
 <LI><a href="#[164]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUIPROP_DispChar
-<LI><a href="#[38c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;emWin_LCD_Init
 <LI><a href="#[5ee]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_DrawLineScaled_RLE
 <LI><a href="#[f3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_DrawLineScaled_RGB
 <LI><a href="#[f4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_DrawLineScaled_Pal
@@ -6706,6 +6706,7 @@ Global Symbols
 <LI><a href="#[b3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_ClearUnusedPixels
 <LI><a href="#[351]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_DrawGradient
 <LI><a href="#[409]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI__DrawBitmap16bpp
+<LI><a href="#[38c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;emWin_LCD_Init
 <LI><a href="#[38f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_InvertRect
 <LI><a href="#[1e2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_FillRect
 <LI><a href="#[168]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUIMONO_DispChar
@@ -7047,8 +7048,8 @@ Global Symbols
 <P><STRONG><a name="[2ea]"></a>LCD_SetDrawMode</STRONG> (Thumb, 8 bytes, Stack size 0 bytes, lcd.o(i.LCD_SetDrawMode))
 <BR><BR>[Called By]<UL><LI><a href="#[328]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_ClearRect
 <LI><a href="#[164]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUIPROP_DispChar
-<LI><a href="#[38c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;emWin_LCD_Init
 <LI><a href="#[2cf]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_SetDrawMode
+<LI><a href="#[38c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;emWin_LCD_Init
 <LI><a href="#[168]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUIMONO_DispChar
 </UL>
 
@@ -7313,11 +7314,11 @@ Global Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[1e7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_SetFont
 <LI><a href="#[207]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_Clear
-<LI><a href="#[2b2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_SetBkColor
 <LI><a href="#[2b3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_SetColor
 <LI><a href="#[1d1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_ALLOC_UnlockH
 <LI><a href="#[1d0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_ALLOC_LockH
 <LI><a href="#[33b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_GetFontDistY
+<LI><a href="#[2b2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_SetBkColor
 <LI><a href="#[28f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_GetStringDistX
 <LI><a href="#[270]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_GetYDistOfFont
 <LI><a href="#[265]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_ARRAY_GethItem
@@ -7829,7 +7830,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[1bc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[489]"></a>MainTask</STRONG> (Thumb, 862 bytes, Stack size 32 bytes, start_windowdlg.o(i.MainTask))
+<P><STRONG><a name="[489]"></a>MainTask</STRONG> (Thumb, 884 bytes, Stack size 32 bytes, start_windowdlg.o(i.MainTask))
 <BR><BR>[Stack]<UL><LI>Max Depth = 720<LI>Call Chain = MainTask &rArr; GUI_MessageBox &rArr; GUI_ExecCreatedDialog &rArr; GUI_Exec &rArr; GUI_Exec1 &rArr; WM_Exec &rArr; _DrawNext &rArr; WM__Paint &rArr; GUI_MEMDEV_Draw &rArr; GUI_MEMDEV_CopyToLCD &rArr; GUI_MEMDEV_CopyToLCDAt &rArr; GUI_MEMDEV__WriteToActiveOpaque &rArr; _WriteToActiveOpaque_8 &rArr; GUI_ALLOC_AllocNoInit &rArr; _Alloc &rArr; _InitOnce &rArr; _EnlargeBlocks &rArr;  _Alloc (Cycle)
 </UL>
 <BR>[Calls]<UL><LI><a href="#[29b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_ReadInputDataBit
@@ -7851,6 +7852,7 @@ Global Symbols
 <LI><a href="#[221]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ICONVIEW_CreateEx
 <LI><a href="#[223]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ICONVIEW_AddBitmapItem
 <LI><a href="#[356]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_EnableAlpha
+<LI><a href="#[226]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Flash_sect_erase
 <LI><a href="#[227]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Flash_prog
 <LI><a href="#[495]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;NVIC_SystemReset
 <LI><a href="#[48b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;NVIC_EnableIRQ
@@ -9503,9 +9505,9 @@ Global Symbols
 <BR>[Calls]<UL><LI><a href="#[1d7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WM_DefaultProc
 <LI><a href="#[207]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_Clear
 <LI><a href="#[219]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WM_SetFocus
-<LI><a href="#[2b2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_SetBkColor
 <LI><a href="#[1d1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_ALLOC_UnlockH
 <LI><a href="#[1d0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_ALLOC_LockH
+<LI><a href="#[2b2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_SetBkColor
 <LI><a href="#[2a9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WM_SetFocusOnNextChild
 <LI><a href="#[1cf]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WIDGET_HandleActive
 <LI><a href="#[2aa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WM__IsAncestorOrSelf
@@ -10805,8 +10807,8 @@ Global Symbols
 <P><STRONG><a name="[56a]"></a>WM_Update</STRONG> (Thumb, 42 bytes, Stack size 128 bytes, wm_paint.o(i.WM_Update))
 <BR><BR>[Stack]<UL><LI>Max Depth = 608<LI>Call Chain = WM_Update &rArr; WM__Paint &rArr; GUI_MEMDEV_Draw &rArr; GUI_MEMDEV_CopyToLCD &rArr; GUI_MEMDEV_CopyToLCDAt &rArr; GUI_MEMDEV__WriteToActiveOpaque &rArr; _WriteToActiveOpaque_8 &rArr; GUI_ALLOC_AllocNoInit &rArr; _Alloc &rArr; _InitOnce &rArr; _EnlargeBlocks &rArr;  _Alloc (Cycle)
 </UL>
-<BR>[Calls]<UL><LI><a href="#[2b2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_SetBkColor
-<LI><a href="#[2b3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_SetColor
+<BR>[Calls]<UL><LI><a href="#[2b3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_SetColor
+<LI><a href="#[2b2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_SetBkColor
 <LI><a href="#[3e5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_SaveContext_W
 <LI><a href="#[3e3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_RestoreContext
 <LI><a href="#[57e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WM__Paint
@@ -11545,8 +11547,8 @@ Global Symbols
 <LI><a href="#[34c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_DrawArc
 <LI><a href="#[277]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_SetPenSize
 </UL>
-<BR>[Address Reference Count : 3]<UL><LI> keydlg.o(i._cbBUTTON_KEY)
-<LI> timerdlg.o(i._cbTIMER)
+<BR>[Address Reference Count : 3]<UL><LI> timerdlg.o(i._cbTIMER)
+<LI> keydlg.o(i._cbBUTTON_KEY)
 <LI> can.o(i.CAN_RXProcess0)
 </UL>
 <P><STRONG><a name="[4aa]"></a>_drawBMP</STRONG> (Thumb, 436 bytes, Stack size 56 bytes, pictureview.o(i._drawBMP))
@@ -11859,12 +11861,14 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[e0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_cbSD
 </UL>
 
-<P><STRONG><a name="[64f]"></a>ff_convert</STRONG> (Thumb, 14 bytes, Stack size 0 bytes, sd_file.o(i.ff_convert))
-<BR><BR>[Called By]<UL><LI><a href="#[66b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_fileinfo
+<P><STRONG><a name="[64f]"></a>ff_convert</STRONG> (Thumb, 70 bytes, Stack size 8 bytes, ccsbcs.o(i.ff_convert))
+<BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = ff_convert
+</UL>
+<BR>[Called By]<UL><LI><a href="#[66b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_fileinfo
 <LI><a href="#[64e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;create_name
 </UL>
 
-<P><STRONG><a name="[64a]"></a>ff_wtoupper</STRONG> (Thumb, 26 bytes, Stack size 0 bytes, sd_file.o(i.ff_wtoupper))
+<P><STRONG><a name="[64a]"></a>ff_wtoupper</STRONG> (Thumb, 46 bytes, Stack size 0 bytes, ccsbcs.o(i.ff_wtoupper))
 <BR><BR>[Called By]<UL><LI><a href="#[649]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;cmp_lfn
 </UL>
 
@@ -12620,7 +12624,7 @@ Local Symbols
 </UL>
 
 <P><STRONG><a name="[66b]"></a>get_fileinfo</STRONG> (Thumb, 296 bytes, Stack size 48 bytes, ff.o(i.get_fileinfo))
-<BR><BR>[Stack]<UL><LI>Max Depth = 48<LI>Call Chain = get_fileinfo
+<BR><BR>[Stack]<UL><LI>Max Depth = 56<LI>Call Chain = get_fileinfo &rArr; ff_convert
 </UL>
 <BR>[Calls]<UL><LI><a href="#[64f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ff_convert
 </UL>
@@ -13328,8 +13332,8 @@ Local Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 16<LI>Call Chain = _InitContext
 </UL>
 <BR>[Calls]<UL><LI><a href="#[203]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WM_GetDesktopWindow
-<LI><a href="#[2b2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_SetBkColor
 <LI><a href="#[2b3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_SetColor
+<LI><a href="#[2b2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_SetBkColor
 </UL>
 <BR>[Called By]<UL><LI><a href="#[388]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_Init
 </UL>
@@ -14862,10 +14866,10 @@ Local Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 128<LI>Call Chain = _CalcSizes &rArr; GUI__CalcTextRect &rArr; GUI_GetStringDistX &rArr; GUI__GetLineDistX &rArr; GUI_UC__GetCharCodeInc
 </UL>
 <BR>[Calls]<UL><LI><a href="#[1e7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_SetFont
-<LI><a href="#[2b2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_SetBkColor
 <LI><a href="#[2b3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_SetColor
 <LI><a href="#[1d1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_ALLOC_UnlockH
 <LI><a href="#[1d0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_ALLOC_LockH
+<LI><a href="#[2b2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_SetBkColor
 <LI><a href="#[52b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WIDGET__GetInsideRect
 <LI><a href="#[28b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI__GetNumChars
 <LI><a href="#[5a8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI__GetCursorPosX
@@ -14978,9 +14982,9 @@ Local Symbols
 <LI><a href="#[207]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_Clear
 <LI><a href="#[261]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WM_GetParent
 <LI><a href="#[219]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WM_SetFocus
-<LI><a href="#[2b2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_SetBkColor
 <LI><a href="#[1d1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_ALLOC_UnlockH
 <LI><a href="#[1d0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_ALLOC_LockH
+<LI><a href="#[2b2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_SetBkColor
 <LI><a href="#[2a9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WM_SetFocusOnNextChild
 <LI><a href="#[1cf]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WIDGET_HandleActive
 <LI><a href="#[2c6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WM_SetFocusOnPrevChild
@@ -15744,9 +15748,9 @@ Local Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 392<LI>Call Chain = _OnPaint &rArr; GUI_ClearRectEx &rArr; GUI_ClearRect &rArr; WM__InitIVRSearch &rArr; WM__GetNextIVR &rArr; WM__ActivateClipRect &rArr; _SetClipRectUserIntersect &rArr; LCD_SetClipRectEx &rArr; GUI__IntersectRects
 </UL>
 <BR>[Calls]<UL><LI><a href="#[1e7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_SetFont
-<LI><a href="#[2b2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_SetBkColor
 <LI><a href="#[1d1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_ALLOC_UnlockH
 <LI><a href="#[1d0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_ALLOC_LockH
+<LI><a href="#[2b2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_SetBkColor
 <LI><a href="#[344]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WM_SetUserClipRect
 <LI><a href="#[628]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WIDGET__EFFECT_DrawDown
 <LI><a href="#[1e9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_MoveRect
@@ -16535,10 +16539,10 @@ Local Symbols
 <BR>[Calls]<UL><LI><a href="#[1e7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_SetFont
 <LI><a href="#[207]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_Clear
 <LI><a href="#[1e3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_DrawRect
-<LI><a href="#[2b2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_SetBkColor
 <LI><a href="#[2b3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_SetColor
 <LI><a href="#[1d1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_ALLOC_UnlockH
 <LI><a href="#[1d0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_ALLOC_LockH
+<LI><a href="#[2b2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_SetBkColor
 <LI><a href="#[344]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WM_SetUserClipRect
 <LI><a href="#[1e5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WM__IsEnabled
 <LI><a href="#[1ea]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_SetTextMode
@@ -16559,10 +16563,10 @@ Local Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[1e7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_SetFont
 <LI><a href="#[1e0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_DrawHLine
-<LI><a href="#[2b2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_SetBkColor
 <LI><a href="#[2b3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_SetColor
 <LI><a href="#[1d1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_ALLOC_UnlockH
 <LI><a href="#[1d0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_ALLOC_LockH
+<LI><a href="#[2b2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_SetBkColor
 <LI><a href="#[628]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WIDGET__EFFECT_DrawDown
 <LI><a href="#[251]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DROPDOWN__GetpItemLocked
 <LI><a href="#[1eb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_DispStringInRect
@@ -16861,9 +16865,9 @@ Local Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 280<LI>Call Chain = _OnPaint &rArr; GUI_ClearRectEx &rArr; GUI_ClearRect &rArr; WM__InitIVRSearch &rArr; WM__GetNextIVR &rArr; WM__ActivateClipRect &rArr; _SetClipRectUserIntersect &rArr; LCD_SetClipRectEx &rArr; GUI__IntersectRects
 </UL>
 <BR>[Calls]<UL><LI><a href="#[1e7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_SetFont
-<LI><a href="#[2b2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_SetBkColor
 <LI><a href="#[1d1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_ALLOC_UnlockH
 <LI><a href="#[1d0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_ALLOC_LockH
+<LI><a href="#[2b2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_SetBkColor
 <LI><a href="#[344]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WM_SetUserClipRect
 <LI><a href="#[628]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WIDGET__EFFECT_DrawDown
 <LI><a href="#[1e9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_MoveRect
@@ -16918,9 +16922,9 @@ Local Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[209]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_DispString
 <LI><a href="#[207]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_Clear
-<LI><a href="#[2b2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_SetBkColor
 <LI><a href="#[327]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_GotoXY
 <LI><a href="#[2b3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_SetColor
+<LI><a href="#[2b2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_SetBkColor
 </UL>
 <BR>[Called By]<UL><LI><a href="#[18e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_Paint
 </UL>
@@ -16961,11 +16965,11 @@ Local Symbols
 <LI><a href="#[201]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_DispStringAt
 <LI><a href="#[207]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_Clear
 <LI><a href="#[34d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_DrawBitmap
-<LI><a href="#[2b2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_SetBkColor
 <LI><a href="#[2b3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_SetColor
 <LI><a href="#[1d1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_ALLOC_UnlockH
 <LI><a href="#[1d0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_ALLOC_LockH
 <LI><a href="#[33b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_GetFontDistY
+<LI><a href="#[2b2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_SetBkColor
 <LI><a href="#[28f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_GetStringDistX
 <LI><a href="#[1e5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WM__IsEnabled
 <LI><a href="#[1ea]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_SetTextMode
@@ -17071,10 +17075,10 @@ Local Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[1e7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_SetFont
 <LI><a href="#[207]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_Clear
-<LI><a href="#[2b2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_SetBkColor
 <LI><a href="#[2b3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_SetColor
 <LI><a href="#[1d1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_ALLOC_UnlockH
 <LI><a href="#[1d0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_ALLOC_LockH
+<LI><a href="#[2b2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_SetBkColor
 <LI><a href="#[1ea]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_SetTextMode
 <LI><a href="#[37c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WM_GetClientRect
 <LI><a href="#[470]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WM_GetHasTrans

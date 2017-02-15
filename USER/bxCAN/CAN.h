@@ -16,6 +16,9 @@
 #define STM32f429  0x2
 #define F103_KIT	 0x3
 
+#define FLAG_STATUS_SECTOR	0x08004000		//sector 1
+#define NAMBER_FLAG_STATUS_SECTOR  1
+
 typedef enum
 {
 	CAN_TXOK=0,
@@ -57,7 +60,7 @@ void CAN_RXProcess0(void);
 void CAN_RXProcess1(void);
 
 extern void Flash_prog(uint8_t * src,uint8_t * dst,uint32_t nbyte,uint8_t psize);
-
+extern void Flash_sect_erase(uint8_t numsect,uint8_t count);
 
 
 

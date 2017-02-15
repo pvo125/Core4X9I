@@ -28,6 +28,7 @@
 ".\output\pictureview.o"
 ".\output\ff.o"
 ".\output\diskio.o"
+".\output\ccsbcs.o"
 ".\output\sdcard.o"
 ".\output\mx25l8005.o"
 ".\output\ssd1963.o"

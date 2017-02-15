@@ -626,9 +626,17 @@ void MainTask(void)
 		{
 			count=0;
 			while(*(uint8_t*)(FLAG_STATUS_SECTOR+count)!=0xFF)		// Перебираем байты пока не дойдем до неписанного поля 0xFF 
+			{
 				count++;
+				if(count>=0x3fff)
+				{
+					count=0;
+					Flash_sect_erase(NAMBER_FLAG_STATUS_SECTOR,1);		// Очистим 		FLAG_STATUS_SECTOR
+					break;
+				}
+			}		
+				
 			Flash_prog(&flag,(uint8_t*)(FLAG_STATUS_SECTOR+count),1,1);		// В ячейке где 0xFF лежит запишем значения флага для bootloader flag=0xA7
-					//reset=1;//NVIC_SystemReset();	
 			GUI_Delay(1000);
 			NVIC_SystemReset();
 		}

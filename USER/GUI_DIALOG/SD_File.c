@@ -89,7 +89,7 @@ static const GUI_WIDGET_CREATE_INFO _aSD[] = {
 	{ ICONVIEW_CreateIndirect,NULL,ID_ICON_DEL,1,75,32,32,WM_CF_SHOW|WM_CF_HASTRANS,(30<<16)|30,0},
 };
 
-#if 1
+#if 0
 WCHAR ff_convert (WCHAR wch, UINT dir)
 {
 	if (wch < 0x80) {
