@@ -1,2 +1,2 @@
 srec_cat Core4x9I.bin -bin -exclude 0x1C 0x28 -length-l-e 0x1C 4 -generate 0x20 0x28 -repeat-string Core4x9I -o Core4x9I.bin -bin 
-srec_cat Core4x9I.bin -bin -crc32-l-e  -max-addr Core4x9I.bin -bin -o Core4x9Icrc.bin -bin
+srec_cat Core4x9I.bin -bin -crc32-l-e  -max-addr Core4x9I.bin -bin -o Core4x9I.bin -bin

@@ -432,30 +432,7 @@ static void _cbBoot_menu(WM_MESSAGE* pMsg) {
 								
 							break;
 						}
-				/*	case ID_BUTTON_CAN_Data:
-					switch(NCode){
-							case WM_NOTIFICATION_RELEASED:
-								CAN_Data_TX.DLC=8;
-								CAN_Data_TX.ID=0x180;
-								CAN_Data_TX.Data[0]='p';
-								CAN_Data_TX.Data[1]='r';
-								CAN_Data_TX.Data[2]='i';
-								CAN_Data_TX.Data[3]='v';
-								CAN_Data_TX.Data[4]='e';
-								CAN_Data_TX.Data[5]='t';
-								CAN_Data_TX.Data[6]='!';
-								CAN_Data_TX.Data[7]='\0';
-								CAN_Transmit_DataFrame(&CAN_Data_TX);
-							break;
-						}
-					break;
-					case ID_BUTTON_CAN_Remote:
-					switch(NCode){
-							case WM_NOTIFICATION_RELEASED:
-								CAN_Transmit_RemoteFrame(0x180);
-							break;
-						}
-					break;	*/						
+						
 					}	
 	break;
 	default:
