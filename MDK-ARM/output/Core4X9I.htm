@@ -3,7 +3,7 @@
 <title>Static Call Graph - [.\output\Core4X9I.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\output\Core4X9I.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5.03 [Build 76]: Last Updated: Wed Feb 15 11:22:23 2017
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5.03 [Build 76]: Last Updated: Fri Feb 17 16:47:06 2017
 <BR><P>
 <H3>Maximum Stack Usage =       1800 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -1287,7 +1287,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[41]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN1_RX0_IRQHandler
 </UL>
 
-<P><STRONG><a name="[212]"></a>CAN_RXProcess1</STRONG> (Thumb, 600 bytes, Stack size 16 bytes, can.o(i.CAN_RXProcess1))
+<P><STRONG><a name="[212]"></a>CAN_RXProcess1</STRONG> (Thumb, 632 bytes, Stack size 16 bytes, can.o(i.CAN_RXProcess1))
 <BR><BR>[Stack]<UL><LI>Max Depth = 240<LI>Call Chain = CAN_RXProcess1 &rArr; GUI_DispDec &rArr; GUI_DispDecShift &rArr; GUI_DispString &rArr; GUI__DispLine &rArr; WM__InitIVRSearch &rArr; WM__GetNextIVR &rArr; WM__ActivateClipRect &rArr; _SetClipRectUserIntersect &rArr; LCD_SetClipRectEx &rArr; GUI__IntersectRects
 </UL>
 <BR>[Calls]<UL><LI><a href="#[1e7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_SetFont
@@ -2356,6 +2356,7 @@ Global Symbols
 <LI><a href="#[520]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TSC2046_LowLevel_Init
 <LI><a href="#[4f5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SSD1963_LowLevel_Init
 <LI><a href="#[482]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MX25_LowLevel_Init
+<LI><a href="#[1bc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 <LI><a href="#[49e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Periph_Init
 <LI><a href="#[4d3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SD_LowLevel_Init
 </UL>
@@ -11898,10 +11899,11 @@ Global Symbols
 <LI><a href="#[663]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;f_sync
 </UL>
 
-<P><STRONG><a name="[1bc]"></a>main</STRONG> (Thumb, 296 bytes, Stack size 0 bytes, main.o(i.main))
+<P><STRONG><a name="[1bc]"></a>main</STRONG> (Thumb, 320 bytes, Stack size 0 bytes, main.o(i.main))
 <BR><BR>[Stack]<UL><LI>Max Depth = 736<LI>Call Chain = main &rArr; Boot_menu &rArr; GUI_MessageBox &rArr; GUI_ExecCreatedDialog &rArr; GUI_Exec &rArr; GUI_Exec1 &rArr; WM_Exec &rArr; _DrawNext &rArr; WM__Paint &rArr; GUI_MEMDEV_Draw &rArr; GUI_MEMDEV_CopyToLCD &rArr; GUI_MEMDEV_CopyToLCDAt &rArr; GUI_MEMDEV__WriteToActiveOpaque &rArr; _WriteToActiveOpaque_8 &rArr; GUI_ALLOC_AllocNoInit &rArr; _Alloc &rArr; _InitOnce &rArr; _EnlargeBlocks &rArr;  _Alloc (Cycle)
 </UL>
 <BR>[Calls]<UL><LI><a href="#[29b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_ReadInputDataBit
+<LI><a href="#[483]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_Init
 <LI><a href="#[641]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;bxCAN_Init
 <LI><a href="#[521]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Touch_calibration
 <LI><a href="#[520]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TSC2046_LowLevel_Init
