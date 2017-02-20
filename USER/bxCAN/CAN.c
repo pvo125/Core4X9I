@@ -187,8 +187,7 @@ void bxCAN_Init(void){
 	CAN1->MCR&=~CAN_MCR_INRQ;  														/*Initialization Request */	
 	while((CAN1->MSR&CAN_MSR_INAK)==CAN_MSR_INAK)		{}   /*while Initialization Acknowledge*/		
 
-	NVIC_EnableIRQ(CAN1_RX0_IRQn);
-	NVIC_EnableIRQ(CAN1_RX1_IRQn);		
+			
 }
 /*****************************************************************************************************************
 *													CAN_Transmit_DataFrame
@@ -593,10 +592,13 @@ void CAN_RXProcess1(void){
 				CAN_Data_TX.Data[1]='g';								// GET_DATA!
 				CAN_Transmit_DataFrame(&CAN_Data_TX);
 				
-				if(GPIOF->IDR & GPIO_IDR_IDR_7)
-					GPIOF->BSRRH=GPIO_BSRR_BS_7;
-				else
-					GPIOF->BSRRL=GPIO_BSRR_BS_7;	
+				if((count%240)==0)
+				{	
+					if(GPIOF->IDR & GPIO_IDR_IDR_7)
+						GPIOF->BSRRH=GPIO_BSRR_BS_7;
+					else
+						GPIOF->BSRRL=GPIO_BSRR_BS_7;	
+				}
 			}
 			else if((size_firmware-count)>4)
 			{

@@ -569,6 +569,9 @@ void MainTask(void)
 	RTC_GetAlarm(RTC_Format_BIN, RTC_Alarm_B, &RTC_AlarmB);
 	RTC_GetTime(RTC_Format_BIN, &RTC_Time);
 	
+	NVIC_EnableIRQ(CAN1_RX0_IRQn);
+	NVIC_EnableIRQ(CAN1_RX1_IRQn);	
+		
 	GUI_EnableAlpha(1);
 	CreateStart();
 	
