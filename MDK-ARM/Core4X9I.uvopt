@@ -441,9 +441,9 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>27</ColumnNumber>
+      <ColumnNumber>29</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>567</TopLine>
+      <TopLine>568</TopLine>
       <CurrentLine>572</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\USER\main\main.c</PathWithFileName>
@@ -585,9 +585,9 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>32</ColumnNumber>
+      <ColumnNumber>34</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>559</TopLine>
+      <TopLine>568</TopLine>
       <CurrentLine>573</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\USER\GUI_DIALOG\Start_WindowDLG.c</PathWithFileName>
@@ -897,10 +897,10 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>57</ColumnNumber>
+      <ColumnNumber>7</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>578</TopLine>
-      <CurrentLine>592</CurrentLine>
+      <TopLine>591</TopLine>
+      <CurrentLine>602</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\USER\bxCAN\CAN.c</PathWithFileName>
       <FilenameWithoutPath>CAN.c</FilenameWithoutPath>
