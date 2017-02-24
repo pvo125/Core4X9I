@@ -584,7 +584,7 @@ void CAN_RXProcess1(void){
 		case 6:	//(id=273 DOWNLOAD_FIRMWARE)
 			if((size_firmware-count)>=8)
 			{
-				Flash_prog(&CAN_Data_RX[1].Data[0],(uint8_t*)(FIRM_UPD_SECTOR+count),2,4);		
+				Flash_prog(&CAN_Data_RX[1].Data[0],(uint8_t*)(FIRM_UPD_SECTOR+count),8,4);		
 				count+=8;
 				CAN_Data_TX.ID=(NETNAME_INDEX<<8)|0x72;
 				CAN_Data_TX.DLC=2;
@@ -600,16 +600,12 @@ void CAN_RXProcess1(void){
 						GPIOF->BSRRL=GPIO_BSRR_BS_7;	
 				}
 			}
-			else if((size_firmware-count)>4)
+			else 
 			{
-				Flash_prog(&CAN_Data_RX[1].Data[0],(uint8_t*)(FIRM_UPD_SECTOR+count),((size_firmware-count)/4+1),4);
+				Flash_prog(&CAN_Data_RX[1].Data[0],(uint8_t*)(FIRM_UPD_SECTOR+count),(size_firmware-count),4);
 				count+=(size_firmware-count);
 			}
-			else if((size_firmware-count)<=4)
-			{
-				Flash_prog(&CAN_Data_RX[1].Data[0],(uint8_t*)(FIRM_UPD_SECTOR+count),1,4);
-				count+=4;
-			}				
+			
 			if(size_firmware==count)	
 			{
 				
@@ -712,9 +708,9 @@ void Flash_prog(uint8_t * src,uint8_t * dst,uint32_t nbyte,uint8_t psize){
 		case 2:
 			FLASH->CR |= FLASH_CR_PSIZE_0;			// 01 program x16
 			FLASH->CR |=FLASH_CR_PG;	
-			for(i=0;i<nbyte;i++)
+			for(i=0;i<nbyte;i+=2)
 			{
-				*(uint16_t*)(dst+i*2)=*(uint16_t*)(src+i*2);
+				*(uint16_t*)(dst+i)=*(uint16_t*)(src+i);
 				while((FLASH->SR & FLASH_SR_EOP)!=FLASH_SR_EOP) {}
 				FLASH->SR=FLASH_SR_EOP;	
 			}
@@ -722,9 +718,9 @@ void Flash_prog(uint8_t * src,uint8_t * dst,uint32_t nbyte,uint8_t psize){
 		case 4:
 			FLASH->CR |= FLASH_CR_PSIZE_1;			// 10 program x32
 			FLASH->CR |=FLASH_CR_PG;	
-			for(i=0;i<nbyte;i++)
+			for(i=0;i<nbyte;i+=4)
 			{
-				*(uint32_t*)(dst+i*4)=*(uint32_t*)(src+i*4);
+				*(uint32_t*)(dst+i)=*(uint32_t*)(src+i);
 				while((FLASH->SR & FLASH_SR_EOP)!=FLASH_SR_EOP) {}
 				FLASH->SR=FLASH_SR_EOP;
 		  }
