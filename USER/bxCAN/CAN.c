@@ -642,13 +642,7 @@ void CAN_RXProcess1(void){
 			CAN_Data_TX.Data[0]=NETNAME_INDEX;  // // netname_index для Core4X9I
 			CAN_Transmit_DataFrame(&CAN_Data_TX);
 			
-			GUI_SetFont(&GUI_Font6x8);
-			GUI_DispStringAt("REC ",120,5);
-			GUI_DispDec((uint8_t)((CAN1->ESR)>>24),3);
-			GUI_DispStringAt("TEC ",190,5);
-			GUI_DispDec((uint8_t)((CAN1->ESR)>>16),3);
-			GUI_DispStringAt("ERF ",260,5);
-			GUI_DispDec((uint8_t)(CAN1->ESR),1);
+			
 		break;
 		
 		default:

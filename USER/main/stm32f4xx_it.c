@@ -44,6 +44,11 @@ extern RTC_TimeTypeDef								RTC_Time;
 extern RTC_DateTypeDef								RTC_Date;
 extern uint8_t sd_ins_rem;
 extern volatile uint8_t new_message;
+
+extern volatile uint8_t time_disp;
+
+volatile uint8_t canconnect,canerr_clr,canerr_disp;
+static volatile uint8_t count;
 	/********************************************************************
 *
 *       LcdWriteReg
@@ -200,16 +205,23 @@ void RTC_WKUP_IRQHandler(void)
 		GUI_DispDec(RTC_Date.RTC_Year,2);
 	}
 		
-		
-	
-	RTC_GetTime(RTC_Format_BIN, &RTC_Time);
-	if(time_show==1)
+		if(time_show)
 		{
-		GUI_DispDecAt(RTC_Time.RTC_Hours,350,0,2);
-		GUI_DispString(":");
-		GUI_DispDec(RTC_Time.RTC_Minutes,2);
-		
-	  }
+			time_disp=1;
+			if(canconnect)
+			{
+				canerr_disp=1;
+				count++;
+				if(count>3)
+				{
+					canconnect=0;
+					canerr_clr=1;
+					canerr_disp=0;
+				}
+			}
+		}
+	RTC_GetTime(RTC_Format_BIN, &RTC_Time);
+	
 	RTC->ISR&=~RTC_ISR_WUTF;//RTC->ISR&=~(RTC_ISR_WUTF|0x00000080);//RTC_ClearITPendingBit(RTC_IT_WUT);//RTC->ISR&=~RTC_ISR_WUTF;
 	EXTI_ClearITPendingBit(EXTI_Line22);
 }
@@ -430,7 +442,7 @@ void CAN1_RX0_IRQHandler (void)
 
 	CAN_Receive_IRQHandler(0);
 	CAN_RXProcess0();
-	//new_message=1;
+	
 
 }
 /**
@@ -441,10 +453,10 @@ void CAN1_RX0_IRQHandler (void)
 
 void CAN1_RX1_IRQHandler (void) 
 {
-
+	canconnect=1;//canerr_clr=0;
+	count=0;
 	CAN_Receive_IRQHandler(1);
 	CAN_RXProcess1();
-	//new_message=1;
 }
 /**
   * @}

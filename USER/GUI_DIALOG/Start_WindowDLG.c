@@ -31,7 +31,10 @@ extern FIL pFile;
 extern GUI_JPEG_INFO Info;
 extern volatile uint8_t write_flashflag;
 extern volatile uint8_t new_message;
-//extern uint8_t cycle_start_pwm;
+//extern uint8_t cycle_start_pwm
+
+extern volatile uint8_t canerr_clr,canerr_disp,canconnect;
+volatile uint8_t time_disp;
 
 extern RTC_TimeTypeDef								RTC_Time;
 extern RTC_DateTypeDef								RTC_Date;
@@ -578,6 +581,31 @@ void MainTask(void)
 	while(1)
 	{
 		GUI_Delay(5);	
+		if(canerr_clr)
+		{
+			GUI_SetBkColor(GUI_DARKBLUE);
+			GUI_ClearRect(120,5,290,15);
+			canerr_clr=0;
+		}
+		if(canerr_disp)	
+		{
+				GUI_SetFont(&GUI_Font6x8);
+				GUI_DispStringAt("REC ",120,5);
+				GUI_DispDec((uint8_t)((CAN1->ESR)>>24),3);
+				GUI_DispStringAt("TEC ",190,5);
+				GUI_DispDec((uint8_t)((CAN1->ESR)>>16),3);
+				GUI_DispStringAt("ERF ",260,5);
+				GUI_DispDec((uint8_t)(CAN1->ESR),1);
+				canerr_disp=0;
+		}
+		if(time_disp)
+		{
+			GUI_SetFont(&GUI_Font8x16);
+			GUI_DispDecAt(RTC_Time.RTC_Hours,350,0,2);
+			GUI_DispString(":");
+			GUI_DispDec(RTC_Time.RTC_Minutes,2);
+			time_disp=0;	
+		}
 		
 		if(sd_ins_rem)
 		{	

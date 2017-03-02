@@ -489,12 +489,10 @@ ARM Macro Assembler    Page 8
                                PROC
   187 00000000                 EXPORT           Reset_Handler             [WEAK
 ]
-  188 00000000                 IMPORT           SDRAM_LowLevel_Init ;SystemInit
-                                                            
+  188 00000000                 IMPORT           SDRAM_LowLevel_Init ;
   189 00000000                 IMPORT           __main
   190 00000000         
-  191 00000000 4809            LDR              R0, =SDRAM_LowLevel_Init 
-                                                            ;SystemInit
+  191 00000000 4809            LDR              R0, =SDRAM_LowLevel_Init ;=  ;
   192 00000002 4780            BLX              R0
   193 00000004         
   194 00000004         
@@ -518,14 +516,14 @@ K]
   208 0000000A E7FE            B                .
   209 0000000C                 ENDP
   211 0000000C         MemManage_Handler
+                               PROC
+  212 0000000C                 EXPORT           MemManage_Handler          [WEA
 
 
 
 ARM Macro Assembler    Page 9 
 
 
-                               PROC
-  212 0000000C                 EXPORT           MemManage_Handler          [WEA
 K]
   213 0000000C E7FE            B                .
   214 0000000E                 ENDP
@@ -583,14 +581,14 @@ K]
    [WEAK]
   251 0000001A                 EXPORT           EXTI0_IRQHandler               
    [WEAK]
+  252 0000001A                 EXPORT           EXTI1_IRQHandler               
+   [WEAK]
 
 
 
 ARM Macro Assembler    Page 10 
 
 
-  252 0000001A                 EXPORT           EXTI1_IRQHandler               
-   [WEAK]
   253 0000001A                 EXPORT           EXTI2_IRQHandler               
    [WEAK]
   254 0000001A                 EXPORT           EXTI3_IRQHandler               
@@ -648,14 +646,14 @@ ARM Macro Assembler    Page 10
   280 0000001A                 EXPORT           SPI1_IRQHandler                
    [WEAK]
   281 0000001A                 EXPORT           SPI2_IRQHandler                
+   [WEAK]
+  282 0000001A                 EXPORT           USART1_IRQHandler              
 
 
 
 ARM Macro Assembler    Page 11 
 
 
-   [WEAK]
-  282 0000001A                 EXPORT           USART1_IRQHandler              
    [WEAK]
   283 0000001A                 EXPORT           USART2_IRQHandler              
    [WEAK]
@@ -713,14 +711,14 @@ ARM Macro Assembler    Page 11
    [WEAK]
   310 0000001A                 EXPORT           CAN2_RX1_IRQHandler            
    [WEAK]
+  311 0000001A                 EXPORT           CAN2_SCE_IRQHandler            
+   [WEAK]
 
 
 
 ARM Macro Assembler    Page 12 
 
 
-  311 0000001A                 EXPORT           CAN2_SCE_IRQHandler            
-   [WEAK]
   312 0000001A                 EXPORT           OTG_FS_IRQHandler              
    [WEAK]
   313 0000001A                 EXPORT           DMA2_Stream5_IRQHandler        
@@ -778,14 +776,14 @@ ARM Macro Assembler    Page 12
   342 0000001A         RCC_IRQHandler
   343 0000001A         EXTI0_IRQHandler
   344 0000001A         EXTI1_IRQHandler
+  345 0000001A         EXTI2_IRQHandler
+  346 0000001A         EXTI3_IRQHandler
 
 
 
 ARM Macro Assembler    Page 13 
 
 
-  345 0000001A         EXTI2_IRQHandler
-  346 0000001A         EXTI3_IRQHandler
   347 0000001A         EXTI4_IRQHandler
   348 0000001A         DMA1_Stream0_IRQHandler
   349 0000001A         DMA1_Stream1_IRQHandler
@@ -843,14 +841,14 @@ ARM Macro Assembler    Page 13
   401 0000001A         CAN2_RX0_IRQHandler
   402 0000001A         CAN2_RX1_IRQHandler
   403 0000001A         CAN2_SCE_IRQHandler
+  404 0000001A         OTG_FS_IRQHandler
+  405 0000001A         DMA2_Stream5_IRQHandler
 
 
 
 ARM Macro Assembler    Page 14 
 
 
-  404 0000001A         OTG_FS_IRQHandler
-  405 0000001A         DMA2_Stream5_IRQHandler
   406 0000001A         DMA2_Stream6_IRQHandler
   407 0000001A         DMA2_Stream7_IRQHandler
   408 0000001A         USART6_IRQHandler
@@ -908,14 +906,14 @@ ARM Macro Assembler    Page 14
               00001000 
               00000600 
               00000000 
+Command Line: --debug --xref --cpu=Cortex-M4.fp --apcs=interwork --depend=.\out
+put\startup_stm32f429_439xx.d -o.\output\startup_stm32f429_439xx.o -ID:\Keil\AR
 
 
 
 ARM Macro Assembler    Page 15 
 
 
-Command Line: --debug --xref --cpu=Cortex-M4.fp --apcs=interwork --depend=.\out
-put\startup_stm32f429_439xx.d -o.\output\startup_stm32f429_439xx.o -ID:\Keil\AR
 M\RV31\INC -ID:\Keil\ARM\CMSIS\Include -ID:\Keil\ARM\Inc\ST\STM32F4xx --list=.\
 startup_stm32f429_439xx.lst ..\Libraries\CMSIS\Device\ST\STM32F4xx\Source\Templ
 ates\arm\startup_stm32f429_439xx.s

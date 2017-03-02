@@ -230,6 +230,8 @@ void _drawGIF(char *Path,char *fn){
 	
 	GUI_GIF_GetInfo((uint32_t*)0x90200000,pFile.fsize,&gif_info);
 	NVIC_DisableIRQ(TIM6_DAC_IRQn);
+	NVIC_DisableIRQ(CAN1_RX0_IRQn);
+	NVIC_DisableIRQ(CAN1_RX1_IRQn);	
 	
 	if((gif_info.xSize<=480)&&(gif_info.ySize<=272))
 		{
@@ -293,6 +295,8 @@ void _drawGIF(char *Path,char *fn){
 		}
 	GUI_MEMDEV_Delete(hMem);
 	NVIC_EnableIRQ(TIM6_DAC_IRQn);
+	NVIC_EnableIRQ(CAN1_RX0_IRQn);
+	NVIC_EnableIRQ(CAN1_RX1_IRQn);		
 	GUI_SetAlpha(0x80);
 	GUI_SetColor(GUI_RED);
 	GUI_DispStringAt("File : ",0,257);
@@ -317,7 +321,9 @@ void _drawBMP(char *Path,char *fn){
 	//ySize=GUI_BMP_GetYSizeEx(_GetData,&pFile);
 	
 	GUI_DrawBitmap(&bmhourglass, 225, 120);
-	
+	NVIC_DisableIRQ(TIM6_DAC_IRQn);
+	NVIC_DisableIRQ(CAN1_RX0_IRQn);
+	NVIC_DisableIRQ(CAN1_RX1_IRQn);	
 	xSize=GUI_BMP_GetXSize((uint32_t*)0x90200000);
 	ySize=GUI_BMP_GetYSize((uint32_t*)0x90200000);
 	if((xSize<=480)&&(ySize<=272))
@@ -356,6 +362,10 @@ void _drawBMP(char *Path,char *fn){
 			Time_1=Time;
 		}
 	GUI_MEMDEV_Delete(hMem);
+	NVIC_EnableIRQ(TIM6_DAC_IRQn);	
+	NVIC_EnableIRQ(CAN1_RX0_IRQn);
+	NVIC_EnableIRQ(CAN1_RX1_IRQn);	
+		
 	GUI_SetAlpha(0x80);
 	GUI_SetColor(GUI_RED);
 	GUI_DispStringAt("File : ",0,257);
@@ -380,6 +390,10 @@ void _drawJPG(char *Path,char *fn){
 	fresult=f_read(&pFile,(uint32_t*)0x90200000, pFile.fsize,&NumBytesRead);
 	
 	GUI_DrawBitmap(&bmhourglass, 225, 120);
+	
+	NVIC_DisableIRQ(TIM6_DAC_IRQn);
+	NVIC_DisableIRQ(CAN1_RX0_IRQn);
+	NVIC_DisableIRQ(CAN1_RX1_IRQn);	
 	
 	GUI_JPEG_GetInfo((uint32_t*)0x90200000, pFile.fsize, &jpg_info);			
 	if((jpg_info.XSize<=480)&&(jpg_info.YSize<=272))
@@ -416,7 +430,12 @@ void _drawJPG(char *Path,char *fn){
 		GUI_MEMDEV_CopyToLCD(hMem);
 		Time_1=Time;
 		}
-	GUI_MEMDEV_Delete(hMem);	
+	GUI_MEMDEV_Delete(hMem);
+		
+  NVIC_EnableIRQ(TIM6_DAC_IRQn);
+	NVIC_EnableIRQ(CAN1_RX0_IRQn);
+	NVIC_EnableIRQ(CAN1_RX1_IRQn);			
+	
 	GUI_SetAlpha(0x80);
 	GUI_SetColor(GUI_RED);
 	GUI_DispStringAt("File: ",0,257);

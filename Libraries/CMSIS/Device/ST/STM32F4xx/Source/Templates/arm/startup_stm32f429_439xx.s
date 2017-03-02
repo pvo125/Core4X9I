@@ -185,10 +185,10 @@ __Vectors_Size  EQU  __Vectors_End - __Vectors
 ; Reset handler
 Reset_Handler    PROC
                  EXPORT  Reset_Handler             [WEAK]
-        IMPORT  SDRAM_LowLevel_Init   ;SystemInit
+        IMPORT  SDRAM_LowLevel_Init   ;
         IMPORT  __main
 
-                 LDR     R0, =SDRAM_LowLevel_Init  ;SystemInit
+                 LDR     R0, =SDRAM_LowLevel_Init ;=  ;
                  BLX     R0
 				
 				
