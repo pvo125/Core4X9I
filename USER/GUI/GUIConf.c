@@ -52,6 +52,7 @@ Purpose     : Display controller initialization
   */
 
 #include "GUI.h"
+#include "SDRAM.h"
 
 /*********************************************************************
 *
@@ -93,7 +94,7 @@ void GUI_X_Config(void) {
   // 32 bit aligned memory area
   //
   
-	static U32 aMemory[GUI_NUMBYTES / 4]__attribute__ ((at(0x90100000))); //0x90100000swap SDRAM_Bank2->PCCARD_Bank
+	static U32 aMemory[GUI_NUMBYTES / 4]__attribute__ ((at(SDRAM_BASE+0x0100000))); 
 	//volatile U32 *aMemory = (U32 *)(0xD00C4000);
 	//
   // Assign memory to emWin

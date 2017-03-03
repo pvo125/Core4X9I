@@ -51,7 +51,7 @@ void _drawBMP(char *Path,char *fn);
 void _drawGIF(char *Path,char *fn);
 //WM_HWIN hWin_Photo;
 BUTTON_Handle hButton_NEXT,hButton_PREV,hButton_EXIT;
-static unsigned char _acBuffer[4096];//__attribute((at(0x90300000)));
+static unsigned char _acBuffer[4096];//__attribute((at(SDRAM_BASE)));
 
 GUI_GIF_IMAGE_INFO 	gif_i_info;
 GUI_GIF_INFO				gif_info;
@@ -224,11 +224,11 @@ void _drawGIF(char *Path,char *fn){
 	uint32_t NumBytesRead;	
 	
 	fresult=f_open (&pFile, Path, FA_READ);	// open file
-	fresult=f_read(&pFile,(uint32_t*)0x90200000, pFile.fsize,&NumBytesRead);
+	fresult=f_read(&pFile,(uint32_t*)(SDRAM_BASE+0x200000), pFile.fsize,&NumBytesRead);
 	
 	GUI_DrawBitmap(&bmhourglass, 225, 120);
 	
-	GUI_GIF_GetInfo((uint32_t*)0x90200000,pFile.fsize,&gif_info);
+	GUI_GIF_GetInfo((uint32_t*)(SDRAM_BASE+0x200000),pFile.fsize,&gif_info);
 	NVIC_DisableIRQ(TIM6_DAC_IRQn);
 	NVIC_DisableIRQ(CAN1_RX0_IRQn);
 	NVIC_DisableIRQ(CAN1_RX1_IRQn);	
@@ -246,16 +246,16 @@ void _drawGIF(char *Path,char *fn){
 			for(j=0;j<m;j++)
 				{
 					Time=0;
-					GUI_GIF_DrawSub((uint32_t*)0x90200000,pFile.fsize,xPos,yPos,0);
+					GUI_GIF_DrawSub((uint32_t*)(SDRAM_BASE+0x200000),pFile.fsize,xPos,yPos,0);
 					GUI_MEMDEV_MarkDirty(hMem,225,120,275,168);
 					GUI_MEMDEV_CopyToLCD(hMem);
 					Time_1=Time;
 					for(i=1;i<gif_info.NumImages;i++)
 						{
 						GUI_MEMDEV_Clear(hMem);
-						GUI_GIF_DrawSub((uint32_t*)0x90200000,pFile.fsize,xPos,yPos,i);
+						GUI_GIF_DrawSub((uint32_t*)(SDRAM_BASE+0x200000),pFile.fsize,xPos,yPos,i);
 						GUI_MEMDEV_CopyToLCD(hMem);
-						GUI_GIF_GetImageInfo((uint32_t*)0x90200000, pFile.fsize, &gif_i_info, i);
+						GUI_GIF_GetImageInfo((uint32_t*)(SDRAM_BASE+0x200000), pFile.fsize, &gif_i_info, i);
 						GUI_Delay(gif_i_info.Delay);
 						}	
 				}	
@@ -279,16 +279,16 @@ void _drawGIF(char *Path,char *fn){
 			for(j=0;j<m;j++)
 			 {
 				Time=0;
-				GUI_GIF_DrawSubScaled((uint32_t*)0x90200000,pFile.fsize,xPos,yPos,0,Num,1000);
+				GUI_GIF_DrawSubScaled((uint32_t*)(SDRAM_BASE+0x200000),pFile.fsize,xPos,yPos,0,Num,1000);
 				GUI_MEMDEV_MarkDirty(hMem,225,120,275,168);
 				GUI_MEMDEV_CopyToLCD(hMem);
 				Time_1=Time; 
 				for(i=1;i<gif_info.NumImages;i++)
 					{
 					GUI_MEMDEV_Clear(hMem);
-					GUI_GIF_DrawSubScaled((uint32_t*)0x90200000,pFile.fsize,xPos,yPos,i,Num,1000);
+					GUI_GIF_DrawSubScaled((uint32_t*)(SDRAM_BASE+0x200000),pFile.fsize,xPos,yPos,i,Num,1000);
 					GUI_MEMDEV_CopyToLCD(hMem);
-					GUI_GIF_GetImageInfo((uint32_t*)0x90200000, pFile.fsize, &gif_i_info, i);
+					GUI_GIF_GetImageInfo((uint32_t*)(SDRAM_BASE+0x200000), pFile.fsize, &gif_i_info, i);
 					GUI_Delay(gif_i_info.Delay);
 					}
 			 }				

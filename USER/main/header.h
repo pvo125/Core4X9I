@@ -41,22 +41,22 @@
 #define START_ADC (uint32_t)0x00000003
 #define STOP_ADC 	(uint32_t)0x00000004
 #if 1
-#define exitt   			0x900B0000
-#define photo					0x900B1214
-#define screen 				0x900B2428				
-#define paint  				0x900B363C				
-#define next   				0x900B4850
-#define prev   				0x900B5A64
-#define date   				0x900B6C78
-#define pwm    				0x900B7E8C
-#define sd     				0x900B90A0
-#define alarm  				0x900BA2B4
+#define exitt   			SDRAM_BASE+0xB0000
+#define photo					SDRAM_BASE+0xB1214
+#define screen 				SDRAM_BASE+0xB2428				
+#define paint  				SDRAM_BASE+0xB363C				
+#define next   				SDRAM_BASE+0xB4850
+#define prev   				SDRAM_BASE+0xB5A64
+#define date   				SDRAM_BASE+0xB6C78
+#define pwm    				SDRAM_BASE+0xB7E8C
+#define sd     				SDRAM_BASE+0xB90A0
+#define alarm  				SDRAM_BASE+0xBA2B4
 
-#define AlarmA  			0x900BB4C8
-#define AlarmB				0x900BB95C
-#define Alarm_d				0x900BBDF0
-#define add_folder		0x900BC284
-#define del_folder   	0x900BC718
+#define AlarmA  			SDRAM_BASE+0xBB4C8
+#define AlarmB				SDRAM_BASE+0xBB95C
+#define Alarm_d				SDRAM_BASE+0xBBDF0
+#define add_folder		SDRAM_BASE+0xBC284
+#define del_folder   	SDRAM_BASE+0xBC718
 	
 
 #define fexit   0x00
