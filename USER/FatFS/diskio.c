@@ -69,10 +69,7 @@ DSTATUS disk_initialize (
 				sd_error=SD_SetDeviceMode(SD_DMA_MODE);
 				stat=0;
 			}
-			//if(res==SD_OK)
-			//{
-			//	SD_SECTOR_SIZE=1<<(sd_cardinfo.SD_csd.MaxWrBlockLen);			
-			//}
+			
 		}
 		return stat;
 	}

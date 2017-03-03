@@ -3,7 +3,7 @@
 <title>Static Call Graph - [.\output\Core4X9I.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\output\Core4X9I.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5.03 [Build 76]: Last Updated: Fri Mar 03 12:38:18 2017
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5.03 [Build 76]: Last Updated: Fri Mar 03 15:51:37 2017
 <BR><P>
 <H3>Maximum Stack Usage =       1800 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -4130,7 +4130,6 @@ Global Symbols
 </UL>
 <BR>[Called By]<UL><LI><a href="#[521]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Touch_calibration
 <LI><a href="#[489]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MainTask
-<LI><a href="#[1bc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 <LI><a href="#[4ab]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_drawGIF
 <LI><a href="#[43f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_X_DisplayDriver
 <LI><a href="#[437]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_Reset
@@ -4496,8 +4495,8 @@ Global Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[35a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_Exec1
 </UL>
-<BR>[Called By]<UL><LI><a href="#[333]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_Delay
-<LI><a href="#[1f9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Boot_menu
+<BR>[Called By]<UL><LI><a href="#[1f9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Boot_menu
+<LI><a href="#[333]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_Delay
 <LI><a href="#[35c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_ExecCreatedDialog
 </UL>
 
@@ -7843,7 +7842,6 @@ Global Symbols
 <LI><a href="#[201]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_DispStringAt
 <LI><a href="#[209]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_DispString
 <LI><a href="#[20b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_DispDec
-<LI><a href="#[333]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_Delay
 <LI><a href="#[202]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BUTTON_SetDefaultSkin
 <LI><a href="#[29d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;EXTI_ClearITPendingBit
 <LI><a href="#[493]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RTC_GetTime
@@ -7865,6 +7863,7 @@ Global Symbols
 <LI><a href="#[48a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;NVIC_ClearPendingIRQ
 <LI><a href="#[2e1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_SetBkColor
 <LI><a href="#[1e3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_DrawRect
+<LI><a href="#[333]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_Delay
 <LI><a href="#[328]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_ClearRect
 <LI><a href="#[240]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CreateStart
 </UL>
@@ -9259,12 +9258,12 @@ Global Symbols
 <LI><a href="#[438]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_ResetBits
 <LI><a href="#[1e7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_SetFont
 <LI><a href="#[1df]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_SetColor
-<LI><a href="#[333]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_Delay
 <LI><a href="#[207]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_Clear
 <LI><a href="#[21d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WM_ShowWindow
 <LI><a href="#[2e1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_SetBkColor
 <LI><a href="#[1e3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_DrawRect
 <LI><a href="#[342]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_DispStringHCenterAt
+<LI><a href="#[333]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_Delay
 <LI><a href="#[328]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_ClearRect
 <LI><a href="#[240]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CreateStart
 <LI><a href="#[525]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_TouchPositionY
@@ -11595,8 +11594,8 @@ Global Symbols
 <LI><a href="#[1df]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_SetColor
 <LI><a href="#[201]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_DispStringAt
 <LI><a href="#[209]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_DispString
-<LI><a href="#[333]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_Delay
 <LI><a href="#[241]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_SetAlpha
+<LI><a href="#[333]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_Delay
 <LI><a href="#[3b4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_MEMDEV_Select
 <LI><a href="#[3c9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_MEMDEV_MarkDirty
 <LI><a href="#[3b9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_MEMDEV_Delete
@@ -11908,7 +11907,7 @@ Global Symbols
 <LI><a href="#[63b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;f_mkdir
 </UL>
 
-<P><STRONG><a name="[1bc]"></a>main</STRONG> (Thumb, 320 bytes, Stack size 0 bytes, main.o(i.main))
+<P><STRONG><a name="[1bc]"></a>main</STRONG> (Thumb, 306 bytes, Stack size 0 bytes, main.o(i.main))
 <BR><BR>[Stack]<UL><LI>Max Depth = 736<LI>Call Chain = main &rArr; Boot_menu &rArr; GUI_MessageBox &rArr; GUI_ExecCreatedDialog &rArr; GUI_Exec &rArr; GUI_Exec1 &rArr; WM_Exec &rArr; _DrawNext &rArr; WM__Paint &rArr; GUI_MEMDEV_Draw &rArr; GUI_MEMDEV_CopyToLCD &rArr; GUI_MEMDEV_CopyToLCDAt &rArr; GUI_MEMDEV__WriteToActiveOpaque &rArr; _WriteToActiveOpaque_8 &rArr; GUI_ALLOC_AllocNoInit &rArr; _Alloc &rArr; _InitOnce &rArr; _EnlargeBlocks &rArr;  _Alloc (Cycle)
 </UL>
 <BR>[Calls]<UL><LI><a href="#[29b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_ReadInputDataBit
@@ -11921,7 +11920,6 @@ Global Symbols
 <LI><a href="#[489]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MainTask
 <LI><a href="#[482]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MX25_LowLevel_Init
 <LI><a href="#[388]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_Init
-<LI><a href="#[333]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_Delay
 <LI><a href="#[4bb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RTC_init
 <LI><a href="#[49e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Periph_Init
 <LI><a href="#[1f9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Boot_menu

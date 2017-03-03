@@ -626,17 +626,8 @@ int main(void){
 		Touch_calibration();
 	
 	if(GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_1)==0)
-		{
 		Boot_menu();
-		MainTask();
-		}	
-	else
-	__nop();
+			
 	MainTask();
-	
-	
-	while(1) {
-	
-	GUI_Delay(10);
-	}
+	while(1) {}
 }

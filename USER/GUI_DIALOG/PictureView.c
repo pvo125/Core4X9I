@@ -316,7 +316,7 @@ void _drawBMP(char *Path,char *fn){
 	int xNum,yNum,xSize,ySize,xPos,yPos,Num,x,y;
 	uint32_t NumBytesRead;
 	fresult=f_open (&pFile, Path, FA_READ);	// open file
-	fresult=f_read(&pFile,(uint32_t*)0x90200000, pFile.fsize,&NumBytesRead);
+	fresult=f_read(&pFile,(uint32_t*)(SDRAM_BASE+0x200000), pFile.fsize,&NumBytesRead);
 	//xSize=GUI_BMP_GetXSizeEx(_GetData,&pFile);
 	//ySize=GUI_BMP_GetYSizeEx(_GetData,&pFile);
 	
@@ -324,8 +324,8 @@ void _drawBMP(char *Path,char *fn){
 	NVIC_DisableIRQ(TIM6_DAC_IRQn);
 	NVIC_DisableIRQ(CAN1_RX0_IRQn);
 	NVIC_DisableIRQ(CAN1_RX1_IRQn);	
-	xSize=GUI_BMP_GetXSize((uint32_t*)0x90200000);
-	ySize=GUI_BMP_GetYSize((uint32_t*)0x90200000);
+	xSize=GUI_BMP_GetXSize((uint32_t*)(SDRAM_BASE+0x200000));
+	ySize=GUI_BMP_GetYSize((uint32_t*)(SDRAM_BASE+0x200000));
 	if((xSize<=480)&&(ySize<=272))
 		{
 			xPos=(480-xSize)/2;
@@ -333,9 +333,9 @@ void _drawBMP(char *Path,char *fn){
 			hMem=GUI_MEMDEV_Create(xPos, yPos, xSize, ySize);
 			GUI_MEMDEV_Select(hMem);
 			//GUI_BMP_DrawEx(_GetData,&pFile,xPos,yPos);
-			//GUI_PNG_Draw((uint32_t*)0x90200000,pFile.fsize,xPos,yPos);
+			//GUI_PNG_Draw((uint32_t*)(SDRAM_BASE+0x200000),pFile.fsize,xPos,yPos);
 			Time=0;
-			GUI_BMP_Draw((uint32_t*)0x90200000,xPos,yPos);
+			GUI_BMP_Draw((uint32_t*)(SDRAM_BASE+0x200000),xPos,yPos);
 			GUI_MEMDEV_MarkDirty(hMem,225,120,275,168);
 			GUI_MEMDEV_CopyToLCD(hMem);
 			Time_1=Time;
@@ -356,7 +356,7 @@ void _drawBMP(char *Path,char *fn){
 			hMem=GUI_MEMDEV_Create(xPos, yPos, x, y);
 			GUI_MEMDEV_Select(hMem);
 			Time=0;
-			GUI_BMP_DrawScaled((uint32_t*)0x90200000,xPos,yPos,Num,1000);
+			GUI_BMP_DrawScaled((uint32_t*)(SDRAM_BASE+0x200000),xPos,yPos,Num,1000);
 			GUI_MEMDEV_MarkDirty(hMem,225,120,275,168);
 			GUI_MEMDEV_CopyToLCD(hMem);
 			Time_1=Time;
@@ -387,7 +387,7 @@ void _drawJPG(char *Path,char *fn){
 		uint32_t NumBytesRead;
 		
 	fresult=f_open (&pFile, Path, FA_READ);	// open file
-	fresult=f_read(&pFile,(uint32_t*)0x90200000, pFile.fsize,&NumBytesRead);
+	fresult=f_read(&pFile,(uint32_t*)(SDRAM_BASE+0x200000), pFile.fsize,&NumBytesRead);
 	
 	GUI_DrawBitmap(&bmhourglass, 225, 120);
 	
@@ -395,7 +395,7 @@ void _drawJPG(char *Path,char *fn){
 	NVIC_DisableIRQ(CAN1_RX0_IRQn);
 	NVIC_DisableIRQ(CAN1_RX1_IRQn);	
 	
-	GUI_JPEG_GetInfo((uint32_t*)0x90200000, pFile.fsize, &jpg_info);			
+	GUI_JPEG_GetInfo((uint32_t*)(SDRAM_BASE+0x200000), pFile.fsize, &jpg_info);			
 	if((jpg_info.XSize<=480)&&(jpg_info.YSize<=272))
 		{
 			xPos=(480-jpg_info.XSize)/2;
@@ -403,7 +403,7 @@ void _drawJPG(char *Path,char *fn){
 			hMem=GUI_MEMDEV_Create(xPos, yPos, jpg_info.XSize, jpg_info.YSize);
 			GUI_MEMDEV_Select(hMem);
 			Time=0;
-			GUI_JPEG_Draw((uint32_t*)0x90200000, pFile.fsize,xPos, yPos);
+			GUI_JPEG_Draw((uint32_t*)(SDRAM_BASE+0x200000), pFile.fsize,xPos, yPos);
 			GUI_MEMDEV_MarkDirty(hMem,225,120,275,168);
 			GUI_MEMDEV_CopyToLCD(hMem);
 			Time_1=Time;
@@ -425,7 +425,7 @@ void _drawJPG(char *Path,char *fn){
 		hMem=GUI_MEMDEV_Create(xPos, yPos, xSize, ySize);
 		GUI_MEMDEV_Select(hMem);
 		Time=0;
-		GUI_JPEG_DrawScaled((uint32_t*)0x90200000, pFile.fsize,xPos, yPos, Num, 1000);
+		GUI_JPEG_DrawScaled((uint32_t*)(SDRAM_BASE+0x200000), pFile.fsize,xPos, yPos, Num, 1000);
 		GUI_MEMDEV_MarkDirty(hMem,225,120,275,168);
 		GUI_MEMDEV_CopyToLCD(hMem);
 		Time_1=Time;
