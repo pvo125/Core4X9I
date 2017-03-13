@@ -65,7 +65,7 @@
 .\output\time_datedlg.o: ..\USER\FatFS\ff.h
 .\output\time_datedlg.o: ..\USER\FatFS\integer.h
 .\output\time_datedlg.o: ..\USER\FatFS\ffconf.h
-.\output\time_datedlg.o: ..\USER\SDCARD\sdcard.h
+.\output\time_datedlg.o: ..\USER\SDCARD\stm324x9i_eval_sdio_sd.h
 .\output\time_datedlg.o: ..\USER\ssd1963\ssd1963.h
 .\output\time_datedlg.o: ..\USER\MX25\mx25l8005.h
 .\output\time_datedlg.o: ..\USER\GUI\LCDConf.h

@@ -29,7 +29,7 @@
 ".\output\ff.o"
 ".\output\diskio.o"
 ".\output\ccsbcs.o"
-".\output\sdcard.o"
+".\output\stm324x9i_eval_sdio_sd.o"
 ".\output\mx25l8005.o"
 ".\output\ssd1963.o"
 ".\output\tsc2046.o"

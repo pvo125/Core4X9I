@@ -6,7 +6,7 @@
 #include "GUI.h"
 #include "DIALOG.h"
 #include "ff.h"
-#include "sdcard.h"
+#include "stm324x9i_eval_sdio_sd.h"
 #include "ssd1963.h"
 #include "mx25l8005.h"
 #include "LCDConf.h"

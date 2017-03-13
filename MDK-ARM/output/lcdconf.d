@@ -67,7 +67,7 @@
 .\output\lcdconf.o: ..\USER\FatFS\ff.h
 .\output\lcdconf.o: ..\USER\FatFS\integer.h
 .\output\lcdconf.o: ..\USER\FatFS\ffconf.h
-.\output\lcdconf.o: ..\USER\SDCARD\sdcard.h
+.\output\lcdconf.o: ..\USER\SDCARD\stm324x9i_eval_sdio_sd.h
 .\output\lcdconf.o: ..\USER\MX25\mx25l8005.h
 .\output\lcdconf.o: ..\USER\GUI\LCDConf.h
 .\output\lcdconf.o: ..\USER\TSC2046\tsc2046.h

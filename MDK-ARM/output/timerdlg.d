@@ -65,7 +65,7 @@
 .\output\timerdlg.o: ..\USER\FatFS\ff.h
 .\output\timerdlg.o: ..\USER\FatFS\integer.h
 .\output\timerdlg.o: ..\USER\FatFS\ffconf.h
-.\output\timerdlg.o: ..\USER\SDCARD\sdcard.h
+.\output\timerdlg.o: ..\USER\SDCARD\stm324x9i_eval_sdio_sd.h
 .\output\timerdlg.o: ..\USER\ssd1963\ssd1963.h
 .\output\timerdlg.o: ..\USER\MX25\mx25l8005.h
 .\output\timerdlg.o: ..\USER\GUI\LCDConf.h

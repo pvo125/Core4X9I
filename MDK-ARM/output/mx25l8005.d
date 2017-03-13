@@ -65,7 +65,7 @@
 .\output\mx25l8005.o: ..\USER\FatFS\ff.h
 .\output\mx25l8005.o: ..\USER\FatFS\integer.h
 .\output\mx25l8005.o: ..\USER\FatFS\ffconf.h
-.\output\mx25l8005.o: ..\USER\SDCARD\sdcard.h
+.\output\mx25l8005.o: ..\USER\SDCARD\stm324x9i_eval_sdio_sd.h
 .\output\mx25l8005.o: ..\USER\ssd1963\ssd1963.h
 .\output\mx25l8005.o: ..\USER\MX25\mx25l8005.h
 .\output\mx25l8005.o: ..\USER\GUI\LCDConf.h

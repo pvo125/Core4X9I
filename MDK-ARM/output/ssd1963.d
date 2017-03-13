@@ -65,7 +65,7 @@
 .\output\ssd1963.o: ..\USER\FatFS\ff.h
 .\output\ssd1963.o: ..\USER\FatFS\integer.h
 .\output\ssd1963.o: ..\USER\FatFS\ffconf.h
-.\output\ssd1963.o: ..\USER\SDCARD\sdcard.h
+.\output\ssd1963.o: ..\USER\SDCARD\stm324x9i_eval_sdio_sd.h
 .\output\ssd1963.o: ..\USER\ssd1963\ssd1963.h
 .\output\ssd1963.o: ..\USER\MX25\mx25l8005.h
 .\output\ssd1963.o: ..\USER\GUI\LCDConf.h

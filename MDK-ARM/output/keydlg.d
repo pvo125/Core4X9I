@@ -65,7 +65,7 @@
 .\output\keydlg.o: ..\USER\FatFS\ff.h
 .\output\keydlg.o: ..\USER\FatFS\integer.h
 .\output\keydlg.o: ..\USER\FatFS\ffconf.h
-.\output\keydlg.o: ..\USER\SDCARD\sdcard.h
+.\output\keydlg.o: ..\USER\SDCARD\stm324x9i_eval_sdio_sd.h
 .\output\keydlg.o: ..\USER\ssd1963\ssd1963.h
 .\output\keydlg.o: ..\USER\MX25\mx25l8005.h
 .\output\keydlg.o: ..\USER\GUI\LCDConf.h

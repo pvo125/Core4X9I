@@ -307,7 +307,7 @@ void Periph_Init(void){
 	NVIC_SetPriority(TIM6_DAC_IRQn,1);
 	NVIC_SetPriority(TIM7_IRQn,2);
 	NVIC_SetPriority(RTC_WKUP_IRQn,2);
-	NVIC_SetPriority(SDIO_IRQn,0);
+	NVIC_SetPriority(SD_SDIO_DMA_IRQn,0);
 	NVIC_SetPriority(EXTI1_IRQn,2);
 	NVIC_SetPriority(EXTI4_IRQn,0);
 	
@@ -457,14 +457,12 @@ SD_Error Boot_menu (void){
 	if(sd_error!=SD_OK)
 	{
 		sd_error=SD_Init();
-		if(sd_error==SD_OK)
+		/*if(sd_error==SD_OK)
 			sd_error=SD_GetCardInfo(&sd_cardinfo);
 		if(sd_error==SD_OK)
 			sd_error=SD_SelectDeselect((u32)sd_cardinfo.RCA<<16);
 		if(sd_error==SD_OK)
-			sd_error=SD_EnableWideBusOperation(SDIO_BusWide_4b);
-		if(sd_error==SD_OK)
-			sd_error=SD_SetDeviceMode(SD_DMA_MODE);
+			sd_error=SD_EnableWideBusOperation(SDIO_BusWide_4b);*/
 		if(sd_error==SD_OK)
 			f_mount (0,&fs);
 		else
@@ -559,8 +557,7 @@ int main(void){
 	uint8_t i;
 	//pBoot_menu=(SD_Error(*)(void))Boot_menu;
 	//pGUI_Init=(void(*)(void))GUI_Init;
-	
-	
+		
 	SSD1963_LowLevel_Init();
 	RTC_init();	
 	Periph_Init();
@@ -584,7 +581,8 @@ int main(void){
 	NVIC_EnableIRQ(TIM6_DAC_IRQn); 							//Разрешение TIM6_DAC_IRQn прерывания
 	NVIC_EnableIRQ(TIM7_IRQn); 									//Разрешение TIM7_IRQn прерывания
 	NVIC_EnableIRQ(RTC_WKUP_IRQn);							//Разрешение RTC_IRQn прерывания
-	NVIC_EnableIRQ(SDIO_IRQn);									//Разрешение SDIO_IRQn прерывания
+	//NVIC_EnableIRQ(SDIO_IRQn);									//Разрешение SDIO_IRQn прерывания
+	NVIC_EnableIRQ(SD_SDIO_DMA_IRQn);						//Разрешение DMA2_Stream3_IRQn прерывания
 	
 	NVIC_EnableIRQ(EXTI4_IRQn);		
 	NVIC_EnableIRQ(RTC_Alarm_IRQn);

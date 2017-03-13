@@ -157,7 +157,7 @@
             <CpuDllArguments></CpuDllArguments>
             <PeripheralDll></PeripheralDll>
             <PeripheralDllArguments></PeripheralDllArguments>
-            <InitializationFile></InitializationFile>
+            <InitializationFile>..\USER\Dbg_NORESET.ini</InitializationFile>
             <Driver>STLink\ST-LINKIII-KEIL_SWO.dll</Driver>
           </TargetDlls>
         </DebugOption>
@@ -306,7 +306,7 @@
               </OCR_RVCT3>
               <OCR_RVCT4>
                 <Type>1</Type>
-                <StartAddress>0x8000000</StartAddress>
+                <StartAddress>0x8008000</StartAddress>
                 <Size>0x35000</Size>
               </OCR_RVCT4>
               <OCR_RVCT5>
@@ -389,8 +389,8 @@
             <noStLib>0</noStLib>
             <RepFail>1</RepFail>
             <useFile>0</useFile>
-            <TextAddressRange>0x20000000</TextAddressRange>
-            <DataAddressRange>0x2002A000</DataAddressRange>
+            <TextAddressRange>0x08008000</TextAddressRange>
+            <DataAddressRange>0x20000000</DataAddressRange>
             <pXoBase></pXoBase>
             <ScatterFile>..\USER\Core4X9I.sct</ScatterFile>
             <IncludeLibs></IncludeLibs>
@@ -606,9 +606,9 @@
           <GroupName>SDCARD</GroupName>
           <Files>
             <File>
-              <FileName>sdcard.c</FileName>
+              <FileName>stm324x9i_eval_sdio_sd.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\USER\SDCARD\sdcard.c</FilePath>
+              <FilePath>..\USER\SDCARD\stm324x9i_eval_sdio_sd.c</FilePath>
             </File>
           </Files>
         </Group>

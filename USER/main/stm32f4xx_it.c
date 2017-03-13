@@ -237,14 +237,12 @@ void EXTI1_IRQHandler (void)
 	if(GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_1)==0)
 	{
 		sd_error=SD_Init();
-		if(sd_error==SD_OK)
+		/*if(sd_error==SD_OK)
 			sd_error=SD_GetCardInfo(&sd_cardinfo);
 		if(sd_error==SD_OK)
 			sd_error=SD_SelectDeselect((u32)sd_cardinfo.RCA<<16);
 		if(sd_error==SD_OK)
-			sd_error=SD_EnableWideBusOperation(SDIO_BusWide_4b);
-		if(sd_error==SD_OK)
-			sd_error=SD_SetDeviceMode(SD_DMA_MODE);
+			sd_error=SD_EnableWideBusOperation(SDIO_BusWide_4b);*/
 		if(sd_error==SD_OK)
 		{
 			f_mount(0,&fs);
@@ -427,11 +425,15 @@ void TIM7_IRQHandler (void)
   * @param  None
   * @retval None
   */
-void SDIO_IRQHandler(void)
-{
-	SD_ProcessIRQSrc();
-}
+/*void SDIO_IRQHandler(void)
 
+{
+	//SD_ProcessIRQSrc();
+}*/
+void SD_SDIO_DMA_IRQHANDLER(void)
+{
+  SD_ProcessDMAIRQ();  
+}     
 /**
   * @brief  This function handles CAN1_RX0_IRQHandler interrupt request.
   * @param  None

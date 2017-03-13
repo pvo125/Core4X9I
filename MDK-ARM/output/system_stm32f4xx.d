@@ -65,7 +65,7 @@
 .\output\system_stm32f4xx.o: ..\USER\FatFS\ff.h
 .\output\system_stm32f4xx.o: ..\USER\FatFS\integer.h
 .\output\system_stm32f4xx.o: ..\USER\FatFS\ffconf.h
-.\output\system_stm32f4xx.o: ..\USER\SDCARD\sdcard.h
+.\output\system_stm32f4xx.o: ..\USER\SDCARD\stm324x9i_eval_sdio_sd.h
 .\output\system_stm32f4xx.o: ..\USER\ssd1963\ssd1963.h
 .\output\system_stm32f4xx.o: ..\USER\MX25\mx25l8005.h
 .\output\system_stm32f4xx.o: ..\USER\GUI\LCDConf.h

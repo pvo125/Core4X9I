@@ -66,7 +66,7 @@
 .\output\can.o: ..\USER\FatFS\ff.h
 .\output\can.o: ..\USER\FatFS\integer.h
 .\output\can.o: ..\USER\FatFS\ffconf.h
-.\output\can.o: ..\USER\SDCARD\sdcard.h
+.\output\can.o: ..\USER\SDCARD\stm324x9i_eval_sdio_sd.h
 .\output\can.o: ..\USER\ssd1963\ssd1963.h
 .\output\can.o: ..\USER\MX25\mx25l8005.h
 .\output\can.o: ..\USER\GUI\LCDConf.h

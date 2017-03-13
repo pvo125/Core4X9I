@@ -65,7 +65,7 @@
 .\output\start_windowdlg.o: ..\USER\FatFS\ff.h
 .\output\start_windowdlg.o: ..\USER\FatFS\integer.h
 .\output\start_windowdlg.o: ..\USER\FatFS\ffconf.h
-.\output\start_windowdlg.o: ..\USER\SDCARD\sdcard.h
+.\output\start_windowdlg.o: ..\USER\SDCARD\stm324x9i_eval_sdio_sd.h
 .\output\start_windowdlg.o: ..\USER\ssd1963\ssd1963.h
 .\output\start_windowdlg.o: ..\USER\MX25\mx25l8005.h
 .\output\start_windowdlg.o: ..\USER\GUI\LCDConf.h

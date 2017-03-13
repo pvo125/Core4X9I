@@ -11,7 +11,6 @@
 #include "diskio.h"		/* FatFs lower layer API */
 //#include "usbdisk.h"	/* Example: USB drive control */
 //#include "atadrive.h"	/* Example: ATA drive control */
-#include "sdcard.h"		/* Example: MMC/SDC contorl */
 #include "header.h"
 
 /* Definitions of physical drive number for each drive */
@@ -66,7 +65,7 @@ DSTATUS disk_initialize (
 				sd_error=SD_EnableWideBusOperation(SDIO_BusWide_4b);
 			if(sd_error==SD_OK)	
 			{
-				sd_error=SD_SetDeviceMode(SD_DMA_MODE);
+				//sd_error=SD_SetDeviceMode(SD_DMA_MODE);
 				stat=0;
 			}
 			
@@ -91,9 +90,18 @@ DRESULT disk_read (
 {
 	SD_Error sderror;	
 	if(count==1)
-		sderror=SD_ReadBlock(sector*SD_SECTOR_SIZE, buff, SD_SECTOR_SIZE);//(sd_cardinfo.SD_csd.MaxWrBlockLen)
+	{
+		sderror=SD_ReadBlock(buff,sector*SD_SECTOR_SIZE,SD_SECTOR_SIZE);//(sd_cardinfo.SD_csd.MaxWrBlockLen)
+		sderror=SD_WaitReadOperation();
+		while(SD_GetStatus() != SD_TRANSFER_OK);
+	}
 	else
-		sderror=SD_ReadMultiBlocks(sector*SD_SECTOR_SIZE, buff, SD_SECTOR_SIZE, count);
+	{
+		sderror=SD_ReadMultiBlocks(buff, sector*SD_SECTOR_SIZE, SD_SECTOR_SIZE, count);
+		sderror=SD_WaitReadOperation();
+		while(SD_GetStatus() != SD_TRANSFER_OK);
+	}
+	
 	if(sderror==SD_OK)
 		return RES_OK;
 	else		
@@ -117,9 +125,17 @@ DRESULT disk_write (
 	
 	SD_Error sderror;
 	if(count==1)
-		sderror=SD_WriteBlock(sector*SD_SECTOR_SIZE,  (uint8_t*)buff, SD_SECTOR_SIZE);
+	{
+		sderror=SD_WriteBlock((uint8_t*)buff,sector*SD_SECTOR_SIZE,SD_SECTOR_SIZE);
+	  sderror = SD_WaitWriteOperation();
+    while(SD_GetStatus() != SD_TRANSFER_OK);
+	}
 	else
-		sderror=SD_WriteMultiBlocks(sector*SD_SECTOR_SIZE, (uint8_t*)buff, SD_SECTOR_SIZE, count);
+	{
+		sderror=SD_WriteMultiBlocks((uint8_t*)buff,sector*SD_SECTOR_SIZE,SD_SECTOR_SIZE, count);
+		sderror = SD_WaitWriteOperation();
+    while(SD_GetStatus() != SD_TRANSFER_OK);
+	}
 	if(sderror==SD_OK)
 		return RES_OK;
 	else		

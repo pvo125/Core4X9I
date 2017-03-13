@@ -65,7 +65,7 @@
 .\output\template.o: ..\USER\FatFS\ff.h
 .\output\template.o: ..\USER\FatFS\integer.h
 .\output\template.o: ..\USER\FatFS\ffconf.h
-.\output\template.o: ..\USER\SDCARD\sdcard.h
+.\output\template.o: ..\USER\SDCARD\stm324x9i_eval_sdio_sd.h
 .\output\template.o: ..\USER\ssd1963\ssd1963.h
 .\output\template.o: ..\USER\MX25\mx25l8005.h
 .\output\template.o: ..\USER\GUI\LCDConf.h

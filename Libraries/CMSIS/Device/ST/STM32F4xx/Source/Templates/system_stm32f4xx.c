@@ -306,7 +306,7 @@
 /*!< Uncomment the following line if you need to relocate your vector Table in
      Internal SRAM. */
 //#define VECT_TAB_SRAM 
-#define VECT_TAB_OFFSET  0x00 /*!< Vector Table base offset field. 
+#define VECT_TAB_OFFSET  0x8000 /*!< Vector Table base offset field. 
                                    This value must be a multiple of 0x200. */
 /******************************************************************************/
 
@@ -446,10 +446,7 @@ void SystemInit(void)
      AHB/APBx prescalers and Flash settings ----------------------------------*/
   SetSysClock();
 	
-	//SYSCFG->MEMRMP|=SYSCFG_MEMRMP_SWP_FMC_0;	// swap SDRAM_BANK_2 PCCARD_BANK 0xD0000000->0x90000000
- 	//SDRAM_LowLevel_Init();
-
-
+	
 /* Configure the Vector Table location add offset address ------------------*/
 #ifdef VECT_TAB_SRAM
   SCB->VTOR = SRAM_BASE | VECT_TAB_OFFSET; /* Vector Table Relocation in Internal SRAM */

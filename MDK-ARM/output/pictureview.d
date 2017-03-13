@@ -65,7 +65,7 @@
 .\output\pictureview.o: ..\USER\FatFS\ff.h
 .\output\pictureview.o: ..\USER\FatFS\integer.h
 .\output\pictureview.o: ..\USER\FatFS\ffconf.h
-.\output\pictureview.o: ..\USER\SDCARD\sdcard.h
+.\output\pictureview.o: ..\USER\SDCARD\stm324x9i_eval_sdio_sd.h
 .\output\pictureview.o: ..\USER\ssd1963\ssd1963.h
 .\output\pictureview.o: ..\USER\MX25\mx25l8005.h
 .\output\pictureview.o: ..\USER\GUI\LCDConf.h

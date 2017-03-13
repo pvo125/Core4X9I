@@ -1,7 +1,7 @@
 .\output\diskio.o: ..\USER\FatFS\diskio.c
 .\output\diskio.o: ..\USER\FatFS\diskio.h
 .\output\diskio.o: ..\USER\FatFS\integer.h
-.\output\diskio.o: ..\USER\SDCARD\sdcard.h
+.\output\diskio.o: ..\USER\main\header.h
 .\output\diskio.o: ..\Libraries\CMSIS\Device\ST\STM32F4xx\Include\stm32f4xx.h
 .\output\diskio.o: D:\Keil\ARM\CMSIS\Include\core_cm4.h
 .\output\diskio.o: D:\Keil\ARM\ARMCC\bin\..\include\stdint.h
@@ -20,7 +20,6 @@
 .\output\diskio.o: ..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_sdio.h
 .\output\diskio.o: ..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_spi.h
 .\output\diskio.o: ..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_fmc.h
-.\output\diskio.o: ..\USER\main\header.h
 .\output\diskio.o: ..\USER\GUI\inc\GUI.h
 .\output\diskio.o: ..\USER\GUI\inc\GUI_ConfDefaults.h
 .\output\diskio.o: ..\USER\GUI\inc\GUIConf.h
@@ -67,6 +66,7 @@
 .\output\diskio.o: ..\USER\GUI\inc\TREEVIEW.h
 .\output\diskio.o: ..\USER\FatFS\ff.h
 .\output\diskio.o: ..\USER\FatFS\ffconf.h
+.\output\diskio.o: ..\USER\SDCARD\stm324x9i_eval_sdio_sd.h
 .\output\diskio.o: ..\USER\ssd1963\ssd1963.h
 .\output\diskio.o: ..\USER\MX25\mx25l8005.h
 .\output\diskio.o: ..\USER\GUI\LCDConf.h
