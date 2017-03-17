@@ -3,7 +3,7 @@
 <title>Static Call Graph - [.\output\Core4X9I.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\output\Core4X9I.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5.03 [Build 76]: Last Updated: Thu Mar 09 20:57:27 2017
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5.03 [Build 76]: Last Updated: Fri Mar 17 14:47:37 2017
 <BR><P>
 <H3>Maximum Stack Usage =       1800 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -1266,7 +1266,7 @@ Global Symbols
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32f429_439xx.o(RESET)
 </UL>
-<P><STRONG><a name="[20e]"></a>CAN_RXProcess0</STRONG> (Thumb, 1556 bytes, Stack size 40 bytes, can.o(i.CAN_RXProcess0))
+<P><STRONG><a name="[20e]"></a>CAN_RXProcess0</STRONG> (Thumb, 1552 bytes, Stack size 40 bytes, can.o(i.CAN_RXProcess0))
 <BR><BR>[Stack]<UL><LI>Max Depth = 560<LI>Call Chain = CAN_RXProcess0 &rArr; ICONVIEW_AddBitmapItem &rArr; _ManageAutoScroll &rArr; WM_SetScrollbarV &rArr; WM__SetScrollbarV &rArr; _SetScrollbar &rArr; SCROLLBAR_CreateAttached &rArr; SCROLLBAR_CreateEx &rArr; SCROLLBAR_CreateUser &rArr; WM_CreateWindowAsChild &rArr; WM_BringToBottom &rArr; WM__InvalidateRectEx &rArr; WM__InvalidateRect &rArr;  WM__InvalidateRect (Cycle)
 </UL>
 <BR>[Calls]<UL><LI><a href="#[219]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PROGBAR_SetValue
@@ -1294,7 +1294,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[42]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN1_RX0_IRQHandler
 </UL>
 
-<P><STRONG><a name="[20f]"></a>CAN_RXProcess1</STRONG> (Thumb, 500 bytes, Stack size 12 bytes, can.o(i.CAN_RXProcess1))
+<P><STRONG><a name="[20f]"></a>CAN_RXProcess1</STRONG> (Thumb, 484 bytes, Stack size 12 bytes, can.o(i.CAN_RXProcess1))
 <BR><BR>[Stack]<UL><LI>Max Depth = 28<LI>Call Chain = CAN_RXProcess1 &rArr; Flash_prog
 </UL>
 <BR>[Calls]<UL><LI><a href="#[223]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Flash_sect_erase
@@ -2482,24 +2482,24 @@ Global Symbols
 <LI><a href="#[2c8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_DrawBitmap
 <LI><a href="#[2e2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_SetDrawMode
 </UL>
-<BR>[Address Reference Count : 3]<UL><LI> f6x8.o(.constdata)
+<BR>[Address Reference Count : 3]<UL><LI> f8x16.o(.constdata)
 <LI> f8x16.o(.constdata)
-<LI> f8x16.o(.constdata)
+<LI> f6x8.o(.constdata)
 </UL>
 <P><STRONG><a name="[16a]"></a>GUIMONO_GetCharDistX</STRONG> (Thumb, 18 bytes, Stack size 0 bytes, gui_charm.o(i.GUIMONO_GetCharDistX))
-<BR>[Address Reference Count : 3]<UL><LI> f6x8.o(.constdata)
+<BR>[Address Reference Count : 3]<UL><LI> f8x16.o(.constdata)
 <LI> f8x16.o(.constdata)
-<LI> f8x16.o(.constdata)
+<LI> f6x8.o(.constdata)
 </UL>
 <P><STRONG><a name="[16b]"></a>GUIMONO_GetFontInfo</STRONG> (Thumb, 6 bytes, Stack size 0 bytes, gui_charm.o(i.GUIMONO_GetFontInfo))
-<BR>[Address Reference Count : 3]<UL><LI> f6x8.o(.constdata)
+<BR>[Address Reference Count : 3]<UL><LI> f8x16.o(.constdata)
 <LI> f8x16.o(.constdata)
-<LI> f8x16.o(.constdata)
+<LI> f6x8.o(.constdata)
 </UL>
 <P><STRONG><a name="[16c]"></a>GUIMONO_IsInFont</STRONG> (Thumb, 56 bytes, Stack size 0 bytes, gui_charm.o(i.GUIMONO_IsInFont))
-<BR>[Address Reference Count : 3]<UL><LI> f6x8.o(.constdata)
+<BR>[Address Reference Count : 3]<UL><LI> f8x16.o(.constdata)
 <LI> f8x16.o(.constdata)
-<LI> f8x16.o(.constdata)
+<LI> f6x8.o(.constdata)
 </UL>
 <P><STRONG><a name="[165]"></a>GUIPROP_DispChar</STRONG> (Thumb, 194 bytes, Stack size 56 bytes, gui_charp.o(i.GUIPROP_DispChar))
 <BR><BR>[Stack]<UL><LI>Max Depth = 160<LI>Call Chain = GUIPROP_DispChar &rArr; LCD_DrawBitmap &rArr; LCD_FillRect
@@ -7838,7 +7838,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[1bd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[481]"></a>MainTask</STRONG> (Thumb, 1308 bytes, Stack size 32 bytes, start_windowdlg.o(i.MainTask))
+<P><STRONG><a name="[481]"></a>MainTask</STRONG> (Thumb, 1004 bytes, Stack size 32 bytes, start_windowdlg.o(i.MainTask))
 <BR><BR>[Stack]<UL><LI>Max Depth = 720<LI>Call Chain = MainTask &rArr; GUI_MessageBox &rArr; GUI_ExecCreatedDialog &rArr; GUI_Exec &rArr; GUI_Exec1 &rArr; WM_Exec &rArr; _DrawNext &rArr; WM__Paint &rArr; GUI_MEMDEV_Draw &rArr; GUI_MEMDEV_CopyToLCD &rArr; GUI_MEMDEV_CopyToLCDAt &rArr; GUI_MEMDEV__WriteToActiveOpaque &rArr; _WriteToActiveOpaque_8 &rArr; GUI_ALLOC_AllocNoInit &rArr; _Alloc &rArr; _InitOnce &rArr; _EnlargeBlocks &rArr;  _Alloc (Cycle)
 </UL>
 <BR>[Calls]<UL><LI><a href="#[293]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_ReadInputDataBit

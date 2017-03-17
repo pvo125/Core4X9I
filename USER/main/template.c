@@ -19,7 +19,6 @@ void (*pGUI_Init)(void);
 SD_Error (*pBoot_menu)(void);
 unsigned char level_DIR[1];
 char Path[256]="0:";
-char start;
 uint16_t SD_SECTOR_SIZE=512;
 SD_Error sd_error=SD_ERROR;
 SD_CardInfo sd_cardinfo;

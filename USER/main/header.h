@@ -111,7 +111,7 @@ extern uint8_t sleep_mode;
 extern BACKLIGHT_TypeDef  backlight;
 extern uint16_t brightness;//brightness;
 extern uint8_t backlight_delay;
-extern char start;
+
 extern  uint8_t days [2][13];
 
 extern GUI_PID_STATE State;

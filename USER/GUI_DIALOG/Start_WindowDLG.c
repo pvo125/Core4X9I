@@ -31,7 +31,6 @@ extern FIL pFile;
 extern GUI_JPEG_INFO Info;
 extern volatile uint8_t write_flashflag;
 extern volatile uint8_t new_message;
-//extern uint8_t cycle_start_pwm
 
 extern volatile uint8_t canerr_clr,canerr_disp,canconnect;
 volatile uint8_t time_disp;
@@ -158,13 +157,11 @@ static void _cbSTART(WM_MESSAGE* pMsg) {
 									if(fresult==FR_NO_PATH)
 									{
 										GUI_MessageBox("Invalid IMAGE directory"," Message", GUI_MESSAGEBOX_CF_MODAL);
-										//GUI_SetBkColor(GUI_LIGHTBLUE);
 										GUI_ClearRect(170,105,305,165);
 									}
 									else
 									{			
 									time_show=0;
-									//	start=0;
 									WM_HideWindow(hIcon_EXIT);
 									WM_HideWindow(hIcon_BRIGHT);	
 									WM_HideWindow(hWin_start);
@@ -507,13 +504,7 @@ void CreateStart(void)
 	else
 	{
 		WM_ShowWindow(hWin_start);
-		/*WM_ShowWindow(hIcon_PHOTO);
-		WM_ShowWindow(hIcon_CALIB);
-		WM_ShowWindow(hIcon_PAINT);
-		WM_ShowWindow(hIcon_NEXT);
-		WM_ShowWindow(hALARMA);
-		WM_ShowWindow(hALARMB);
-		WM_ShowWindow(PROGBAR_MEM);*/
+		
 	}
 		RTC_GetDate(RTC_Format_BIN, &RTC_Date);
 		GUI_DispDecAt(RTC_Date.RTC_Date,5,0,2);
@@ -615,21 +606,18 @@ void MainTask(void)
 				if(sd_error==SD_OK)
 					{
 					GUI_MessageBox("SD card is OK!", "Message", GUI_MESSAGEBOX_CF_MODAL);
-					if(start)
-						GUI_ClearRect(180,105,296,165);
+					
 					}	
 				else
 					{
 					GUI_MessageBox("SD card is error!", "Message", GUI_MESSAGEBOX_CF_MODAL);
-					if(start)
-						GUI_ClearRect(180,105,296,165);
+					
 					}
 			}			
 			else
 			{
 			GUI_MessageBox("SD card is removed!", "Message", GUI_MESSAGEBOX_CF_MODAL);
-			if(start)
-				GUI_ClearRect(180,105,296,165);
+			
 			}
 		}
 		if(sleep_mode)
