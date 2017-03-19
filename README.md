@@ -39,3 +39,8 @@ SN65HVD230.
 CAN_Data_TX.Data[1]='c' если CRC_OK! или CAN_Data_TX.Data[1]='e' если CRC_ERROR! Выставляется флаг write_flashflag=1 если CRC_OK!
 В сеторе FLAG_STATUS_SECTOR перебираются байты пока не будет найдено чистое поле 0xFF. В этом байте пишется флаг 0xA7 для бутлодера, 
 который перепишет обновление в рабочую часть флэш и сделает запуск приложения. После секндной паузы делается RESET для запуска бутлоадера.
+* Для получения готового bin файла делается последовательность:
+
+  * $K\ARM\ARMCC\BIN\fromelf.exe --bin -o Core4x9I.bin !L получаем из .axf бинарник .bin
+  * srec_cat Core4x9I.bin -bin -exclude 0x1C 0x28 -length-l-e 0x1C 4 -generate 0x20 0x28 -repeat-string Core4x9I -o Core4x9I.bin -bin - исключаем из бинарника адреса с 0x1C до 0x28 по адресу 0x1c записываем 4 байта размер бинарника. По адресу 0x20 8 байт строки "Core4x9I"
+  * srec_cat Core4x9I.bin -bin -crc32-l-e -max-addr Core4x9I.bin -bin -o Core4x9I.bin - считаем crc32 для полученного бинарника и сохраняем его в конце файла Core4x9I.bin.
