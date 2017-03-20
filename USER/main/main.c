@@ -457,6 +457,12 @@ SD_Error Boot_menu (void){
 	if(sd_error!=SD_OK)
 	{
 		sd_error=SD_Init();
+		/*if(sd_error==SD_OK)
+			sd_error=SD_GetCardInfo(&sd_cardinfo);
+		if(sd_error==SD_OK)
+			sd_error=SD_SelectDeselect((u32)sd_cardinfo.RCA<<16);
+		if(sd_error==SD_OK)
+			sd_error=SD_EnableWideBusOperation(SDIO_BusWide_4b);*/
 		if(sd_error==SD_OK)
 			f_mount (0,&fs);
 		else
