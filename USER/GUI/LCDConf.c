@@ -78,6 +78,13 @@ extern WM_HWIN hWin_start;
 //
 #define XSIZE_PHYS  480 // To be adapted to x-screen size
 #define YSIZE_PHYS  272 // To be adapted to y-screen size
+#define VXSIZE_PHYS 480
+#define VYSIZE_PHYS 1088
+
+#define SCREEN_0		(272*0)
+#define SCREEN_1		(272*1)
+#define SCREEN_2		(272*2)
+#define SCREEN_3		(272*3)
 
 static float Xd[]={0.0f,240.0f,20.0f,460.0f,460.0f,20.0f};
 static float Yd[]={0.0f,136.0f,20.0f,20.0f,252.0f,252.0f};
@@ -567,6 +574,11 @@ int LCD_X_DisplayDriver(unsigned LayerIndex, unsigned Cmd, void * pData) {
   (void) pData;
   
   switch (Cmd) {
+		case LCD_X_SETORG:
+			temp=((LCD_X_SETORG_INFO*)pData)->yPos;
+			temp=((LCD_X_SETORG_INFO*)pData)->xPos;
+		
+		break;	
 		case LCD_X_INITCONTROLLER: {
     //
     addr=(uint32_t*)&A;

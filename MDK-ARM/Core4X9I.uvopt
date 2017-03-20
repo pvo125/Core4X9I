@@ -515,7 +515,7 @@
 
   <Group>
     <GroupName>GUI</GroupName>
-    <tvExp>0</tvExp>
+    <tvExp>1</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <RteFlg>0</RteFlg>
@@ -557,10 +557,10 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>0</ColumnNumber>
+      <ColumnNumber>27</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>0</TopLine>
-      <CurrentLine>0</CurrentLine>
+      <TopLine>558</TopLine>
+      <CurrentLine>87</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\USER\GUI\LCDConf.c</PathWithFileName>
       <FilenameWithoutPath>LCDConf.c</FilenameWithoutPath>
@@ -597,10 +597,10 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>26</ColumnNumber>
+      <ColumnNumber>29</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>27</TopLine>
-      <CurrentLine>31</CurrentLine>
+      <TopLine>533</TopLine>
+      <CurrentLine>476</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\USER\GUI_DIALOG\Start_WindowDLG.c</PathWithFileName>
       <FilenameWithoutPath>Start_WindowDLG.c</FilenameWithoutPath>
@@ -613,10 +613,10 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>0</ColumnNumber>
+      <ColumnNumber>26</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>0</TopLine>
-      <CurrentLine>0</CurrentLine>
+      <TopLine>96</TopLine>
+      <CurrentLine>113</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\USER\GUI_DIALOG\MENUDLG.c</PathWithFileName>
       <FilenameWithoutPath>MENUDLG.c</FilenameWithoutPath>

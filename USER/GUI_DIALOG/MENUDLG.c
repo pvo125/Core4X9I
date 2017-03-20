@@ -110,6 +110,7 @@ static void _cbMENU(WM_MESSAGE * pMsg) {
         	WM_HideWindow(hWin_menu);
 				//	WM_DeleteWindow(hWin_menu);//hWin_menu=0;
 					CreateStart();
+					GUI_SetOrg(0,0);
 			break;
       }
     break;
