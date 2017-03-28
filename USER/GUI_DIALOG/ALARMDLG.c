@@ -336,7 +336,7 @@ static void _cbDialog(WM_MESSAGE * pMsg) {
 									{	
 										if((RTC->CR&RTC_CR_ALRAE)==RTC_CR_ALRAE)
 										{
-											GUI_MessageBox("DISABLE ALARM_A", "Message", 0);
+											Message("DISABLE ALARM_A", 0);
 											break;
 										}	
 										RTC_WriteBackupRegister(RTC_BKP_DR0,ALARMA_ACTION);
@@ -351,7 +351,7 @@ static void _cbDialog(WM_MESSAGE * pMsg) {
 									{
 										if((RTC->CR&RTC_CR_ALRBE)==RTC_CR_ALRBE)
 										{
-											GUI_MessageBox("DISABLE ALARM_B", "Message", 0);
+											Message("DISABLE ALARM_B",0);
 											break;
 										}	
 										RTC_WriteBackupRegister(RTC_BKP_DR1,ALARMB_ACTION);

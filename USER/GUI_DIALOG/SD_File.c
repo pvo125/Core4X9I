@@ -58,7 +58,7 @@ BUTTON_Handle hButton;
 extern void _drawJPG(char *Path,char *fn);
 extern void _drawBMP(char *Path,char *fn);
 extern void _drawGIF(char *Path,char *fn);
-
+extern void _cbBkWin(WM_MESSAGE* pMsg);
 extern int _cbButtonEXIT(const WIDGET_ITEM_DRAW_INFO *pDrawItemInfo);
 
 WM_HWIN hWin_SD;
@@ -82,9 +82,9 @@ TREEVIEW_ITEM_INFO pInfo;
 //};
 
 static const GUI_WIDGET_CREATE_INFO _aSD[] = {
-  { FRAMEWIN_CreateIndirect, "SDCARD", ID_FRAMEWIN_0, 110, 0, 360, 272, 0, 0x0, 0 },
-  { TREEVIEW_CreateIndirect, NULL, ID_TREE_0, 35, 0, 315, 220, 0, 0x0,1},
-	{ EDIT_CreateIndirect, NULL, ID_EDIT_0, 0,225,350,20,0,256,0},
+  { FRAMEWIN_CreateIndirect, "SDCARD", ID_FRAMEWIN_0, 110, 0, 300, 240, 0, 0x0, 0 },
+  { TREEVIEW_CreateIndirect, NULL, ID_TREE_0, 35, 0, 265, 190, 0, 0x0,1},
+	{ EDIT_CreateIndirect, NULL, ID_EDIT_0, 0,201,305,20,0,256,0},
 	{ ICONVIEW_CreateIndirect,NULL,ID_ICON_ADD,1,30,32,32,WM_CF_SHOW|WM_CF_HASTRANS,(30<<16)|30,0},
 	{ ICONVIEW_CreateIndirect,NULL,ID_ICON_DEL,1,75,32,32,WM_CF_SHOW|WM_CF_HASTRANS,(30<<16)|30,0},
 };
@@ -217,6 +217,7 @@ static void _cbEXIT(WM_MESSAGE *pMsg){
 								WM_ShowWindow(hALARMA);
 								WM_ShowWindow(hALARMB);
 								WM_ShowWindow(hWin_menu);
+								WM_SetCallback(WM_HBKWIN, _cbBkWin);
 							break;	
 						}
 					break;
@@ -319,9 +320,9 @@ static void _cbSD(WM_MESSAGE * pMsg) {
 							WM_SetFocus(hTree);
 						}
 						else if(fresult==FR_DENIED)
-							GUI_MessageBox("DIRECTORY IS NOT EMPTY! ", "ERROR", 0);
+							Message("DIRECTORY IS NOT EMPTY! ", 0);
 						else if(fresult==FR_INVALID_NAME)
-							GUI_MessageBox("INVALID DIRECTORY NAME! ", "ERROR", 0);
+							Message("INVALID DIRECTORY NAME! ",0);
 						break;	
 				}
 			break;	 
@@ -405,7 +406,8 @@ static void _cbSD(WM_MESSAGE * pMsg) {
 									WM_HideWindow(PROGBAR_MEM);
 									GUI_SetBkColor(GUI_BLACK);
 									GUI_SetColor(GUI_RED);
-									GUI_Clear();
+									GUI_ClearRect(0,0,479,271);
+									NVIC_DisableIRQ(TIM6_DAC_IRQn);
 									_drawJPG(Path,Buff);
 									hButton=BUTTON_CreateEx(5,5,30,30,WM_HBKWIN,/*WM_CF_SHOW|*/WM_CF_HASTRANS,0,ID_BUTTON_EXIT);
 									BUTTON_SetSkin(hButton, _cbButtonEXIT);
@@ -422,7 +424,8 @@ static void _cbSD(WM_MESSAGE * pMsg) {
 									WM_HideWindow(PROGBAR_MEM);
 									GUI_SetBkColor(GUI_BLACK);
 									GUI_SetColor(GUI_RED);
-									GUI_Clear();
+									GUI_ClearRect(0,0,479,271);
+									NVIC_DisableIRQ(TIM6_DAC_IRQn);
 									_drawBMP(Path,Buff);
 									hButton=BUTTON_CreateEx(5,5,30,30,WM_HBKWIN,/*WM_CF_SHOW|*/WM_CF_HASTRANS,0,ID_BUTTON_EXIT);
 									BUTTON_SetSkin(hButton, _cbButtonEXIT);
@@ -439,7 +442,8 @@ static void _cbSD(WM_MESSAGE * pMsg) {
 									WM_HideWindow(PROGBAR_MEM);
 									GUI_SetBkColor(GUI_BLACK);
 									GUI_SetColor(GUI_RED);
-									GUI_Clear();
+									GUI_ClearRect(0,0,479,271);
+									NVIC_DisableIRQ(TIM6_DAC_IRQn);	
 									_drawGIF(Path,Buff);
 									hButton=BUTTON_CreateEx(5,5,30,30,WM_HBKWIN,/*WM_CF_SHOW|*/WM_CF_HASTRANS,0,ID_BUTTON_EXIT);
 									BUTTON_SetSkin(hButton, _cbButtonEXIT);

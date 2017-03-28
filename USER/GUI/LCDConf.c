@@ -61,7 +61,6 @@ Purpose     : Display controller configuration (single layer)
 #include "stdbool.h"
 #include "stdlib.h"
 
-//uint8_t cycle_start_pwm=0;
 extern char drawmode;
 extern WM_HWIN hButton;
 extern ICONVIEW_Handle hALARMA,hALARMB,hIcon_EXIT,hIcon_BRIGHT;
@@ -77,14 +76,10 @@ extern WM_HWIN hWin_start;
 // Physical display size
 //
 #define XSIZE_PHYS  480 // To be adapted to x-screen size
-#define YSIZE_PHYS  272 // To be adapted to y-screen size
+#define YSIZE_PHYS  544 // To be adapted to y-screen size
 #define VXSIZE_PHYS 480
-#define VYSIZE_PHYS 1088
+#define VYSIZE_PHYS 544
 
-#define SCREEN_0		(272*0)
-#define SCREEN_1		(272*1)
-#define SCREEN_2		(272*2)
-#define SCREEN_3		(272*3)
 
 static float Xd[]={0.0f,240.0f,20.0f,460.0f,460.0f,20.0f};
 static float Yd[]={0.0f,136.0f,20.0f,20.0f,252.0f,252.0f};
@@ -103,10 +98,11 @@ static U16 Touch_GetResult(void);
 #define TOUCH_PRESSED		1
 #define TOUCH_UNPRESSED	0
 
-/*#define GUI_TOUCH_AD_LEFT 	 	50
-#define GUI_TOUCH_AD_RIGHT 	 	3970
-#define GUI_TOUCH_AD_TOP 	 		50
-#define GUI_TOUCH_AD_BOTTOM  	3970*/
+extern uint8_t scroll_up,scroll_down;
+extern uint16_t move_y;
+extern volatile int16_t linescroll;
+extern volatile uint16_t first_touch;
+extern uint8_t screen_scroll;
 /*********************************************************************
 *
 *       Configuration checking
@@ -359,16 +355,18 @@ void _CheckUpdateTouch(void)
 					State.Pressed=TOUCH_PRESSED;
 					GUI_TOUCH_StoreStateEx(&State);
 					if(drawmode)
-						GUI_DrawPoint(Xd,Yd);
+						GUI_DrawPoint(Xd,Yd+SCREEN_2);
 				}
 			}
 			else
 			{	
+			 first_touch=0;
 			 GUI_TOUCH_GetState(&State);
-				if(State.Pressed==TOUCH_PRESSED)
+			 if(State.Pressed==TOUCH_PRESSED)
 					{
-				   State.Pressed=TOUCH_UNPRESSED;
-					 GUI_TOUCH_StoreStateEx(&State);	
+				   
+						State.Pressed=TOUCH_UNPRESSED;
+						GUI_TOUCH_StoreStateEx(&State);	
 					}
 			}
 }
@@ -390,33 +388,23 @@ void _CheckUpdateTouch(void)
 *
 */
 void LCD_X_Config(void) {
- // U32  TouchOrientation;
-	GUI_DEVICE * pDevice;
+ 	GUI_DEVICE * pDevice;
   CONFIG_FLEXCOLOR Config = {0};
   GUI_PORT_API PortAPI = {0};
-  //
-  // Set display driver and color conversion
-  //
+  
   pDevice = GUI_DEVICE_CreateAndLink(GUIDRV_FLEXCOLOR, GUICC_M565, 0, 0);
-  //
-  // Display driver configuration, required for Lin-driver
-  //
-  LCD_SetSizeEx (0, XSIZE_PHYS , YSIZE_PHYS);
-  LCD_SetVSizeEx(0, VXSIZE_PHYS, VYSIZE_PHYS);
-	
-  //
-  // Display driver configuration, required for Lin-driver
-  //
-   Config.Orientation =GUI_MIRROR_Y|GUI_MIRROR_X;
+  
+	Config.Orientation =GUI_MIRROR_Y|GUI_MIRROR_X;
 	//Config.FirstCOM=0;
   //Config.FirstSEG=0;
 	GUIDRV_FlexColor_Config(pDevice, &Config);
-  //
-  // Set controller and operation mode
-  //
-	//
+  
+  LCD_SetSizeEx(0,XSIZE_PHYS , YSIZE_PHYS);
+  LCD_SetVSizeEx(0,VXSIZE_PHYS, VYSIZE_PHYS);
+  
   GUIDRV_FlexColor_SetReadFunc66720_B16(pDevice, GUIDRV_FLEXCOLOR_READ_FUNC_II); //GUIDRV_FLEXCOLOR_READ_FUNC_II
-  PortAPI.pfWrite16_A0  = LcdWriteReg;
+  
+	PortAPI.pfWrite16_A0  = LcdWriteReg;
   PortAPI.pfWrite16_A1  = LcdWriteData;
   PortAPI.pfWriteM16_A1 = LcdWriteDataMultiple;
   PortAPI.pfReadM16_A1  = LcdReadDataMultiple;
@@ -570,15 +558,15 @@ int LCD_X_DisplayDriver(unsigned LayerIndex, unsigned Cmd, void * pData) {
   uint16_t temp=0;
 	int r;
 	uint32_t * addr;
-  (void) LayerIndex;
-  (void) pData;
-  
+ 
   switch (Cmd) {
-		case LCD_X_SETORG:
-			temp=((LCD_X_SETORG_INFO*)pData)->yPos;
-			temp=((LCD_X_SETORG_INFO*)pData)->xPos;
-		
-		break;	
+		case LCD_X_SETORG:{
+			LCD_X_SETORG_INFO *p;
+			p=(LCD_X_SETORG_INFO*)pData;
+			temp=p->yPos;
+								
+		break;
+		}
 		case LCD_X_INITCONTROLLER: {
     //
     addr=(uint32_t*)&A;
@@ -662,19 +650,18 @@ int LCD_X_DisplayDriver(unsigned LayerIndex, unsigned Cmd, void * pData) {
 	LcdWriteData((VS-1)&0x00ff);  			//Set VPW=VPW-1
 	LcdWriteData(0X0000);  							//Set FPS
 	LcdWriteData(0X0000);
+	
+	LcdWriteReg(CMD_SET_SCROLL_AREA);
+	LcdWriteData(0x0000);
+	LcdWriteData(0x0000);
+	LcdWriteData(0x0001);
+	LcdWriteData(0x0010);
+	LcdWriteData(0x0002);
+	LcdWriteData(0x0020);
+	LcdWriteReg(CMD_SET_SCROLL_START);
+	LcdWriteData(272>>8);
+	LcdWriteData(272);
 		
-	LcdWriteReg(CMD_SET_COL_ADDRESS);
-	LcdWriteData(0x0000);
-	LcdWriteData(0x0000);
-	LcdWriteData(0x0001);
-	LcdWriteData(0x00DF);
-	
-	LcdWriteReg(CMD_SET_PAGE_ADDRESS);
-	LcdWriteData(0x0000);
-	LcdWriteData(0x0000);
-	LcdWriteData(0x0001);
-	LcdWriteData(0x000F);
-	
 	LcdWriteReg(CMD_SET_ADDRESS_MODE); //rotation, see p.18
 	LcdWriteData(0x0000);
 /*----------------------------------------------------------------------------------*/	
@@ -685,11 +672,6 @@ int LCD_X_DisplayDriver(unsigned LayerIndex, unsigned Cmd, void * pData) {
 	
 	LcdWriteReg(CMD_SET_DISPLAY_ON); 		//display on
 								
-								//PWM
-	//temp=0;
-	//while(!temp)
-	//{
-		//cycle_start_pwm++;
 		GUI_Delay(1);
 		LcdWriteReg(CMD_SET_PWM_CONF); 			//set PWM for Backlight. Manual p.53
 		// 6 parameters to be set
@@ -700,12 +682,7 @@ int LCD_X_DisplayDriver(unsigned LayerIndex, unsigned Cmd, void * pData) {
 		LcdWriteData(0x0000); 							// minimum brightness level =  0x00 - 0xFF
 		LcdWriteData(0x0000);								// brightness prescalar 0x0 - 0xF
 		
-		/*LcdWriteReg(CMD_GET_PWM_CONF);
-		for(i=0;i<3;i++)
-			temp=LCD_DATA_ADDRESS;
-		for(i=3;i<7;i++)
-			temp1=LCD_DATA_ADDRESS;*/
-	//}	
+		
 	return 0;
   }
   default:

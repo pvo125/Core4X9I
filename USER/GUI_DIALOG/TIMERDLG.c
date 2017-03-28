@@ -267,7 +267,7 @@ static void _cbTIMER(WM_MESSAGE * pMsg) {
 					  hItem = WM_GetDialogItem(pMsg->hWin, ID_DROPDOWN_0);
 						DROPDOWN_Collapse(hItem);
 						WM_Paint(hItem);
-						GUI_MessageBox("STOP TIMER!!!", "Error", GUI_MESSAGEBOX_CF_MODAL);
+						Message("STOP TIMER!!!",0);
 						//CreateError();
 						//if(hWin_error==1)
 						//	GUI_Exec();

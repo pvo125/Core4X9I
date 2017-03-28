@@ -57,9 +57,7 @@ static void _cbMENU(WM_MESSAGE * pMsg) {
   int     Id;
 
   switch (pMsg->MsgId) {
-	//	case MY_MESSAGE:
-	//		__nop();
-	//	break;	
+	
 	case WM_NOTIFY_PARENT:
     Id    = WM_GetId(pMsg->hWinSrc);
     NCode = pMsg->Data.v;
@@ -92,7 +90,7 @@ static void _cbMENU(WM_MESSAGE * pMsg) {
 					}
 			}		
 			else
-				GUI_MessageBox("INSERT SD CARD!!! ", "Message", GUI_MESSAGEBOX_CF_MODAL);
+				Message("INSERT SD CARD!!! ",0);
 			break;
       }
     break;
@@ -108,9 +106,8 @@ static void _cbMENU(WM_MESSAGE * pMsg) {
       switch(NCode) {
       case WM_NOTIFICATION_RELEASED:
         	WM_HideWindow(hWin_menu);
-				//	WM_DeleteWindow(hWin_menu);//hWin_menu=0;
 					CreateStart();
-					GUI_SetOrg(0,0);
+					
 			break;
       }
     break;
@@ -129,7 +126,7 @@ static void _cbMENU(WM_MESSAGE * pMsg) {
 
 WM_HWIN CreateMENU(void) {
 	
-		hWin_menu=WINDOW_CreateEx(60,15,410, 260,WM_HBKWIN, WM_CF_SHOW,0,ID_WINDOW_0,_cbMENU);	
+		hWin_menu=WINDOW_CreateEx(60,15+SCREEN_1,410, 257,WM_HBKWIN, WM_CF_SHOW,0,ID_WINDOW_0,_cbMENU);	
 		WINDOW_SetBkColor(hWin_menu, 0x00DF6687);	
 			
 		hIcon_ALARM=ICONVIEW_CreateEx(100,70,58,65,hWin_menu,WM_CF_SHOW|WM_CF_HASTRANS,0,ID_ICON_ALARM,48,65);

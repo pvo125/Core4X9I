@@ -250,7 +250,7 @@ static void _cbBUTTON_KEY(WM_MESSAGE * pMsg) {
 						fresult=f_open (&fil,Path, FA_CREATE_NEW);
 						if(fresult==FR_EXIST)
 							{
-								GUI_MessageBox(" THE FILE ALREADY EXISTS!", "ERROR", 0);
+								Message(" THE FILE ALREADY EXISTS!", 0);
 								while(*pPath!='/')
 									pPath--;
 								*pPath='\0';
@@ -269,7 +269,7 @@ static void _cbBUTTON_KEY(WM_MESSAGE * pMsg) {
 						fresult=f_mkdir(Path);
 						if(fresult==FR_EXIST)
 							{
-								GUI_MessageBox("A DIRECTORY ALREADY EXISTS!", "ERROR", 0);
+								Message("A DIRECTORY ALREADY EXISTS!",0);
 								*pPath='\0';
 							}	
 						else if(fresult==FR_OK)

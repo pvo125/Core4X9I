@@ -47,6 +47,11 @@ extern volatile uint8_t new_message;
 
 extern volatile uint8_t time_disp;
 
+uint8_t move_y_last;
+extern uint8_t move_y;
+extern uint8_t screen_scroll;
+extern uint16_t screen_x;
+
 volatile uint8_t canconnect,canerr_clr,canerr_disp;
 static volatile uint8_t count;
 	/********************************************************************
@@ -198,28 +203,27 @@ void RTC_WKUP_IRQHandler(void)
 	if(((RTC->TR&0x003F0000)==0)&&((RTC->TR&0x00007F00)==0)&&((RTC->TR&0x0000007F)==0))
 	{
 		RTC_GetDate(RTC_Format_BIN, &RTC_Date);
-		GUI_DispDecAt(RTC_Date.RTC_Date,5,0,2);
+		GUI_DispDecAt(RTC_Date.RTC_Date,5,0+SCREEN_1,2);
 		GUI_DispString(":");
 		GUI_DispDec(RTC_Date.RTC_Month,2);
 		GUI_DispString(":20");
 		GUI_DispDec(RTC_Date.RTC_Year,2);
 	}
-		
-		if(time_show)
+	if(time_show)
+	{
+		time_disp=1;
+		if(canconnect)
 		{
-			time_disp=1;
-			if(canconnect)
+			canerr_disp=1;
+			count++;
+			if(count>3)
 			{
-				canerr_disp=1;
-				count++;
-				if(count>3)
-				{
-					canconnect=0;
-					canerr_clr=1;
-					canerr_disp=0;
-				}
+				canconnect=0;
+				canerr_clr=1;
+				canerr_disp=0;
 			}
 		}
+	}
 	RTC_GetTime(RTC_Format_BIN, &RTC_Time);
 	
 	RTC->ISR&=~RTC_ISR_WUTF;//RTC->ISR&=~(RTC_ISR_WUTF|0x00000080);//RTC_ClearITPendingBit(RTC_IT_WUT);//RTC->ISR&=~RTC_ISR_WUTF;
@@ -361,7 +365,6 @@ void RTC_Alarm_IRQHandler(void){
 void TIM6_DAC_IRQHandler (void){
 	
 	_CheckUpdateTouch();
-	
 		if(drawmode==0)
 		{
 			if(PROGBAR_MEM!=0)

@@ -22,7 +22,7 @@ char Path[256]="0:";
 char start;
 uint16_t SD_SECTOR_SIZE=512;
 SD_Error sd_error=SD_ERROR;
-SD_CardInfo sd_cardinfo;
+//SD_CardInfo sd_cardinfo;
 
 uint8_t sleep_mode=0;
 

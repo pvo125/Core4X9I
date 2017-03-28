@@ -19,6 +19,9 @@
 
 #define FLASHCODE
 
+#define SCREEN_1		0
+#define SCREEN_2		272
+
 //#define SRAM
 #define NAND
 
@@ -121,7 +124,7 @@ extern uint8_t count_SD_open;
 extern uint8_t SD_buff[];
 
 extern SD_Error sd_error;
-extern SD_CardInfo sd_cardinfo;
+extern SD_CardInfo SDCardInfo;
 extern uint16_t SD_SECTOR_SIZE;
 extern FATFS fs;
 extern FRESULT fresult;
@@ -149,6 +152,8 @@ WM_HWIN CreateALARM(void);
 WM_HWIN CreateTIME_DATE(void);
 TREEVIEW_Handle SD_Files(void);
 
+extern WM_HWIN Message(const char *p,int flag );
+ 
 extern void CreateStart(void);
 extern GUI_CONST_STORAGE GUI_BITMAP bmexit;
 extern GUI_CONST_STORAGE GUI_BITMAP bmscreen;

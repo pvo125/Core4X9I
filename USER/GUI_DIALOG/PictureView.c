@@ -41,7 +41,7 @@
 int Time_1;
 extern volatile int Time;
 GUI_MEMDEV_Handle hMem;
-
+WM_HWIN hWin_photo;
 extern ICONVIEW_Handle hALARMA,hALARMB,hIcon_EXIT,hIcon_BRIGHT;
  
 extern RTC_DateTypeDef			RTC_Date;
@@ -49,7 +49,8 @@ extern GUI_CONST_STORAGE GUI_BITMAP bmhourglass;
 void _drawJPG(char *Path,char *fn);
 void _drawBMP(char *Path,char *fn);
 void _drawGIF(char *Path,char *fn);
-//WM_HWIN hWin_Photo;
+
+extern volatile int16_t first_touch;
 BUTTON_Handle hButton_NEXT,hButton_PREV,hButton_EXIT;
 static unsigned char _acBuffer[4096];//__attribute((at(SDRAM_BASE)));
 
@@ -57,7 +58,95 @@ GUI_GIF_IMAGE_INFO 	gif_i_info;
 GUI_GIF_INFO				gif_info;
 GUI_JPEG_INFO 			jpg_info;
 FIL pFile;
-int file_index,file_count;
+static int file_index,file_count;
+
+static void PhotoScrollRight(void){
+	char *fn,*pPath;
+	int i;
+#if _USE_LFN
+    static char lfn[_MAX_LFN + 1];   /* Buffer to store the LFN */
+    finfo.lfname = lfn;
+    finfo.lfsize = sizeof lfn;
+#endif		
+		fresult=f_opendir(&dir, "0:Photo"); 
+		for(i=0;i<file_index-1;i++)
+			fresult=f_readdir(&dir,&finfo); 
+		file_index--;
+		if(file_index==2)
+			{
+				for(i=0;i<file_count-2;i++)
+					fresult=f_readdir(&dir,&finfo);
+				file_index=file_count;
+			}
+#if _USE_LFN
+			fn = *finfo.lfname ? finfo.lfname : finfo.fname;
+#else
+		 fn = finfo.fname;
+#endif												
+			pPath=strchr(Path,'/');
+			*(++pPath)='\0';
+			strcat(Path,fn);
+			pPath=strchr(fn,'\0');
+			pPath-=3;
+			GUI_SetAlpha(0);
+			WM_HideWindow(hButton_EXIT);	
+			GUI_SetBkColor(GUI_BLACK);
+			GUI_ClearRect(0,0,479,271);
+			if((*pPath=='j')||(*pPath=='J'))	
+				_drawJPG(Path,fn);
+			else if((*pPath=='b')||(*pPath=='B'))
+				_drawBMP(Path,fn);
+			else if((*pPath=='g')||(*pPath=='G'))
+				_drawGIF(Path,fn);
+			
+}
+/*
+*
+*/
+static void PhotoScrollLeft(void){
+	char *fn,*pPath;
+#if _USE_LFN
+    static char lfn[_MAX_LFN + 1];   /* Buffer to store the LFN */
+    finfo.lfname = lfn;
+    finfo.lfsize = sizeof lfn;
+#endif			
+	for(;;)
+	{
+		fresult=f_readdir(&dir,&finfo); file_index++;
+		if(finfo.fname[0]==0)		
+			{
+				fresult=f_opendir(&dir, "0:Photo"); file_index=0;
+				continue;
+			}
+		if((fresult!=FR_OK)||(finfo.fname[0]!='.'))
+			break;
+		if(finfo.fname[0]=='.')
+			continue;
+	}
+#if _USE_LFN
+			fn = *finfo.lfname ? finfo.lfname : finfo.fname;
+#else
+		 fn = finfo.fname;
+#endif												
+		pPath=strchr(Path,'/');
+		*(++pPath)='\0';
+		strcat(Path,fn);
+		pPath=strchr(fn,'\0');
+		pPath-=3;;
+		GUI_SetAlpha(0);
+		WM_HideWindow(hButton_EXIT);
+		GUI_SetBkColor(GUI_BLACK);
+		GUI_ClearRect(0,0,479,271);
+		if((*pPath=='j')||(*pPath=='J'))	
+		_drawJPG(Path,fn);
+		else if((*pPath=='b')||(*pPath=='B'))
+		_drawBMP(Path,fn);
+		else if((*pPath=='g')||(*pPath=='G'))
+		_drawGIF(Path,fn);
+		}
+/*
+*
+*/
 void Draw_EXIT(int x,int y){
 			
 			GUI_POINT pPoint[12];
@@ -132,7 +221,7 @@ void Draw_PREV(int x,int y,int size){
 			GUI_FillPolygon(pPoint,6,x,y);
 }
 
-static int _cbButtonPREV(const WIDGET_ITEM_DRAW_INFO *pDrawItemInfo){
+/*static int _cbButtonPREV(const WIDGET_ITEM_DRAW_INFO *pDrawItemInfo){
 	
 	GUI_RECT Rect;
 	switch(pDrawItemInfo->Cmd){
@@ -152,8 +241,9 @@ static int _cbButtonPREV(const WIDGET_ITEM_DRAW_INFO *pDrawItemInfo){
 			return BUTTON_DrawSkinFlex(pDrawItemInfo);
 		}
 	return 0;
-}
-void Draw_NEXT(int x,int y,int size){
+}*/
+
+/*void Draw_NEXT(int x,int y,int size){
 			
 			GUI_POINT pPoint[6];
 	
@@ -172,12 +262,9 @@ void Draw_NEXT(int x,int y,int size){
 			pPoint[5].y=size*3;
 			GUI_SetColor(GUI_WHITE);
 			GUI_FillPolygon(pPoint,6,x,y);
-}
+}*/
 
-static int _cbButtonNEXT(const WIDGET_ITEM_DRAW_INFO *pDrawItemInfo){
-	
-
-	
+/*static int _cbButtonNEXT(const WIDGET_ITEM_DRAW_INFO *pDrawItemInfo){
 	GUI_RECT Rect;
 	switch(pDrawItemInfo->Cmd){
 		case WIDGET_ITEM_DRAW_BACKGROUND:
@@ -195,8 +282,7 @@ static int _cbButtonNEXT(const WIDGET_ITEM_DRAW_INFO *pDrawItemInfo){
 			return BUTTON_DrawSkinFlex(pDrawItemInfo);
 		}
 	return 0;
-}
-
+}*/
 
 
 int _GetData(void *p,const U8 **ppData,unsigned NumBytesReq,U32 Off){
@@ -229,9 +315,6 @@ void _drawGIF(char *Path,char *fn){
 	GUI_DrawBitmap(&bmhourglass, 225, 120);
 	
 	GUI_GIF_GetInfo((uint32_t*)(SDRAM_BASE+0x200000),pFile.fsize,&gif_info);
-	NVIC_DisableIRQ(TIM6_DAC_IRQn);
-	NVIC_DisableIRQ(CAN1_RX0_IRQn);
-	NVIC_DisableIRQ(CAN1_RX1_IRQn);	
 	
 	if((gif_info.xSize<=480)&&(gif_info.ySize<=272))
 		{
@@ -294,9 +377,7 @@ void _drawGIF(char *Path,char *fn){
 			 }				
 		}
 	GUI_MEMDEV_Delete(hMem);
-	NVIC_EnableIRQ(TIM6_DAC_IRQn);
-	NVIC_EnableIRQ(CAN1_RX0_IRQn);
-	NVIC_EnableIRQ(CAN1_RX1_IRQn);		
+			
 	GUI_SetAlpha(0x80);
 	GUI_SetColor(GUI_RED);
 	GUI_DispStringAt("File : ",0,257);
@@ -310,6 +391,9 @@ void _drawGIF(char *Path,char *fn){
 	GUI_DispString("    File size (KB): ");
 	GUI_DispDecMin(pFile.fsize/1024);
 	f_close (&pFile);		
+	NVIC_EnableIRQ(TIM6_DAC_IRQn);
+	NVIC_EnableIRQ(CAN1_RX0_IRQn);
+	NVIC_EnableIRQ(CAN1_RX1_IRQn);	
 }
 
 void _drawBMP(char *Path,char *fn){
@@ -321,9 +405,6 @@ void _drawBMP(char *Path,char *fn){
 	//ySize=GUI_BMP_GetYSizeEx(_GetData,&pFile);
 	
 	GUI_DrawBitmap(&bmhourglass, 225, 120);
-	NVIC_DisableIRQ(TIM6_DAC_IRQn);
-	NVIC_DisableIRQ(CAN1_RX0_IRQn);
-	NVIC_DisableIRQ(CAN1_RX1_IRQn);	
 	xSize=GUI_BMP_GetXSize((uint32_t*)(SDRAM_BASE+0x200000));
 	ySize=GUI_BMP_GetYSize((uint32_t*)(SDRAM_BASE+0x200000));
 	if((xSize<=480)&&(ySize<=272))
@@ -362,10 +443,7 @@ void _drawBMP(char *Path,char *fn){
 			Time_1=Time;
 		}
 	GUI_MEMDEV_Delete(hMem);
-	NVIC_EnableIRQ(TIM6_DAC_IRQn);	
-	NVIC_EnableIRQ(CAN1_RX0_IRQn);
-	NVIC_EnableIRQ(CAN1_RX1_IRQn);	
-		
+			
 	GUI_SetAlpha(0x80);
 	GUI_SetColor(GUI_RED);
 	GUI_DispStringAt("File : ",0,257);
@@ -379,7 +457,10 @@ void _drawBMP(char *Path,char *fn){
 	GUI_DispString("    File size (KB): ");
 	GUI_DispDecMin(pFile.fsize/1024);
 	f_close (&pFile);	
-
+	NVIC_EnableIRQ(TIM6_DAC_IRQn);	
+	NVIC_EnableIRQ(CAN1_RX0_IRQn);
+	NVIC_EnableIRQ(CAN1_RX1_IRQn);	
+		
 }
 
 void _drawJPG(char *Path,char *fn){
@@ -390,10 +471,6 @@ void _drawJPG(char *Path,char *fn){
 	fresult=f_read(&pFile,(uint32_t*)(SDRAM_BASE+0x200000), pFile.fsize,&NumBytesRead);
 	
 	GUI_DrawBitmap(&bmhourglass, 225, 120);
-	
-	NVIC_DisableIRQ(TIM6_DAC_IRQn);
-	NVIC_DisableIRQ(CAN1_RX0_IRQn);
-	NVIC_DisableIRQ(CAN1_RX1_IRQn);	
 	
 	GUI_JPEG_GetInfo((uint32_t*)(SDRAM_BASE+0x200000), pFile.fsize, &jpg_info);			
 	if((jpg_info.XSize<=480)&&(jpg_info.YSize<=272))
@@ -431,10 +508,6 @@ void _drawJPG(char *Path,char *fn){
 		Time_1=Time;
 		}
 	GUI_MEMDEV_Delete(hMem);
-		
-  NVIC_EnableIRQ(TIM6_DAC_IRQn);
-	NVIC_EnableIRQ(CAN1_RX0_IRQn);
-	NVIC_EnableIRQ(CAN1_RX1_IRQn);			
 	
 	GUI_SetAlpha(0x80);
 	GUI_SetColor(GUI_RED);
@@ -449,7 +522,9 @@ void _drawJPG(char *Path,char *fn){
 	GUI_DispString("    File size (KB): ");
 	GUI_DispDecMin(pFile.fsize/1024);
 	f_close (&pFile);	
-							
+	NVIC_EnableIRQ(TIM6_DAC_IRQn);
+	NVIC_EnableIRQ(CAN1_RX0_IRQn);
+	NVIC_EnableIRQ(CAN1_RX1_IRQn);						
 	
 }
 
@@ -460,110 +535,37 @@ void _drawJPG(char *Path,char *fn){
 **********************************************************************
 */
 static void _cbPhoto(WM_MESSAGE * pMsg) {
-	 char *fn,*pPath;
-//	int xNum,yNum,xSize,ySize,xPos,yPos,Num,x,y;
-	int     NCode;
+  int     NCode;
   int     Id;
-	int i;
-	
-#if _USE_LFN
-    static char lfn[_MAX_LFN + 1];   /* Buffer to store the LFN */
-    finfo.lfname = lfn;
-    finfo.lfsize = sizeof lfn;
-#endif		
 	switch (pMsg->MsgId) {
 		case WM_TOUCH:
-			WM_ShowWindow(hButton_NEXT);
-			WM_ShowWindow(hButton_PREV);
-			WM_ShowWindow(hButton_EXIT);
+		if(GPIOB->IDR & GPIO_IDR_IDR_11)	break;
+			//if(screen_scroll) break;
+		if(!first_touch)	
+			{ first_touch=State.x; 
+				WM_ShowWindow(hButton_EXIT);
+			}	
+		if((State.x-first_touch)>50)
+		{
+			first_touch=State.x;
+			NVIC_DisableIRQ(TIM6_DAC_IRQn);
+			PhotoScrollRight();
+		}
+		else if((first_touch-State.x)>50)
+		{
+			first_touch=State.x;
+			NVIC_DisableIRQ(TIM6_DAC_IRQn);
+			PhotoScrollLeft();
+		
+		}
 		break;
 		case WM_NOTIFY_PARENT:
 			Id    = WM_GetId(pMsg->hWinSrc);
 			NCode = pMsg->Data.v;
 			switch(Id) {
-				case ID_BUTTON_PREV:
+				 case ID_BUTTON_EXIT:
 					switch(NCode){
 						case WM_NOTIFICATION_RELEASED:
-							fresult=f_opendir(&dir, "0:Photo"); 
-							for(i=0;i<file_index-1;i++)
-								fresult=f_readdir(&dir,&finfo); 
-							file_index--;
-							if(file_index==2)
-								{
-									for(i=0;i<file_count-2;i++)
-										fresult=f_readdir(&dir,&finfo);
-									file_index=file_count;
-								}
-#if _USE_LFN
-			fn = *finfo.lfname ? finfo.lfname : finfo.fname;
-#else
-		 fn = finfo.fname;
-#endif												
-							pPath=strchr(Path,'/');
-							*(++pPath)='\0';
-							strcat(Path,fn);
-							pPath=strchr(fn,'\0');
-							pPath-=3;
-							GUI_SetAlpha(0);	
-							GUI_Clear();
-							if((*pPath=='j')||(*pPath=='J'))	
-								_drawJPG(Path,fn);
-							else if((*pPath=='b')||(*pPath=='B'))
-								_drawBMP(Path,fn);
-							else if((*pPath=='g')||(*pPath=='G'))
-								_drawGIF(Path,fn);
-							
-							WM_HideWindow(hButton_PREV);
-							WM_HideWindow(hButton_EXIT);
-							WM_HideWindow(hButton_NEXT);
-						break;	
-					}
-				break;
-				case ID_BUTTON_NEXT:
-					switch(NCode){
-						case WM_NOTIFICATION_RELEASED:
-							for(;;)
-								{
-									fresult=f_readdir(&dir,&finfo); file_index++;
-									if(finfo.fname[0]==0)		
-									{
-										fresult=f_opendir(&dir, "0:Photo"); file_index=0;
-										continue;
-									}
-									if((fresult!=FR_OK)||(finfo.fname[0]!='.'))
-										break;
-									if(finfo.fname[0]=='.')
-										continue;
-								}
-#if _USE_LFN
-			fn = *finfo.lfname ? finfo.lfname : finfo.fname;
-#else
-		 fn = finfo.fname;
-#endif												
-							pPath=strchr(Path,'/');
-							*(++pPath)='\0';
-							strcat(Path,fn);
-							pPath=strchr(fn,'\0');
-							pPath-=3;;
-							GUI_SetAlpha(0);	
-							GUI_Clear();
-							if((*pPath=='j')||(*pPath=='J'))	
-								_drawJPG(Path,fn);
-							else if((*pPath=='b')||(*pPath=='B'))
-								_drawBMP(Path,fn);
-							else if((*pPath=='g')||(*pPath=='G'))
-								_drawGIF(Path,fn);
-							WM_HideWindow(hButton_PREV);
-							WM_HideWindow(hButton_EXIT);
-							WM_HideWindow(hButton_NEXT);
-							break;
-					}
-				break;
-				case ID_BUTTON_EXIT:
-					switch(NCode){
-						case WM_NOTIFICATION_RELEASED:
-							WM_DeleteWindow(hButton_NEXT);
-							WM_DeleteWindow(hButton_PREV);
 							WM_DeleteWindow(hButton_EXIT);
 							GUI_SetAlpha(0);
 							GUI_SetBkColor(GUI_LIGHTBLUE);
@@ -588,7 +590,6 @@ static void _cbPhoto(WM_MESSAGE * pMsg) {
 							
 							time_show=1;
 							CreateStart();
-						
 						break;	
 					}
 				break;		
@@ -611,7 +612,7 @@ void PictureView(void) {
 char *fn,*pPath;
 	file_index=0;file_count=0;
 	GUI_SetBkColor(GUI_BLACK);
-	GUI_Clear();
+	GUI_ClearRect(0,0,479,271);
 	for(;;)
 			{
 				fresult=f_readdir(&dir,&finfo);   /* Count of file in directory Photo */
@@ -646,16 +647,13 @@ char *fn,*pPath;
 			else if((*pPath=='p')||(*pPath=='P'))
 				_drawGIF(Path,fn);
 			
-			hButton_NEXT=BUTTON_CreateEx(445,90,30,80,WM_HBKWIN,/*WM_CF_SHOW|*/WM_CF_HASTRANS,0,ID_BUTTON_NEXT);
-			BUTTON_SetSkin(hButton_NEXT, _cbButtonNEXT);
-					
-			hButton_PREV=BUTTON_CreateEx(5,90,30,80,WM_HBKWIN,/*WM_CF_SHOW|*/WM_CF_HASTRANS,0,ID_BUTTON_PREV);
-			BUTTON_SetSkin(hButton_PREV, _cbButtonPREV);
-				
+			//hButton_NEXT=BUTTON_CreateEx(445,90,30,80,WM_HBKWIN,/*WM_CF_SHOW|*/WM_CF_HASTRANS,0,ID_BUTTON_NEXT);
+			//BUTTON_SetSkin(hButton_NEXT, _cbButtonNEXT);
+			//hButton_PREV=BUTTON_CreateEx(5,90,30,80,WM_HBKWIN,/*WM_CF_SHOW|*/WM_CF_HASTRANS,0,ID_BUTTON_PREV);
+			//BUTTON_SetSkin(hButton_PREV, _cbButtonPREV);
 			hButton_EXIT=BUTTON_CreateEx(5,5,30,30,WM_HBKWIN,/*WM_CF_SHOW|*/WM_CF_HASTRANS,0,ID_BUTTON_EXIT);
 			BUTTON_SetSkin(hButton_EXIT, _cbButtonEXIT);
-			WM_SetCallback(WM_HBKWIN, _cbPhoto);
-			
+			WM_SetCallback(WM_HBKWIN, _cbPhoto);			
 }
 
 // USER END

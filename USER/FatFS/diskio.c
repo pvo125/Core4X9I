@@ -58,21 +58,11 @@ DSTATUS disk_initialize (
 	if(sd_error==SD_OK)
 		//	Get the SD CID and CSD data.
 		{
-		sd_error=SD_GetCardInfo(&sd_cardinfo);
-			if(sd_error==SD_OK)
-				sd_error=SD_SelectDeselect((u32)sd_cardinfo.RCA<<16);
-			if(sd_error==SD_OK)		
-				sd_error=SD_EnableWideBusOperation(SDIO_BusWide_4b);
-			if(sd_error==SD_OK)	
-			{
-				//sd_error=SD_SetDeviceMode(SD_DMA_MODE);
-				stat=0;
-			}
-			
+			stat=0;
 		}
-		return stat;
+			
 	}
-	
+	return stat;
 }
 
 
@@ -168,8 +158,8 @@ DRESULT disk_ioctl (
 	case MMC :
 		switch(cmd){
 			case GET_SECTOR_COUNT:
-			result<<=(sd_cardinfo.SD_csd.DeviceSizeMul+2);
-			*(DWORD*) buff=(sd_cardinfo.SD_csd.DeviceSize+1)*result;
+			result<<=(SDCardInfo.SD_csd.DeviceSizeMul+2);
+			*(DWORD*) buff=(SDCardInfo.SD_csd.DeviceSize+1)*result;
 			res=RES_OK;
 			return res;
 			

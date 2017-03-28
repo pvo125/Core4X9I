@@ -28,10 +28,15 @@
 extern GUI_PID_STATE State;
 extern void PictureView(void);
 extern FIL pFile;
-extern GUI_JPEG_INFO Info;
+
 extern volatile uint8_t write_flashflag;
 extern volatile uint8_t new_message;
-//extern uint8_t cycle_start_pwm
+
+uint16_t move_y=272;
+volatile int16_t first_touch;
+uint8_t screen_scroll=0;
+int16_t linescroll=272;
+uint8_t scroll_up=0,scroll_down=0;;
 
 extern volatile uint8_t canerr_clr,canerr_disp,canconnect;
 volatile uint8_t time_disp;
@@ -48,6 +53,7 @@ extern RTC_AlarmTypeDef								RTC_AlarmA,RTC_AlarmB;
 #define Bank1_LCD_Data    ((uint32_t)0x60020000) // display controller Data ADDR
 
 #define ID_WINDOW_0     (GUI_ID_USER + 0x00)
+#define ID_FRAMEWIN_3     (GUI_ID_USER + 0x01)
 #define ID_ICON_CALIB    (GUI_ID_USER + 0x04)
 #define ID_ICON_NEXT     (GUI_ID_USER + 0x05)
 
@@ -72,7 +78,8 @@ extern RTC_AlarmTypeDef								RTC_AlarmA,RTC_AlarmB;
 #define ID_ICON_ORANGE     (GUI_ID_USER + 0x25)
 #define ID_ICON_WHITE     (GUI_ID_USER + 0x26)
 
-
+#define ID_BUTTON_OK			(GUI_ID_USER + 0x27)
+#define ID_TEXT_1					(GUI_ID_USER + 0x28)
 #define FLAG_STATUS_SECTOR	0x08004000		//sector 1
 
 // USER START (Optionally insert additional defines)
@@ -87,9 +94,7 @@ int xD[]={ID_ICON_BLUE,ID_ICON_GREEN,ID_ICON_RED,ID_ICON_CYAN,ID_ICON_MAGENTA,ID
 int color[]={GUI_BLUE,GUI_GREEN,GUI_RED,GUI_CYAN,GUI_MAGENTA,GUI_YELLOW,GUI_WHITE,GUI_BLACK,GUI_ORANGE};
 extern WM_HWIN hWin_menu;
 
-extern void Draw_JPG_File(const char *FileName);
-
-
+WM_HWIN hWin_message;
 
 // USER END
 
@@ -134,10 +139,77 @@ static __INLINE  void LcdWriteData(U16 Data) {
 	LCD_DATA_ADDRESS=Data;
 }
 
-
+/*********************************************************************
+*       			_cbMESSAGE
+*********************************************************************/
+static void _cbMESSAGE(WM_MESSAGE * pMsg) {
+  GUI_RECT pRECT;
+	int     NCode,x,y;
+  int     Id;
+	switch (pMsg->MsgId) {
+		case WM_DELETE:
+			hWin_message=0;
+		break;	
+		case WM_NOTIFY_PARENT:
+			Id    = WM_GetId(pMsg->hWinSrc);
+			NCode = pMsg->Data.v;
+				switch(Id) {
+					case ID_BUTTON_OK: 
+						switch(NCode) {
+							case WM_NOTIFICATION_RELEASED:
+								WM_GetWindowRectEx(hWin_message, &pRECT);
+								x=WM_GetWindowSizeX(hWin_message);
+								y=WM_GetWindowSizeY(hWin_message);
+								WM_DeleteWindow(hWin_message);
+								GUI_ClearRect(pRECT.x0,pRECT.y0,pRECT.x0+x,pRECT.y0+y);
+								
+							break;	
+							}
+					break;
+					}
+		break;
+		default:
+			WM_DefaultProc(pMsg);
+		break;
+	}
+}
+/*********************************************************************
+*      				Message
+**********************************************************************/
+WM_HWIN Message(const char *p,int flag ){
+	WM_HWIN hWin;
+	BUTTON_Handle hButton;
+	int temp;
+	if(hWin_message!=0)
+			return hWin_message;
+	temp=GUI_GetStringDistX(p);
+	hWin_message=FRAMEWIN_CreateEx((240-temp/2),100+SCREEN_1,temp+16, 80,0, WM_CF_SHOW,0,ID_FRAMEWIN_3,0,0);
+	FRAMEWIN_SetActive(hWin_message, 1);
+	if(flag==0)
+	{
+		FRAMEWIN_SetBarColor(hWin_message,1,GUI_RED);
+		FRAMEWIN_SetText(hWin_message, "ERROR");
+	}
+	else 
+		FRAMEWIN_SetText(hWin_message, "Message");
+	
+	FRAMEWIN_SetTextAlign(hWin_message,GUI_TA_HCENTER);
+	
+	hWin=WINDOW_CreateEx(3,22,temp+9,55,hWin_message,WM_CF_SHOW,0,ID_WINDOW_1,_cbMESSAGE);
+	WINDOW_SetBkColor(hWin, GUI_WHITE);
+	
+	hButton=BUTTON_CreateEx(((temp+16)/2-15),32,30,20,hWin, WM_CF_SHOW,0,ID_BUTTON_OK);
+	BUTTON_SetText(hButton, "OK");
+	
+	TEXT_CreateEx(5,10,temp,20,hWin,WM_CF_SHOW,TEXT_CF_HCENTER,ID_TEXT_1,p);
+	//WM_MakeModal(hWin_message);
+	return hWin_message;
+}
+/*********************************************************************
+*      				_cbSTART
+**********************************************************************/
 static void _cbSTART(WM_MESSAGE* pMsg) {
-  char i;
-	int     NCode;
+ 	int     NCode;
   int     Id;
 	switch(pMsg->MsgId) {
 		case WM_NOTIFY_PARENT:
@@ -157,32 +229,25 @@ static void _cbSTART(WM_MESSAGE* pMsg) {
 									fresult=f_opendir(&dir, Path);	
 									if(fresult==FR_NO_PATH)
 									{
-										GUI_MessageBox("Invalid IMAGE directory"," Message", GUI_MESSAGEBOX_CF_MODAL);
-										//GUI_SetBkColor(GUI_LIGHTBLUE);
-										GUI_ClearRect(170,105,305,165);
+										Message("Invalid IMAGE directory",0);
 									}
 									else
 									{			
-									time_show=0;
-									//	start=0;
-									WM_HideWindow(hIcon_EXIT);
-									WM_HideWindow(hIcon_BRIGHT);	
-									WM_HideWindow(hWin_start);
-															
-									WM_HideWindow(hALARMA);
-									WM_HideWindow(hALARMB);
-									WM_HideWindow(PROGBAR_MEM);
-									#ifdef FLASHCODE
-										PictureView();
-									#endif
+										WM_HideWindow(hIcon_EXIT);
+										WM_HideWindow(hIcon_BRIGHT);	
+										WM_HideWindow(hWin_start);
+																
+										WM_HideWindow(hALARMA);
+										WM_HideWindow(hALARMB);
+										WM_HideWindow(PROGBAR_MEM);
+										#ifdef FLASHCODE
+											time_show=0;
+											PictureView();
+										#endif
 									}	
-									
 								}
 							else
-								{
-									GUI_MessageBox("Insert SD card!"," Message", GUI_MESSAGEBOX_CF_MODAL);
-									GUI_ClearRect(180,105,296,165);
-								}	
+								Message("Insert SD card!", 0);
 						break;
 					}
 					break;
@@ -207,7 +272,6 @@ static void _cbSTART(WM_MESSAGE* pMsg) {
 					switch(NCode) {
 						case WM_NOTIFICATION_RELEASED:
 							time_show=1;
-							
 							WM_HideWindow(hWin_start);
 							if(hWin_menu==0)
 								{__disable_irq();
@@ -228,31 +292,29 @@ static void _cbSTART(WM_MESSAGE* pMsg) {
 							case WM_NOTIFICATION_RELEASED:
 							NVIC_DisableIRQ(TIM7_IRQn);
 							NVIC_DisableIRQ(RTC_WKUP_IRQn);
-							
 							time_show=0;
-							WM_HideWindow(hIcon_EXIT);
+							/*WM_HideWindow(hIcon_EXIT);
 							WM_HideWindow(hIcon_BRIGHT);
 							WM_HideWindow(hWin_start);
 							WM_HideWindow(hALARMA);
 							WM_HideWindow(hALARMB);
-							WM_HideWindow(PROGBAR_MEM);
+							WM_HideWindow(PROGBAR_MEM);*/
+							move_y=0;
+							GUI_SetOrg(0,544);
+							screen_scroll=1;
+							scroll_up=1;
+							
 							
 							GUI_SetPenSize(7);
 							GUI_SetBkColor(GUI_WHITE);
 							GUI_SetColor(GUI_WHITE);
-							GUI_Clear();
+							GUI_ClearRect(0,0+SCREEN_2,479,271+SCREEN_2);
+							WM_Paint(hButton_BACK);
+								
+							
 							TIM6->ARR = 40;
 						  TIM6->EGR = TIM_EGR_UG;	
-						  hButton_BACK=BUTTON_CreateEx(400,220,50,30,WM_HBKWIN,WM_CF_SHOW,0,ID_BUTTON_BACK);
-							BUTTON_SetText(hButton_BACK, "BACK");	
-							
-							for(i=0;i<9;i++)
-						 {
-							hIcon[i]=ICONVIEW_CreateEx(0,i*30,30,30,WM_HBKWIN,WM_CF_SHOW,0,xD[i],30,30);
-							ICONVIEW_SetBkColor(hIcon[i], ICONVIEW_CI_BK, color[i]);
-						 }
-						 
-							drawmode=1;	
+						 	drawmode=1;	
 						break;
 						}
 					break;		
@@ -263,18 +325,92 @@ static void _cbSTART(WM_MESSAGE* pMsg) {
     WM_DefaultProc(pMsg);
   }
 }
+/*********************************************************************
+*      				_cbBkWin
+**********************************************************************/
 void _cbBkWin(WM_MESSAGE* pMsg) {
-  
 	int			i;
 	int     NCode;
   int     Id;
 	switch(pMsg->MsgId) {
+		case WM_TOUCH:
+		break;	
+		case WM_TOUCH_CHILD:
+			if(GPIOB->IDR & GPIO_IDR_IDR_11)	break;
+			if(move_y==0)			break;
+			if(!first_touch)
+				first_touch=State.y;
+			if((State.y-first_touch)>24)
+					{
+						/*i=(State.y-first_touch)/4;					// Сначала разделим на 4 затем умножим чтобы linescroll всегда была кратна 4
+						linescroll=252+i*4;
+						LcdWriteReg(CMD_SET_SCROLL_START);
+						LcdWriteData((linescroll)>>8);
+						LcdWriteData(linescroll);
+						if(linescroll>292)
+						{
+							NVIC_DisableIRQ(TIM6_DAC_IRQn);
+							first_touch=0;
+							GUI_SetOrg(0,0);
+							move_y=544;
+							screen_scroll=1;
+							scroll_down=1;
+						}*/
+					}
+					else if((first_touch-State.y)>24)
+					{
+						i=(first_touch-State.y)/4;					// Сначала разделим на 4 затем умножим чтобы linescroll всегда была кратна 4
+						//if(move_y==272)
+						//{
+							linescroll=292-i*4;
+							LcdWriteReg(CMD_SET_SCROLL_START);
+							LcdWriteData((linescroll)>>8);
+							LcdWriteData(linescroll);
+							if(linescroll<252)
+							{
+								NVIC_DisableIRQ(TIM6_DAC_IRQn);
+								first_touch=0;
+								GUI_SetOrg(0,SCREEN_2);
+								move_y=0;
+								screen_scroll=1;
+								scroll_up=1;
+								GUI_SetPenSize(7);
+								GUI_SetBkColor(GUI_WHITE);
+								GUI_ClearRect(0,0+SCREEN_2,479,271+SCREEN_2);
+												
+								GUI_SetColor(GUI_WHITE);
+								WM_Paint(hButton_BACK);
+											
+								TIM6->ARR = 40;
+								TIM6->EGR = TIM_EGR_UG;	
+								}
+						}
+						/*else if(move_y==544)
+						{
+							linescroll=564-i*4;
+							LcdWriteReg(CMD_SET_SCROLL_START);
+							LcdWriteData((linescroll)>>8);
+							LcdWriteData(linescroll);
+							if(linescroll<524)
+							{
+								NVIC_DisableIRQ(TIM6_DAC_IRQn);
+								GUI_SetOrg(0,272);
+								move_y=272;
+								first_touch=0;
+								screen_scroll=1;
+								scroll_up=1;
+								GUI_SetColor(GUI_YELLOW);
+								GUI_SetBkColor(GUI_DARKBLUE);		
+							}
+						}*/
+					//}
+		break;
 		case WM_NOTIFY_PARENT:
 			Id    = WM_GetId(pMsg->hWinSrc);
-			NCode = pMsg->Data.v;
+			NCode = pMsg->Data.v;	
 			switch(Id){
-					case ID_ICON_BRIGHT:
-						switch(NCode) {
+				case ID_ICON_BRIGHT:
+					switch(NCode) {
 						case WM_NOTIFICATION_RELEASED:
 							if(brightness==BRIGHTNESS_LOW)
 							{
@@ -330,12 +466,11 @@ void _cbBkWin(WM_MESSAGE* pMsg) {
 					switch(NCode) {
 						case WM_NOTIFICATION_CLICKED:
 							WM_DeleteWindow(hALARMA);
-							hALARMA=ICONVIEW_CreateEx(10,15,34,34,WM_HBKWIN,WM_CF_SHOW|WM_CF_HASTRANS,0,ID_ICON_ALARM_A,24,24);
+							hALARMA=ICONVIEW_CreateEx(10,15+SCREEN_1,34,34,WM_HBKWIN,WM_CF_SHOW|WM_CF_HASTRANS,0,ID_ICON_ALARM_A,24,24);
 							if((RTC->CR&RTC_CR_ALRAE)==RTC_CR_ALRAE)
 							{
 								RTC_AlarmCmd(RTC_Alarm_A, DISABLE);
 								ICONVIEW_AddBitmapItem(hALARMA,(const GUI_BITMAP*)(Alarm_d+1152),"");
-								
 							}
 							else
 							{
@@ -349,7 +484,7 @@ void _cbBkWin(WM_MESSAGE* pMsg) {
 					switch(NCode) {
 						case WM_NOTIFICATION_CLICKED:
 							WM_DeleteWindow(hALARMB);
-							hALARMB=ICONVIEW_CreateEx(10,45,34,34,WM_HBKWIN,WM_CF_SHOW|WM_CF_HASTRANS,0,ID_ICON_ALARM_B,24,24);
+							hALARMB=ICONVIEW_CreateEx(10,45+SCREEN_1,34,34,WM_HBKWIN,WM_CF_SHOW|WM_CF_HASTRANS,0,ID_ICON_ALARM_B,24,24);
 							if((RTC->CR&RTC_CR_ALRBE)==RTC_CR_ALRBE)
 							{
 								RTC_AlarmCmd(RTC_Alarm_B, DISABLE);
@@ -365,35 +500,20 @@ void _cbBkWin(WM_MESSAGE* pMsg) {
 					break;		
 					case ID_BUTTON_BACK:
 					switch(NCode){
-						case WM_NOTIFICATION_RELEASED:
+						case WM_NOTIFICATION_CLICKED:
 							drawmode=0;
-							WM_DeleteWindow(hButton_BACK);
-							hButton_BACK=0;
-							for(i=0;i<9;i++)
-							{WM_DeleteWindow(hIcon[i]);
-							hIcon[i]=0;
-							}
-							TIM6->ARR=250;
-							TIM6->EGR = TIM_EGR_UG;
-							TIM7->CNT=0;
-													
-							NVIC_EnableIRQ(TIM7_IRQn);
-							NVIC_EnableIRQ(RTC_WKUP_IRQn);
-							
-							GUI_SetBkColor(GUI_LIGHTBLUE);
-							GUI_ClearRect(1,17,58,270);
+						break;	
+						case WM_NOTIFICATION_RELEASED:
 							GUI_SetColor(GUI_YELLOW);
-							GUI_DrawRect(0,16,59,271);
 							GUI_SetBkColor(GUI_DARKBLUE);
-							GUI_ClearRect(0,0,470,15);
-							time_show=1;
-							CreateStart();
-							WM_ShowWindow(hALARMA);
-							WM_ShowWindow(hALARMB);
-							WM_ShowWindow(hIcon_EXIT);
-							WM_ShowWindow(hIcon_BRIGHT);
-							WM_ShowWindow(PROGBAR_MEM);
-							break;	
+							GUI_SetOrg(0,SCREEN_1);
+							move_y=272;
+							screen_scroll=1;
+							scroll_down=1;
+							TIM6->ARR=100;
+							TIM6->EGR = TIM_EGR_UG;
+							
+						break;	
 						}
 					break;
 					case ID_ICON_BLUE:
@@ -462,8 +582,8 @@ void _cbBkWin(WM_MESSAGE* pMsg) {
 					break;		
 				}	
 			break;	
-	 default:
-    WM_DefaultProc(pMsg);
+			default:
+			WM_DefaultProc(pMsg);
   }
 }
 
@@ -474,17 +594,11 @@ void CreateStart(void)
 	GUI_SetAlpha(0);
 	WM_SetCallback(WM_HBKWIN, _cbBkWin);
 	GUI_SetFont(&GUI_Font8x16);
-	//GUI_SetBkColor(GUI_LIGHTBLUE);
-	//GUI_Clear();
-	//GUI_SetColor(GUI_BLACK);
 	if(hWin_start==0)
 	{
-		hWin_start=WINDOW_CreateEx(60,15,410, 260,WM_HBKWIN, WM_CF_SHOW,0,ID_WINDOW_0,_cbSTART);	
+		hWin_start=WINDOW_CreateEx(60,15+SCREEN_1,410, 257,WM_HBKWIN, WM_CF_SHOW,0,ID_WINDOW_0,_cbSTART);	
 		WINDOW_SetBkColor(hWin_start, GUI_LIGHTBLUE);	
-		
-		
-		
-		
+				
 		hIcon_PHOTO=ICONVIEW_CreateEx(240,0,58,65,hWin_start,WM_CF_SHOW|WM_CF_HASTRANS,0,ID_ICON_PHOTO,48,65);
 		ICONVIEW_AddBitmapItem(hIcon_PHOTO,(const GUI_BITMAP*)(photo+4608),"IMAGE");
 		ICONVIEW_SetFont(hIcon_PHOTO,&GUI_Font8x18);
@@ -516,7 +630,7 @@ void CreateStart(void)
 		WM_ShowWindow(PROGBAR_MEM);*/
 	}
 		RTC_GetDate(RTC_Format_BIN, &RTC_Date);
-		GUI_DispDecAt(RTC_Date.RTC_Date,5,0,2);
+		GUI_DispDecAt(RTC_Date.RTC_Date,5,0+SCREEN_1,2);
 		GUI_DispString(".");
 		GUI_DispDec(RTC_Date.RTC_Month,2);
 		GUI_DispString(".20");
@@ -530,27 +644,27 @@ void MainTask(void)
 {
 	uint8_t flag=0xA7;
 	uint16_t count;
-	
+		
 	NVIC_SetPriority(SysTick_IRQn,1);
 	WM_SetCallback(WM_HBKWIN, _cbBkWin);
 	
 	GUI_SetBkColor(GUI_LIGHTBLUE);
-	GUI_ClearRect(1,17,58,270);
+	GUI_ClearRect(1,17+SCREEN_1,58,270+SCREEN_1);
 	GUI_SetColor(GUI_YELLOW);
-	GUI_DrawRect(0,16,59,271);
+	GUI_DrawRect(0,16+SCREEN_1,59,271+SCREEN_1);
 	GUI_SetBkColor(GUI_DARKBLUE);
-	GUI_ClearRect(0,0,470,15);
+	GUI_ClearRect(0,0+SCREEN_1,470,15+SCREEN_1);
 	
-	hIcon_EXIT=ICONVIEW_CreateEx(0,214,58,58,WM_HBKWIN,WM_CF_SHOW|WM_CF_HASTRANS,0,ID_ICON_EXIT,48,48);
+	hIcon_EXIT=ICONVIEW_CreateEx(0,214+SCREEN_1,58,58,WM_HBKWIN,WM_CF_SHOW|WM_CF_HASTRANS,0,ID_ICON_EXIT,48,48);
 	ICONVIEW_AddBitmapItem(hIcon_EXIT,(const GUI_BITMAP*)(exitt+4608),"");
-	hIcon_BRIGHT=ICONVIEW_CreateEx(10,80,34,34,WM_HBKWIN,WM_CF_SHOW|WM_CF_HASTRANS,0,ID_ICON_BRIGHT,24,24);
+	hIcon_BRIGHT=ICONVIEW_CreateEx(10,80+SCREEN_1,34,34,WM_HBKWIN,WM_CF_SHOW|WM_CF_HASTRANS,0,ID_ICON_BRIGHT,24,24);
 	ICONVIEW_AddBitmapItem(hIcon_BRIGHT,&bmbrightness,"");
-	hALARMA=ICONVIEW_CreateEx(10,15,34,34,WM_HBKWIN,WM_CF_SHOW|WM_CF_HASTRANS,0,ID_ICON_ALARM_A,24,24);
+	hALARMA=ICONVIEW_CreateEx(10,15+SCREEN_1,34,34,WM_HBKWIN,WM_CF_SHOW|WM_CF_HASTRANS,0,ID_ICON_ALARM_A,24,24);
 	if((RTC->CR&RTC_CR_ALRAE)==RTC_CR_ALRAE)
 			ICONVIEW_AddBitmapItem(hALARMA,(const GUI_BITMAP*)(AlarmA+1152),"");
 	else
 			ICONVIEW_AddBitmapItem(hALARMA,(const GUI_BITMAP*)(Alarm_d+1152),"");
-	hALARMB=ICONVIEW_CreateEx(10,45,34,34,WM_HBKWIN,WM_CF_SHOW|WM_CF_HASTRANS,0,ID_ICON_ALARM_B,24,24);
+	hALARMB=ICONVIEW_CreateEx(10,45+SCREEN_1,34,34,WM_HBKWIN,WM_CF_SHOW|WM_CF_HASTRANS,0,ID_ICON_ALARM_B,24,24);
 		if((RTC->CR&RTC_CR_ALRBE)==RTC_CR_ALRBE)
 			ICONVIEW_AddBitmapItem(hALARMB,(const GUI_BITMAP*)(AlarmB+1152),"");
 		else
@@ -564,14 +678,24 @@ void MainTask(void)
 	pWIDGET_DRAW_ITEM_FUNC=BUTTON_SetDefaultSkin(BUTTON_SKIN_FLEX);
 	
 	RADIO_SetDefaultSkin(RADIO_SKIN_FLEX);	
+	//FRAMEWIN_SetDefaultSkinClassic();
 	SCROLLBAR_SetDefaultWidth(20);
 	PROGBAR_SetDefaultSkin(PROGBAR_SKIN_FLEX);
-	PROGBAR_MEM=PROGBAR_CreateEx(470,0,10,272,WM_HBKWIN,WM_CF_SHOW,PROGBAR_CF_VERTICAL,PROGBAR_MEM);
+	PROGBAR_MEM=PROGBAR_CreateEx(470,0+SCREEN_1,10,272,WM_HBKWIN,WM_CF_SHOW,PROGBAR_CF_VERTICAL,PROGBAR_MEM);
 	PROGBAR_SetMinMax(PROGBAR_MEM,0,400*1024);
 	RTC_GetAlarm(RTC_Format_BIN, RTC_Alarm_A, &RTC_AlarmA);
 	RTC_GetAlarm(RTC_Format_BIN, RTC_Alarm_B, &RTC_AlarmB);
 	RTC_GetTime(RTC_Format_BIN, &RTC_Time);
+/*********************************************************************************************************************/	
+	hButton_BACK=BUTTON_CreateEx(400,220+SCREEN_2,50,30,WM_HBKWIN,WM_CF_SHOW,0,ID_BUTTON_BACK);
+	BUTTON_SetText(hButton_BACK, "BACK");	
+	for(int i=0;i<9;i++)
+	{
+	hIcon[i]=ICONVIEW_CreateEx(0,(i*30+SCREEN_2),30,30,WM_HBKWIN,WM_CF_SHOW,0,xD[i],30,30);
+	ICONVIEW_SetBkColor(hIcon[i], ICONVIEW_CI_BK, color[i]);	
+	}	
 	
+/**************************************************************************************************************************/	
 	NVIC_EnableIRQ(CAN1_RX0_IRQn);
 	NVIC_EnableIRQ(CAN1_RX1_IRQn);	
 		
@@ -584,24 +708,24 @@ void MainTask(void)
 		if(canerr_clr)
 		{
 			GUI_SetBkColor(GUI_DARKBLUE);
-			GUI_ClearRect(120,5,290,15);
+			GUI_ClearRect(120,5+SCREEN_1,290,15+SCREEN_1);
 			canerr_clr=0;
 		}
 		if(canerr_disp)	
 		{
 				GUI_SetFont(&GUI_Font6x8);
-				GUI_DispStringAt("REC ",120,5);
+				GUI_DispStringAt("REC ",120,5+SCREEN_1);
 				GUI_DispDec((uint8_t)((CAN1->ESR)>>24),3);
-				GUI_DispStringAt("TEC ",190,5);
+				GUI_DispStringAt("TEC ",190,5+SCREEN_1);
 				GUI_DispDec((uint8_t)((CAN1->ESR)>>16),3);
-				GUI_DispStringAt("ERF ",260,5);
+				GUI_DispStringAt("ERF ",260,5+SCREEN_1);
 				GUI_DispDec((uint8_t)(CAN1->ESR),1);
 				canerr_disp=0;
 		}
 		if(time_disp)
 		{
 			GUI_SetFont(&GUI_Font8x16);
-			GUI_DispDecAt(RTC_Time.RTC_Hours,350,0,2);
+			GUI_DispDecAt(RTC_Time.RTC_Hours,350,0+SCREEN_1,2);
 			GUI_DispString(":");
 			GUI_DispDec(RTC_Time.RTC_Minutes,2);
 			time_disp=0;	
@@ -614,22 +738,22 @@ void MainTask(void)
 			{
 				if(sd_error==SD_OK)
 					{
-					GUI_MessageBox("SD card is OK!", "Message", GUI_MESSAGEBOX_CF_MODAL);
-					if(start)
-						GUI_ClearRect(180,105,296,165);
+						Message("SD card is OK!",1);
+					//if(start)
+					//	GUI_ClearRect(180,105,296,165);
 					}	
 				else
 					{
-					GUI_MessageBox("SD card is error!", "Message", GUI_MESSAGEBOX_CF_MODAL);
-					if(start)
-						GUI_ClearRect(180,105,296,165);
+						Message("SD card is error!", 0);
+					//if(start)
+					//	GUI_ClearRect(180,105,296,165);
 					}
 			}			
 			else
 			{
-			GUI_MessageBox("SD card is removed!", "Message", GUI_MESSAGEBOX_CF_MODAL);
-			if(start)
-				GUI_ClearRect(180,105,296,165);
+				Message("SD card is removed!", 1);
+			//if(start)
+			//	GUI_ClearRect(180,105,296,165);
 			}
 		}
 		if(sleep_mode)
@@ -671,9 +795,45 @@ void MainTask(void)
 			GUI_Delay(1000);
 			NVIC_SystemReset();
 		}
+		if(screen_scroll)
+		{
+			if(scroll_up)
+			{
+				linescroll-=4;
+				LcdWriteReg(CMD_SET_SCROLL_START);
+				LcdWriteData(linescroll>>8);
+				LcdWriteData(linescroll);
+				if(linescroll==move_y)
+				{
+					NVIC_EnableIRQ(TIM6_DAC_IRQn);
+					screen_scroll=0;
+					scroll_up=0;
+					if(move_y==0)	drawmode=1;
+				}
+			}
+			else if(scroll_down)
+			{
+				linescroll+=4;
+				LcdWriteReg(CMD_SET_SCROLL_START);
+				LcdWriteData(linescroll>>8);
+				LcdWriteData(linescroll);
+				if(linescroll==move_y)
+				{ 
+					NVIC_EnableIRQ(TIM6_DAC_IRQn);
+					screen_scroll=0;
+					scroll_down=0;
+					//if(!hWin_photo)
+					//	PictureView();
+					
+					/*TIM7->CNT=0;
+					NVIC_EnableIRQ(TIM7_IRQn);
+					NVIC_EnableIRQ(RTC_WKUP_IRQn);
+					NVIC_EnableIRQ(TIM6_DAC_IRQn);*/
+				}
+			}
+		}
 	}
 }
-
 // USER END
 
 /*************************** End of file ****************************/

@@ -3,7 +3,6 @@
 #include <header.h>
 #include "DIALOG.h"
 #include "CAN.h"
-#define ADDRESS_NAME (FLASH_BASE+0x20)
 
 void assert_failed(uint8_t* file, uint32_t line)
 {
@@ -286,7 +285,7 @@ void Periph_Init(void){
 /* 															Инициализация таймера TIM6									 */	
 /*****************************************************************************/
 	TIM6->PSC = 45000 - 1; 			// Настраиваем делитель что таймер тикал 2000 раз в секунду
-	TIM6->ARR = 200 ; 					// Чтоб прерывание случалось 10 раз в секунду
+	TIM6->ARR = 100 ; 					// Чтоб прерывание случалось 10 раз в секунду
 	TIM6->DIER |= TIM_DIER_UIE; //разрешаем прерывание от таймера обновления структуры GUI_PID_STATE
 	TIM6->EGR = TIM_EGR_UG;		//генерируем "update event". ARR и PSC грузятся из предварительного в теневой регистр. 
 	TIM6->SR&=~TIM_SR_UIF; 			//Сбрасываем флаг UIF
@@ -457,25 +456,19 @@ SD_Error Boot_menu (void){
 	if(sd_error!=SD_OK)
 	{
 		sd_error=SD_Init();
-		/*if(sd_error==SD_OK)
-			sd_error=SD_GetCardInfo(&sd_cardinfo);
-		if(sd_error==SD_OK)
-			sd_error=SD_SelectDeselect((u32)sd_cardinfo.RCA<<16);
-		if(sd_error==SD_OK)
-			sd_error=SD_EnableWideBusOperation(SDIO_BusWide_4b);*/
 		if(sd_error==SD_OK)
 			f_mount (0,&fs);
 		else
 			{
-			GUI_MessageBox("SD card is error", "Message", 0);	
+			Message("SD card is error",0);	
 			return sd_error;
 			}
 		}		
-	 GUI_DispStringAt(" BOOT FROM SD CARD ? ",170,50);
+	 GUI_DispStringAt(" BOOT FROM SD CARD ? ",170,50+SCREEN_1);
 	 BUTTON_SetDefaultSkin(BUTTON_SKIN_FLEX);
-   hButton_YES=BUTTON_CreateEx(150,100,40,30,WM_HBKWIN,WM_CF_SHOW,0,ID_BUTTON_YES);
+   hButton_YES=BUTTON_CreateEx(150,100+SCREEN_1,40,30,WM_HBKWIN,WM_CF_SHOW,0,ID_BUTTON_YES);
 	 BUTTON_SetText(hButton_YES, "YES");
-	 hButton_NO=BUTTON_CreateEx(300,100,40,30,WM_HBKWIN,WM_CF_SHOW,0,ID_BUTTON_NO);
+	 hButton_NO=BUTTON_CreateEx(300,100+SCREEN_1,40,30,WM_HBKWIN,WM_CF_SHOW,0,ID_BUTTON_NO);
 	 BUTTON_SetText(hButton_NO, "NO");
 	 WM_SetCallback(WM_HBKWIN, _cbBoot_menu);
 		while(yes&&no)
@@ -493,29 +486,29 @@ SD_Error Boot_menu (void){
 		fresult=f_opendir(&dir, "0:");
 		if(fresult==FR_OK)
 			{					
-			GUI_DispStringAt(" CARD TYPE : ",5,10);
-			GUI_DispString(CardType[sd_cardinfo.CardType]);
+			GUI_DispStringAt(" CARD TYPE : ",5,10+SCREEN_1);
+			GUI_DispString(CardType[SDCardInfo.CardType]);
 										
-			GUI_DispStringAt(" SD_CARD SIZE :  ",5,30);
-			temp=1<<(sd_cardinfo.SD_csd.DeviceSizeMul+2);
-			temp1=(sd_cardinfo.SD_csd.DeviceSize+1)*temp*(1<<sd_cardinfo.SD_csd.RdBlockLen);
+			GUI_DispStringAt(" SD_CARD SIZE :  ",5,30+SCREEN_1);
+			temp=1<<(SDCardInfo.SD_csd.DeviceSizeMul+2);
+			temp1=(SDCardInfo.SD_csd.DeviceSize+1)*temp*(1<<SDCardInfo.SD_csd.RdBlockLen);
 			sd_size=temp1/1048576.0f;
 			GUI_DispFloat(sd_size,6);
 			GUI_DispString(" MBYTE");
 					
-			GUI_DispStringAt(" SECTOR SIZE : ",5,50);
+			GUI_DispStringAt(" SECTOR SIZE : ",5,50+SCREEN_1);
 			GUI_DispDec(SD_SECTOR_SIZE,3);
 			GUI_DispString("  BYTE");
 				
-			GUI_DispStringAt(" RRODUCT SN : ",5,70);
-			GUI_DispDec(sd_cardinfo.SD_cid.ProdSN,10);
+			GUI_DispStringAt(" RRODUCT SN : ",5,70+SCREEN_1);
+			GUI_DispDec(SDCardInfo.SD_cid.ProdSN,10);
 			
-			GUI_DispStringAt(" RCA : ",5,90);
-			GUI_DispDec(sd_cardinfo.RCA,5);
+			GUI_DispStringAt(" RCA : ",5,90+SCREEN_1);
+			GUI_DispDec(SDCardInfo.RCA,5);
 					
-			GUI_DispStringAt(" MANUFACTURER ID : ",5,110);
-			GUI_DispDec(sd_cardinfo.SD_cid.ManufacturerID,2);
-		  GUI_MessageBox("SD card is OK!", "Message", 0);
+			GUI_DispStringAt(" MANUFACTURER ID : ",5,110+SCREEN_1);
+			GUI_DispDec(SDCardInfo.SD_cid.ManufacturerID,2);
+		  Message("SD card is OK!",1);
 			fresult=f_open (&fil, "0:stm32.hex", FA_READ);	// open file
 			if(fresult==FR_OK)	
 				{	
@@ -535,7 +528,7 @@ SD_Error Boot_menu (void){
 			}				
 			else
 			{	
-			GUI_MessageBox("SD card is not initialize", "Message", 0);
+			Message("SD card is not initialize",0);
 			fresult=f_mount (0,NULL);
 			}	
 			
@@ -616,7 +609,8 @@ int main(void){
 	
 	
 	GUI_Init();
-	
+	GUI_SetOrg(0,0);
+		
 	TIM6->CR1 |= TIM_CR1_CEN; 	// Начать отсчёт!	
 	TIM7->CR1 |= TIM_CR1_CEN; 	// Начать отсчёт!
 	
