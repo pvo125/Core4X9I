@@ -96,6 +96,10 @@ extern WM_HWIN hWin_menu;
 
 WM_HWIN hWin_message;
 
+void Suspend(void);
+void SDRAM_PinConfig(void);
+void SSD1963_PinConfig(void);	
+void TSC2046_PinConfig(void);
 // USER END
 
 /*********************************************************************
@@ -467,7 +471,8 @@ void _cbBkWin(WM_MESSAGE* pMsg) {
 						case WM_NOTIFICATION_CLICKED:
 							WM_DeleteWindow(hALARMA);
 							hALARMA=ICONVIEW_CreateEx(10,15+SCREEN_1,34,34,WM_HBKWIN,WM_CF_SHOW|WM_CF_HASTRANS,0,ID_ICON_ALARM_A,24,24);
-							if((RTC->CR&RTC_CR_ALRAE)==RTC_CR_ALRAE)
+#ifdef FLASHCODE	
+						if((RTC->CR&RTC_CR_ALRAE)==RTC_CR_ALRAE)
 							{
 								RTC_AlarmCmd(RTC_Alarm_A, DISABLE);
 								ICONVIEW_AddBitmapItem(hALARMA,(const GUI_BITMAP*)(Alarm_d+1152),"");
@@ -477,6 +482,7 @@ void _cbBkWin(WM_MESSAGE* pMsg) {
 								RTC_AlarmCmd(RTC_Alarm_A, ENABLE);
 								ICONVIEW_AddBitmapItem(hALARMA,(const GUI_BITMAP*)(AlarmA+1152),"");
 							}
+#endif							
 						break;
 							}
 					break;
@@ -485,6 +491,7 @@ void _cbBkWin(WM_MESSAGE* pMsg) {
 						case WM_NOTIFICATION_CLICKED:
 							WM_DeleteWindow(hALARMB);
 							hALARMB=ICONVIEW_CreateEx(10,45+SCREEN_1,34,34,WM_HBKWIN,WM_CF_SHOW|WM_CF_HASTRANS,0,ID_ICON_ALARM_B,24,24);
+#ifdef FLASHCODE							
 							if((RTC->CR&RTC_CR_ALRBE)==RTC_CR_ALRBE)
 							{
 								RTC_AlarmCmd(RTC_Alarm_B, DISABLE);
@@ -495,6 +502,7 @@ void _cbBkWin(WM_MESSAGE* pMsg) {
 								RTC_AlarmCmd(RTC_Alarm_B, ENABLE);
 								ICONVIEW_AddBitmapItem(hALARMB,(const GUI_BITMAP*)(AlarmB+1152),"");
 							}
+#endif							
 						break;
 						}
 					break;		
@@ -600,23 +608,31 @@ void CreateStart(void)
 		WINDOW_SetBkColor(hWin_start, GUI_LIGHTBLUE);	
 				
 		hIcon_PHOTO=ICONVIEW_CreateEx(240,0,58,65,hWin_start,WM_CF_SHOW|WM_CF_HASTRANS,0,ID_ICON_PHOTO,48,65);
+#ifdef FLASHCODE	
 		ICONVIEW_AddBitmapItem(hIcon_PHOTO,(const GUI_BITMAP*)(photo+4608),"IMAGE");
+#endif
 		ICONVIEW_SetFont(hIcon_PHOTO,&GUI_Font8x18);
 		ICONVIEW_SetIconAlign(hIcon_PHOTO, ICONVIEW_IA_TOP);
 		
 		
 		hIcon_CALIB=ICONVIEW_CreateEx(340,0,58,65,hWin_start,WM_CF_SHOW|WM_CF_HASTRANS,0,ID_ICON_CALIB,48,65);
+#ifdef FLASHCODE		
 		ICONVIEW_AddBitmapItem(hIcon_CALIB,(const GUI_BITMAP*)(screen+4608),"CALIB");
+#endif
 		ICONVIEW_SetFont(hIcon_CALIB,&GUI_Font8x18);
 		ICONVIEW_SetIconAlign(hIcon_CALIB, ICONVIEW_IA_TOP);
 		
 		hIcon_PAINT=ICONVIEW_CreateEx(340,90,58,65,hWin_start,WM_CF_SHOW|WM_CF_HASTRANS,0,ID_ICON_PAINT,48,65);
+#ifdef FLASHCODE	
 		ICONVIEW_AddBitmapItem(hIcon_PAINT,(const GUI_BITMAP*)(paint+4608),"PAINT");
+#endif
 		ICONVIEW_SetFont(hIcon_PAINT,&GUI_Font8x18);
 		ICONVIEW_SetIconAlign(hIcon_PAINT, ICONVIEW_IA_TOP);
 		
 		hIcon_NEXT=ICONVIEW_CreateEx(340,200,58,58,hWin_start,WM_CF_SHOW|WM_CF_HASTRANS,0,ID_ICON_NEXT,48,48);
-		ICONVIEW_AddBitmapItem(hIcon_NEXT,(const GUI_BITMAP*)(next+4608),"");
+#ifdef FLASHCODE		
+	ICONVIEW_AddBitmapItem(hIcon_NEXT,(const GUI_BITMAP*)(next+4608),"");
+#endif	
 	}
 	else
 	{
@@ -656,20 +672,27 @@ void MainTask(void)
 	GUI_ClearRect(0,0+SCREEN_1,470,15+SCREEN_1);
 	
 	hIcon_EXIT=ICONVIEW_CreateEx(0,214+SCREEN_1,58,58,WM_HBKWIN,WM_CF_SHOW|WM_CF_HASTRANS,0,ID_ICON_EXIT,48,48);
+#ifdef FLASHCODE	
 	ICONVIEW_AddBitmapItem(hIcon_EXIT,(const GUI_BITMAP*)(exitt+4608),"");
+#endif
 	hIcon_BRIGHT=ICONVIEW_CreateEx(10,80+SCREEN_1,34,34,WM_HBKWIN,WM_CF_SHOW|WM_CF_HASTRANS,0,ID_ICON_BRIGHT,24,24);
+#ifdef FLASHCODE		
 	ICONVIEW_AddBitmapItem(hIcon_BRIGHT,&bmbrightness,"");
-	hALARMA=ICONVIEW_CreateEx(10,15+SCREEN_1,34,34,WM_HBKWIN,WM_CF_SHOW|WM_CF_HASTRANS,0,ID_ICON_ALARM_A,24,24);
+#endif
+hALARMA=ICONVIEW_CreateEx(10,15+SCREEN_1,34,34,WM_HBKWIN,WM_CF_SHOW|WM_CF_HASTRANS,0,ID_ICON_ALARM_A,24,24);
+#ifdef FLASHCODE	
 	if((RTC->CR&RTC_CR_ALRAE)==RTC_CR_ALRAE)
 			ICONVIEW_AddBitmapItem(hALARMA,(const GUI_BITMAP*)(AlarmA+1152),"");
 	else
 			ICONVIEW_AddBitmapItem(hALARMA,(const GUI_BITMAP*)(Alarm_d+1152),"");
+#endif
 	hALARMB=ICONVIEW_CreateEx(10,45+SCREEN_1,34,34,WM_HBKWIN,WM_CF_SHOW|WM_CF_HASTRANS,0,ID_ICON_ALARM_B,24,24);
-		if((RTC->CR&RTC_CR_ALRBE)==RTC_CR_ALRBE)
+#ifdef FLASHCODE	
+	if((RTC->CR&RTC_CR_ALRBE)==RTC_CR_ALRBE)
 			ICONVIEW_AddBitmapItem(hALARMB,(const GUI_BITMAP*)(AlarmB+1152),"");
 		else
 			ICONVIEW_AddBitmapItem(hALARMB,(const GUI_BITMAP*)(Alarm_d+1152),"");
-	
+#endif	
 	EXTI_ClearITPendingBit(EXTI_Line1);
 	NVIC_ClearPendingIRQ(EXTI1_IRQn);
 	
@@ -737,45 +760,16 @@ void MainTask(void)
 			if(GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_1)==0)	
 			{
 				if(sd_error==SD_OK)
-					{
-						Message("SD card is OK!",1);
-					//if(start)
-					//	GUI_ClearRect(180,105,296,165);
-					}	
+					Message("SD card is OK!",1);
 				else
-					{
-						Message("SD card is error!", 0);
-					//if(start)
-					//	GUI_ClearRect(180,105,296,165);
-					}
+					Message("SD card is error!", 0);
 			}			
 			else
-			{
 				Message("SD card is removed!", 1);
-			//if(start)
-			//	GUI_ClearRect(180,105,296,165);
-			}
 		}
 		if(sleep_mode)
 		{
-			
-			NVIC_DisableIRQ(TIM6_DAC_IRQn);
-			NVIC_DisableIRQ(TIM7_IRQn);
-			NVIC_DisableIRQ(RTC_WKUP_IRQn);
-			SysTick->CTRL&=~SysTick_CTRL_ENABLE_Msk;
-			SysTick->CTRL&=~SysTick_CTRL_TICKINT_Msk;
-			__WFI();
-		  
-			SysTick->VAL=0;
-			SysTick->CTRL|=SysTick_CTRL_ENABLE_Msk;
-			SysTick->CTRL|=SysTick_CTRL_TICKINT_Msk;
-			NVIC_EnableIRQ(TIM6_DAC_IRQn);
-			TIM7->CNT=0;
-			TIM7->SR &= ~TIM_SR_UIF; 			//Сбрасываем флаг UIF
-			NVIC_ClearPendingIRQ(TIM7_IRQn);
-			NVIC_EnableIRQ(TIM7_IRQn);
-			NVIC_EnableIRQ(RTC_WKUP_IRQn);
-			sleep_mode=0;
+			Suspend();
 		}
 		if(write_flashflag)
 		{
@@ -833,6 +827,242 @@ void MainTask(void)
 			}
 		}
 	}
+}
+
+void Suspend(void){
+	GPIO_InitTypeDef GPIO_InitStruct;
+			
+	NVIC_DisableIRQ(TIM6_DAC_IRQn);
+	NVIC_DisableIRQ(TIM7_IRQn);
+	NVIC_DisableIRQ(RTC_WKUP_IRQn);
+	SysTick->CTRL&=~SysTick_CTRL_ENABLE_Msk;
+	SysTick->CTRL&=~SysTick_CTRL_TICKINT_Msk;
+
+	LcdWriteReg(CMD_ENTER_SLEEP);
+						
+	while(FMC_Bank5_6->SDSR&FMC_SDSR_BUSY);
+	FMC_Bank5_6->SDCMR = ((uint32_t)0x00000004)|FMC_SDCMR_MODE_0| 	// 101  Self-Refresh mode
+											 FMC_SDCMR_CTB2| 														// Command issued to SDRAM Bank 2
+											 FMC_SDCMR_NRFS_0;													// 2 Auto-refresh cycles*/
+	
+	GPIO_InitStruct.GPIO_Mode=GPIO_Mode_AIN;
+	GPIO_InitStruct.GPIO_Speed=GPIO_Speed_2MHz;	
+	GPIO_InitStruct.GPIO_Pin=GPIO_Pin_0|GPIO_Pin_1|GPIO_Pin_2|GPIO_Pin_3|GPIO_Pin_4|GPIO_Pin_5|GPIO_Pin_6|GPIO_Pin_7|
+													 GPIO_Pin_8|GPIO_Pin_9|GPIO_Pin_10|GPIO_Pin_11|GPIO_Pin_12;
+	GPIO_Init(GPIOA, &GPIO_InitStruct);	
+	
+	GPIO_InitStruct.GPIO_Pin=GPIO_Pin_0|GPIO_Pin_1|GPIO_Pin_2|GPIO_Pin_5|GPIO_Pin_6|GPIO_Pin_7|GPIO_Pin_8|GPIO_Pin_9|
+													 GPIO_Pin_10|GPIO_Pin_11|GPIO_Pin_12|GPIO_Pin_13|GPIO_Pin_14|GPIO_Pin_15;
+	GPIO_Init(GPIOB, &GPIO_InitStruct);
+	
+	GPIO_InitStruct.GPIO_Pin=GPIO_Pin_0|GPIO_Pin_1|GPIO_Pin_2|GPIO_Pin_3|GPIO_Pin_5|GPIO_Pin_6|GPIO_Pin_7|GPIO_Pin_8|
+													 GPIO_Pin_9|GPIO_Pin_10|GPIO_Pin_11|GPIO_Pin_12|GPIO_Pin_13|GPIO_Pin_14|GPIO_Pin_15;
+	GPIO_Init(GPIOE, &GPIO_InitStruct);
+	
+	GPIO_InitStruct.GPIO_Pin=GPIO_Pin_All;
+	GPIO_Init(GPIOC, &GPIO_InitStruct);
+	GPIO_Init(GPIOD, &GPIO_InitStruct);
+	GPIO_Init(GPIOF, &GPIO_InitStruct);
+	GPIO_Init(GPIOG, &GPIO_InitStruct);
+	GPIO_Init(GPIOH, &GPIO_InitStruct);
+	GPIO_Init(GPIOI, &GPIO_InitStruct);
+	
+	
+			
+	__WFI();
+/**********************************************************		  
+*						WakeUp from stop mode													*	
+**********************************************************/				
+	RCC->CR|= RCC_CR_HSEON;
+	while((RCC->CR&RCC_CR_HSERDY)!=RCC_CR_HSERDY) {}
+			//RCC->CFGR    PLLXTPRE=0x00   (HSE clock not divided)
+			//RCC->CFGR    PLLMUL=0x07      (PLL input clock x 9)
+			//RCC->CFGR   PLLSRC=0x01        (HSE oscillator clock selected as PLL input clock)	
+			
+	RCC->CR|= RCC_CR_PLLON;
+	while((RCC->CR& RCC_CR_PLLRDY)!=RCC_CR_PLLRDY) {}
+	/* Enable the Over-drive to extend the clock frequency to 180 Mhz */
+  PWR->CR |= PWR_CR_ODEN;
+  while((PWR->CSR & PWR_CSR_ODRDY) == 0){}
+  PWR->CR |= PWR_CR_ODSWEN;
+  while((PWR->CSR & PWR_CSR_ODSWRDY) == 0){}
+	RCC->CFGR|=RCC_CFGR_SW_PLL;
+	while((RCC->CFGR&RCC_CFGR_SWS_PLL)!=RCC_CFGR_SWS_PLL) {}
+/***********************************************************/	
+	SDRAM_PinConfig();
+	while(FMC_Bank5_6->SDSR&FMC_SDSR_BUSY);
+	FMC_Bank5_6->SDCMR=  FMC_SDCMR_MODE_2|								// 011: Auto-refresh command
+										   FMC_SDCMR_CTB2|									// Command issued to SDRAM Bank 2
+	FMC_SDCMR_NRFS_0|FMC_SDCMR_NRFS_1|FMC_SDCMR_NRFS_2;		// Number of Auto-refresh 8 cycle (0111)
+	/*while(FMC_Bank5_6->SDSR&FMC_SDSR_BUSY);
+	FMC_Bank5_6->SDCMR =((uint32_t)0x00000000)			// 000: normal mode 
+											|FMC_SDCMR_CTB2							// Command issued to SDRAM Bank 2
+											|FMC_SDCMR_NRFS_2;					// Number of Auto-refresh 8 cycle (0111)*/
+	
+	SSD1963_PinConfig();	
+	TSC2046_PinConfig();
+		
+	SysTick->VAL=0;
+	SysTick->CTRL|=SysTick_CTRL_ENABLE_Msk|SysTick_CTRL_TICKINT_Msk;
+	
+	NVIC_EnableIRQ(TIM6_DAC_IRQn);
+	TIM7->CNT=0;
+	TIM7->SR &= ~TIM_SR_UIF; 			//Сбрасываем флаг UIF
+	NVIC_ClearPendingIRQ(TIM7_IRQn);
+	NVIC_EnableIRQ(TIM7_IRQn);
+	NVIC_EnableIRQ(RTC_WKUP_IRQn);
+	sleep_mode=0;
+
+
+}
+void SDRAM_PinConfig(void){
+	/* Connect PDx pins to FMC Alternate function  AF12 (1100=0xC) */
+	GPIOD->AFR[0]|=0x000000CC;
+	GPIOD->AFR[1]|=0xCC000CCC;
+	/* Configure PDx pins in Alternate function mode */
+	GPIOD->MODER|=0xA02A000A;
+	/* Configure PDx pins speed to 100 MHz */
+	GPIOD->OSPEEDR|=0xF03F000F;
+	/* Configure PDx pins Output type to push-pull */
+	GPIOD->OTYPER|=0x00000000;
+	/* No pull-up, pull-down for PDx pins */ 
+	GPIOD->PUPDR|=0x00000000;
+	
+	/* Connect PEx pins to FMC Alternate function  AF12 (1100=0xC) */
+	GPIOE->AFR[0]|=0xC00000CC;
+	GPIOE->AFR[1]|=0xCCCCCCCC;	
+	/* Configure PEx pins in Alternate function mode */
+	GPIOE->MODER|=0xAAAA800A;
+	/* Configure PEx pins speed to 100 MHz */
+	GPIOE->OSPEEDR|=0xFFFFC00F;
+	/* Configure PEx pins Output type to push-pull */
+	GPIOE->OTYPER|=0x00000000;
+	/* No pull-up, pull-down for PEx pins */ 
+	GPIOE->PUPDR|=0x00000000;
+	
+	/* Connect PFx pins to FMC Alternate function  AF12 (1100=0xC) */
+	GPIOF->AFR[0]=0x00CCCCCC;
+	GPIOF->AFR[1]=0xCCCCC000;	
+	/* Configure PFx pins in Alternate function mode */
+	GPIOF->MODER=0xAA800AAA;
+	/* Configure PFx pins speed to 100 MHz */
+	GPIOF->OSPEEDR=0xFFC00FFF;
+	/* Configure PFx pins Output type to push-pull */
+	GPIOF->OTYPER=0x00000000;
+	/* No pull-up, pull-down for PFx pins */ 
+	GPIOF->PUPDR=0x00000000;
+
+	/* Connect PEx pins to FMC Alternate function  AF12 (1100=0xC) */
+	GPIOG->AFR[0]=0x00CC00CC;
+	GPIOG->AFR[1]=0xC000000C;	
+	/* Configure PGx pins in Alternate function mode */
+	GPIOG->MODER=0x80020A0A;
+	/* Configure PGx pins speed to 100 MHz */
+	GPIOG->OSPEEDR=0xC0030F0F;
+	/* Configure PGx pins Output type to push-pull */
+	GPIOG->OTYPER=0x00000000;
+	/* No pull-up, pull-down for PGx pins */ 
+	GPIOG->PUPDR=0x00000000;
+
+	/* Connect PHx pins to FMC Alternate function  AF12 (1100=0xC) */
+	GPIOH->AFR[0]=0xCCC00000;
+	/* Configure PHx pins in Alternate function mode */
+	GPIOH->MODER=0x0000A800;
+	/* Configure PHx pins speed to 100 MHz */
+	GPIOH->OSPEEDR=0x0000FC00;
+	/* Configure PHx pins Output type to push-pull */
+	GPIOH->OTYPER=0x00000000;
+	/* No pull-up, pull-down for PHx pins */ 
+	GPIOH->PUPDR=0x00000000;
+}
+
+/*
+*/
+void SSD1963_PinConfig(void){
+	GPIO_InitTypeDef 	GPIO_InitStruct;
+	//Port D
+	GPIO_InitStruct.GPIO_Mode=GPIO_Mode_AF;
+	GPIO_InitStruct.GPIO_OType=GPIO_OType_PP;
+	GPIO_InitStruct.GPIO_PuPd=GPIO_PuPd_DOWN;
+	GPIO_InitStruct.GPIO_Speed=GPIO_Speed_100MHz;
+	GPIO_InitStruct.GPIO_Pin=GPIO_Pin_0|GPIO_Pin_1|GPIO_Pin_4|GPIO_Pin_5|GPIO_Pin_7|
+				GPIO_Pin_8|	GPIO_Pin_9|GPIO_Pin_10|GPIO_Pin_11|GPIO_Pin_14|GPIO_Pin_15;
+	GPIO_Init(GPIOD, &GPIO_InitStruct);
+	GPIO_PinAFConfig(GPIOD, GPIO_PinSource0,GPIO_AF_FMC);
+	GPIO_PinAFConfig(GPIOD, GPIO_PinSource1,GPIO_AF_FMC);
+	GPIO_PinAFConfig(GPIOD, GPIO_PinSource4,GPIO_AF_FMC);
+	GPIO_PinAFConfig(GPIOD, GPIO_PinSource5,GPIO_AF_FMC);
+	GPIO_PinAFConfig(GPIOD, GPIO_PinSource7,GPIO_AF_FMC);
+	GPIO_PinAFConfig(GPIOD, GPIO_PinSource8,GPIO_AF_FMC);
+	GPIO_PinAFConfig(GPIOD, GPIO_PinSource9,GPIO_AF_FMC);
+	GPIO_PinAFConfig(GPIOD, GPIO_PinSource10,GPIO_AF_FMC);
+	GPIO_PinAFConfig(GPIOD, GPIO_PinSource11,GPIO_AF_FMC);
+	GPIO_PinAFConfig(GPIOD, GPIO_PinSource14,GPIO_AF_FMC);
+	GPIO_PinAFConfig(GPIOD, GPIO_PinSource15,GPIO_AF_FMC);
+	//Port E
+	GPIO_InitStruct.GPIO_Mode=GPIO_Mode_AF;
+	GPIO_InitStruct.GPIO_OType=GPIO_OType_PP;
+	GPIO_InitStruct.GPIO_PuPd=GPIO_PuPd_DOWN;
+	GPIO_InitStruct.GPIO_Speed=GPIO_Speed_100MHz;
+	GPIO_InitStruct.GPIO_Pin=GPIO_Pin_7|GPIO_Pin_8|GPIO_Pin_9|GPIO_Pin_10|GPIO_Pin_11|
+				GPIO_Pin_12|GPIO_Pin_13|GPIO_Pin_14|GPIO_Pin_15;
+	GPIO_Init(GPIOE, &GPIO_InitStruct);
+	GPIO_PinAFConfig(GPIOE, GPIO_PinSource7,GPIO_AF_FMC);
+	GPIO_PinAFConfig(GPIOE, GPIO_PinSource8,GPIO_AF_FMC);
+	GPIO_PinAFConfig(GPIOE, GPIO_PinSource9,GPIO_AF_FMC);
+	GPIO_PinAFConfig(GPIOE, GPIO_PinSource10,GPIO_AF_FMC);
+	GPIO_PinAFConfig(GPIOE, GPIO_PinSource11,GPIO_AF_FMC);
+	GPIO_PinAFConfig(GPIOE, GPIO_PinSource12,GPIO_AF_FMC);
+	GPIO_PinAFConfig(GPIOE, GPIO_PinSource13,GPIO_AF_FMC);
+	GPIO_PinAFConfig(GPIOE, GPIO_PinSource14,GPIO_AF_FMC);
+	GPIO_PinAFConfig(GPIOE, GPIO_PinSource15,GPIO_AF_FMC);
+	
+	// LCD RESET 
+	GPIO_InitStruct.GPIO_Pin = GPIO_Pin_2;
+	GPIO_InitStruct.GPIO_Mode = GPIO_Mode_OUT;
+	GPIO_InitStruct.GPIO_OType = GPIO_OType_PP;
+	GPIO_InitStruct.GPIO_Speed = GPIO_Speed_50MHz;
+	GPIO_InitStruct.GPIO_PuPd=GPIO_PuPd_DOWN;//NOPULL
+	GPIO_Init(GPIOE, &GPIO_InitStruct);
+	
+	GPIO_ResetBits(GPIOE, GPIO_Pin_2);
+
+}
+/*
+*/
+void TSC2046_PinConfig(void){
+	GPIO_InitTypeDef 	GPIO_InitStruct;
+	
+	GPIO_PinAFConfig(GPIOB, GPIO_PinSource13,GPIO_AF_SPI2);
+	GPIO_PinAFConfig(GPIOB, GPIO_PinSource14,GPIO_AF_SPI2);
+	GPIO_PinAFConfig(GPIOB, GPIO_PinSource15,GPIO_AF_SPI2);
+	
+	/* TSC2046 interrupt(GPIO input) - port B */
+	GPIO_InitStruct.GPIO_Pin = GPIO_Pin_11;	/* PB11  - TCH INTR  */
+	GPIO_InitStruct.GPIO_Speed = GPIO_Speed_2MHz;
+	GPIO_InitStruct.GPIO_Mode = GPIO_Mode_IN;
+	GPIO_InitStruct.GPIO_PuPd=GPIO_PuPd_UP;
+	GPIO_Init(GPIOB, &GPIO_InitStruct);
+
+	/* TSC2046 CS(GPIO output) - port B */
+	GPIO_InitStruct.GPIO_Pin = GPIO_Pin_12;	/* PB12  - TCH CS    */
+	GPIO_InitStruct.GPIO_Speed = GPIO_Speed_50MHz;
+	GPIO_InitStruct.GPIO_Mode = GPIO_Mode_OUT;
+	GPIO_InitStruct.GPIO_OType=GPIO_OType_PP;
+	GPIO_InitStruct.GPIO_PuPd=GPIO_PuPd_NOPULL;
+	GPIO_Init(GPIOB, &GPIO_InitStruct);	
+
+	//GPIOB->BSRRL=GPIO_BSRR_BS_12;	
+
+	/* TSC2046 SCK,MOSI,MISO - port B */
+
+	GPIO_InitStruct.GPIO_Pin=GPIO_Pin_13|GPIO_Pin_14|GPIO_Pin_15;	/*	PB13 - SPI2_SCK */
+	GPIO_InitStruct.GPIO_Speed=GPIO_Speed_50MHz;								/*  PB14 - SPI2_MISO*/
+	GPIO_InitStruct.GPIO_Mode=GPIO_Mode_AF;											/*  PB15 - SPI2_MOSI*/	
+	GPIO_InitStruct.GPIO_OType=GPIO_OType_PP;
+	GPIO_InitStruct.GPIO_PuPd=GPIO_PuPd_NOPULL;
+	GPIO_Init(GPIOB, &GPIO_InitStruct);	
+
 }
 // USER END
 

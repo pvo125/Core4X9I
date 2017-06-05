@@ -294,7 +294,7 @@ void Periph_Init(void){
 /* 															Инициализация таймера TIM7									 */	
 /*****************************************************************************/
 	TIM7->PSC = 45000 - 1; 			// Настраиваем делитель что таймер тикал 2000 раз в секунду
-	TIM7->ARR = 60000 ; 				// Чтоб прерывание случалось  раз в 10 секунд
+	TIM7->ARR = 10000 ; 				// Чтоб прерывание случалось  раз в 5 секунд
   TIM7->DIER |= TIM_DIER_UIE; //разрешаем прерывание от таймера подсветки дисплея
 	TIM7->EGR = TIM_EGR_UG;			//генерируем "update event". ARR и PSC грузятся из предварительного в теневой регистр. 
 	TIM7->SR&=~TIM_SR_UIF; 			//Сбрасываем флаг UIF
@@ -579,6 +579,12 @@ int main(void){
 	
 	NVIC_EnableIRQ(EXTI4_IRQn);		
 	NVIC_EnableIRQ(RTC_Alarm_IRQn);
+	
+	DBGMCU->CR|=DBGMCU_CR_DBG_STOP;
+	SCB->SCR|=SCB_SCR_SLEEPDEEP_Msk;					// Разрешаем SLEEPDEEP по команде WFI WFE
+	PWR->CR&= ~PWR_CR_PDDS;										// Сбрасываем бит PDDS (Stop mode)
+	PWR->CR|=	PWR_CR_LPDS;										// Voltage regulator low-power during Stop mode
+	
 	DBGMCU->APB1FZ|=DBGMCU_APB1_FZ_DBG_CAN1_STOP;
 	/*ChipErase_MX25L();
 	for(i=0;i<10;i++)

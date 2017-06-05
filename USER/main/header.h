@@ -16,9 +16,7 @@
 #define ID_PROGBAR_MEM     (GUI_ID_USER + 0x27)
 
 #define MY_MESSAGE     (WM_USER + 0x01)
-
-#define FLASHCODE
-
+// #define FLASHCODE
 #define SCREEN_1		0
 #define SCREEN_2		272
 

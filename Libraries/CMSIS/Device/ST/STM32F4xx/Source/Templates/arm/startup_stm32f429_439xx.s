@@ -189,8 +189,8 @@ Reset_Handler    PROC
 		IMPORT  SDRAM_LowLevel_Init   
         IMPORT  __main
 
-				 ;LDR     R0, =SystemInit
-				 ;BLX     R0				 
+				 LDR     R0, =SystemInit
+				 BLX     R0				 
                  LDR     R0, =SDRAM_LowLevel_Init 
                  BLX     R0
 				
