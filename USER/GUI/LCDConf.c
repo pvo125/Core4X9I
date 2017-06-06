@@ -292,10 +292,23 @@ void _CheckUpdateTouch(void)
 			float Rt;
 			if(_TouchIsPresset())
 			{
-				if((backlight==BACKLIGHT_OFF)||(backlight==BACKLIGHT_LOW))
+				if(backlight==BACKLIGHT_OFF)
 				{/* Включаем PWM на подсветке */
 					LcdWriteReg(CMD_EXIT_SLEEP);
 					for(i=0;i<180000;i++);//GUI_Delay(5);
+					LcdWriteReg(CMD_SET_PWM_CONF); 			//set PWM for Backlight. Manual p.53
+					// 6 parameters to be set
+					LcdWriteData(0x0004); 							// PWM Freq =100MHz/(256*(PWMF[7:0]+1))/256  PWMF[7:0]=4 PWM Freq=305Hz
+					LcdWriteData(brightness); 					// PWM duty cycle(50%)
+					LcdWriteData(0x0001); 							// PWM controlled by host, PWM enable
+					LcdWriteData(0x00f0); 							// brightness level 0x00 - 0xFF
+					LcdWriteData(0x0000); 							// minimum brightness level =  0x00 - 0xFF
+					LcdWriteData(0x0000);								// brightness prescalar 0x0 - 0xF
+					backlight=BACKLIGHT_ON;
+					backlight_delay=0;
+				}
+				else if(backlight==BACKLIGHT_LOW)	
+				{
 					LcdWriteReg(CMD_SET_PWM_CONF); 			//set PWM for Backlight. Manual p.53
 					// 6 parameters to be set
 					LcdWriteData(0x0004); 							// PWM Freq =100MHz/(256*(PWMF[7:0]+1))/256  PWMF[7:0]=4 PWM Freq=305Hz

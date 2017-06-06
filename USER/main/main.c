@@ -224,12 +224,11 @@ void Periph_Init(void){
 /********************************************************************/
 /*					SDIO card insert  PB1	  																*/
 /********************************************************************/	
-
-		GPIO_InitStruct.GPIO_Pin=GPIO_Pin_1;
+		GPIO_InitStruct.GPIO_Pin=SDCARD_INSERT_PIN;
 		GPIO_InitStruct.GPIO_Speed=GPIO_Speed_2MHz;
 		GPIO_InitStruct.GPIO_Mode=GPIO_Mode_IN;
 		GPIO_InitStruct.GPIO_PuPd=GPIO_PuPd_UP;
-		GPIO_Init(GPIOB,&GPIO_InitStruct);
+		GPIO_Init(SDCARD_INSERT_PORT,&GPIO_InitStruct);
 		
 		SYSCFG->EXTICR[0]=SYSCFG_EXTICR1_EXTI1_PB;
 		
@@ -238,9 +237,25 @@ void Periph_Init(void){
 		EXTI_InitStruct.EXTI_Mode=EXTI_Mode_Interrupt;
 		EXTI_InitStruct.EXTI_Trigger=EXTI_Trigger_Rising_Falling;
 		EXTI_Init(&EXTI_InitStruct);
+/********************************************************************/
+/*								SWPOWER_LCD 		  																*/
+/********************************************************************/			
+		GPIO_InitStruct.GPIO_Pin=SWPOWER_LCD_PIN;
+		GPIO_InitStruct.GPIO_Speed=GPIO_Speed_2MHz;
+		GPIO_InitStruct.GPIO_Mode=GPIO_Mode_OUT;
+		GPIO_InitStruct.GPIO_OType=GPIO_OType_PP;
+		GPIO_InitStruct.GPIO_PuPd=GPIO_PuPd_NOPULL;
+		GPIO_Init(SWPOWER_LCD_PORT,&GPIO_InitStruct);
 		
+		GPIO_SetBits(SWPOWER_LCD_PORT, SWPOWER_LCD_PIN);		// Включаем  LDO для LCD + CAN transsiver
 		
-		
+// PF7 выход push-pull без подтяжки для моргания светодиодом
+		GPIO_InitStruct.GPIO_Pin=GPIO_Pin_7;
+		GPIO_InitStruct.GPIO_Mode=GPIO_Mode_OUT;
+		GPIO_InitStruct.GPIO_OType=GPIO_OType_PP;
+		GPIO_InitStruct.GPIO_PuPd=GPIO_PuPd_NOPULL;
+		GPIO_InitStruct.GPIO_Speed=GPIO_Low_Speed;
+		GPIO_Init(GPIOF,&GPIO_InitStruct);			
 
 /*****************************************************************************/
 /* 															Инициализация таймера TIM2									 */	
@@ -558,13 +573,7 @@ int main(void){
 	TSC2046_LowLevel_Init();
 	bxCAN_Init();
 	
-	// PF7 выход push-pull без подтяжки для моргания светодиодом
-		GPIO_InitStruct.GPIO_Pin=GPIO_Pin_7;
-		GPIO_InitStruct.GPIO_Mode=GPIO_Mode_OUT;
-		GPIO_InitStruct.GPIO_OType=GPIO_OType_PP;
-		GPIO_InitStruct.GPIO_PuPd=GPIO_PuPd_NOPULL;
-		GPIO_InitStruct.GPIO_Speed=GPIO_Low_Speed;
-		GPIO_Init(GPIOF,&GPIO_InitStruct);	
+	
 	
 	brightness=(uint16_t)RTC->BKP2R;
 	if(!brightness)

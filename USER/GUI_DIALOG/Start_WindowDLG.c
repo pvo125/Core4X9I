@@ -835,36 +835,40 @@ void Suspend(void){
 	NVIC_DisableIRQ(TIM6_DAC_IRQn);
 	NVIC_DisableIRQ(TIM7_IRQn);
 	NVIC_DisableIRQ(RTC_WKUP_IRQn);
+	NVIC_DisableIRQ(EXTI1_IRQn);									
+	
 	SysTick->CTRL&=~SysTick_CTRL_ENABLE_Msk;
 	SysTick->CTRL&=~SysTick_CTRL_TICKINT_Msk;
 
 	LcdWriteReg(CMD_ENTER_SLEEP);
-						
+					
 	while(FMC_Bank5_6->SDSR&FMC_SDSR_BUSY);
 	FMC_Bank5_6->SDCMR = ((uint32_t)0x00000004)|FMC_SDCMR_MODE_0| 	// 101  Self-Refresh mode
 											 FMC_SDCMR_CTB2| 														// Command issued to SDRAM Bank 2
 											 FMC_SDCMR_NRFS_0;													// 2 Auto-refresh cycles*/
 	
+	
 	GPIO_InitStruct.GPIO_Mode=GPIO_Mode_AIN;
 	GPIO_InitStruct.GPIO_Speed=GPIO_Speed_2MHz;	
-	GPIO_InitStruct.GPIO_Pin=GPIO_Pin_0|GPIO_Pin_1|GPIO_Pin_2|GPIO_Pin_3|GPIO_Pin_4|GPIO_Pin_5|GPIO_Pin_6|GPIO_Pin_7|
-													 GPIO_Pin_8|GPIO_Pin_9|GPIO_Pin_10|GPIO_Pin_11|GPIO_Pin_12;
-	GPIO_Init(GPIOA, &GPIO_InitStruct);	
 	
-	GPIO_InitStruct.GPIO_Pin=GPIO_Pin_0|GPIO_Pin_1|GPIO_Pin_2|GPIO_Pin_5|GPIO_Pin_6|GPIO_Pin_7|GPIO_Pin_8|GPIO_Pin_9|
+	GPIO_InitStruct.GPIO_Pin=GPIO_Pin_0|GPIO_Pin_1|GPIO_Pin_2|GPIO_Pin_3|GPIO_Pin_4|GPIO_Pin_5|GPIO_Pin_6|GPIO_Pin_7|
+													 GPIO_Pin_8|GPIO_Pin_9|GPIO_Pin_10|GPIO_Pin_11|GPIO_Pin_12/*|GPIO_Pin_13|GPIO_Pin_14|GPIO_Pin_15*/;
+	GPIO_Init(GPIOA, &GPIO_InitStruct);	
+	GPIO_InitStruct.GPIO_Pin=GPIO_Pin_0|GPIO_Pin_1|GPIO_Pin_2|/*GPIO_Pin_3|GPIO_Pin_4|*/GPIO_Pin_5|GPIO_Pin_6|GPIO_Pin_7|GPIO_Pin_8|GPIO_Pin_9|
 													 GPIO_Pin_10|GPIO_Pin_11|GPIO_Pin_12|GPIO_Pin_13|GPIO_Pin_14|GPIO_Pin_15;
 	GPIO_Init(GPIOB, &GPIO_InitStruct);
-	
-	GPIO_InitStruct.GPIO_Pin=GPIO_Pin_0|GPIO_Pin_1|GPIO_Pin_2|GPIO_Pin_3|GPIO_Pin_5|GPIO_Pin_6|GPIO_Pin_7|GPIO_Pin_8|
+	GPIO_InitStruct.GPIO_Pin=/*GPIO_Pin_0|GPIO_Pin_1*/GPIO_Pin_2|GPIO_Pin_3|GPIO_Pin_5|GPIO_Pin_6|GPIO_Pin_7|GPIO_Pin_8|
 													 GPIO_Pin_9|GPIO_Pin_10|GPIO_Pin_11|GPIO_Pin_12|GPIO_Pin_13|GPIO_Pin_14|GPIO_Pin_15;
 	GPIO_Init(GPIOE, &GPIO_InitStruct);
+	GPIO_InitStruct.GPIO_Pin=GPIO_Pin_0|GPIO_Pin_1|GPIO_Pin_2|GPIO_Pin_3|GPIO_Pin_4|GPIO_Pin_5/*|GPIO_Pin_6|GPIO_Pin_7*/|GPIO_Pin_8|
+													 GPIO_Pin_9|GPIO_Pin_10|GPIO_Pin_11|GPIO_Pin_12|GPIO_Pin_13|GPIO_Pin_14|GPIO_Pin_15;
+	GPIO_Init(GPIOH, &GPIO_InitStruct);
 	
 	GPIO_InitStruct.GPIO_Pin=GPIO_Pin_All;
 	GPIO_Init(GPIOC, &GPIO_InitStruct);
 	GPIO_Init(GPIOD, &GPIO_InitStruct);
 	GPIO_Init(GPIOF, &GPIO_InitStruct);
 	GPIO_Init(GPIOG, &GPIO_InitStruct);
-	GPIO_Init(GPIOH, &GPIO_InitStruct);
 	GPIO_Init(GPIOI, &GPIO_InitStruct);
 	
 	
@@ -890,21 +894,78 @@ void Suspend(void){
 	while((RCC->CFGR&RCC_CFGR_SWS_PLL)!=RCC_CFGR_SWS_PLL) {}
 /***********************************************************/	
 	SDRAM_PinConfig();
-	while(FMC_Bank5_6->SDSR&FMC_SDSR_BUSY);
+	
+	/*while(FMC_Bank5_6->SDSR&FMC_SDSR_BUSY);
 	FMC_Bank5_6->SDCMR=  FMC_SDCMR_MODE_2|								// 011: Auto-refresh command
 										   FMC_SDCMR_CTB2|									// Command issued to SDRAM Bank 2
-	FMC_SDCMR_NRFS_0|FMC_SDCMR_NRFS_1|FMC_SDCMR_NRFS_2;		// Number of Auto-refresh 8 cycle (0111)
-	/*while(FMC_Bank5_6->SDSR&FMC_SDSR_BUSY);
+	FMC_SDCMR_NRFS_0|FMC_SDCMR_NRFS_1|FMC_SDCMR_NRFS_2;		// Number of Auto-refresh 8 cycle (0111)*/
+	while(FMC_Bank5_6->SDSR&FMC_SDSR_BUSY);
 	FMC_Bank5_6->SDCMR =((uint32_t)0x00000000)			// 000: normal mode 
 											|FMC_SDCMR_CTB2							// Command issued to SDRAM Bank 2
 											|FMC_SDCMR_NRFS_2;					// Number of Auto-refresh 8 cycle (0111)*/
 	
 	SSD1963_PinConfig();	
 	TSC2046_PinConfig();
+/********************************************************************/
+/*					SDIO card insert  PB1	  																*/
+/********************************************************************/	
+		GPIO_InitStruct.GPIO_Pin=SDCARD_INSERT_PIN;
+		GPIO_InitStruct.GPIO_Speed=GPIO_Speed_2MHz;
+		GPIO_InitStruct.GPIO_Mode=GPIO_Mode_IN;
+		GPIO_InitStruct.GPIO_PuPd=GPIO_PuPd_UP;
+		GPIO_Init(SDCARD_INSERT_PORT,&GPIO_InitStruct);	
+		EXTI_ClearITPendingBit(EXTI_Line1);
+		NVIC_ClearPendingIRQ(EXTI1_IRQn);
+		NVIC_EnableIRQ(EXTI1_IRQn);									//Разрешение EXTI1_IRQn прерывания
+/********************************************************************/
+/*								SWPOWER_LCD 		  																*/
+/********************************************************************/			
+		GPIO_InitStruct.GPIO_Pin=SWPOWER_LCD_PIN;
+		GPIO_InitStruct.GPIO_Speed=GPIO_Speed_2MHz;
+		GPIO_InitStruct.GPIO_Mode=GPIO_Mode_OUT;
+		GPIO_InitStruct.GPIO_OType=GPIO_OType_PP;
+		GPIO_InitStruct.GPIO_PuPd=GPIO_PuPd_NOPULL;
+		GPIO_Init(SWPOWER_LCD_PORT,&GPIO_InitStruct);
+		
+		GPIO_SetBits(SWPOWER_LCD_PORT, SWPOWER_LCD_PIN);		// Включаем  LDO для LCD + CAN transsiver
+		
 		
 	SysTick->VAL=0;
 	SysTick->CTRL|=SysTick_CTRL_ENABLE_Msk|SysTick_CTRL_TICKINT_Msk;
 	
+	LCD_X_DisplayDriver(0,LCD_X_INITCONTROLLER, NULL); 
+	LcdWriteReg(CMD_SET_ADDRESS_MODE); //rotation, see p.18
+	LcdWriteData(0x00C0);
+	//GUI_SetOrg(0,0);
+	GUI_SetBkColor(GUI_LIGHTBLUE);
+	GUI_ClearRect(1,17+SCREEN_1,58,270+SCREEN_1);
+	GUI_SetColor(GUI_YELLOW);
+	GUI_DrawRect(0,16+SCREEN_1,59,271+SCREEN_1);
+	GUI_SetBkColor(GUI_DARKBLUE);
+	GUI_ClearRect(0,0+SCREEN_1,470,15+SCREEN_1);
+	
+	WM_Paint(hALARMA);
+	WM_Paint(hALARMB);
+	WM_Paint(hIcon_EXIT);	
+	WM_Paint(hIcon_BRIGHT);
+	
+	RTC_GetDate(RTC_Format_BIN, &RTC_Date);
+	GUI_DispDecAt(RTC_Date.RTC_Date,5,0+SCREEN_1,2);
+	GUI_DispString(".");
+	GUI_DispDec(RTC_Date.RTC_Month,2);
+	GUI_DispString(".20");
+	GUI_DispDec(RTC_Date.RTC_Year,2);
+	
+	if(WM_IsVisible(hWin_start))
+	{
+		WM_HideWindow(hWin_start);
+		WM_ShowWindow(hWin_start);
+	}
+	else if(WM_IsVisible(hWin_menu))
+	{
+		WM_HideWindow(hWin_menu);
+		WM_ShowWindow(hWin_menu);
+	}
 	NVIC_EnableIRQ(TIM6_DAC_IRQn);
 	TIM7->CNT=0;
 	TIM7->SR &= ~TIM_SR_UIF; 			//Сбрасываем флаг UIF
@@ -1025,7 +1086,7 @@ void SSD1963_PinConfig(void){
 	GPIO_InitStruct.GPIO_PuPd=GPIO_PuPd_DOWN;//NOPULL
 	GPIO_Init(GPIOE, &GPIO_InitStruct);
 	
-	GPIO_ResetBits(GPIOE, GPIO_Pin_2);
+	//GPIO_ResetBits(GPIOE, GPIO_Pin_2);
 
 }
 /*

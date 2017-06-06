@@ -23,6 +23,12 @@
 //#define SRAM
 #define NAND
 
+#define SDCARD_INSERT_PIN		GPIO_Pin_1
+#define SDCARD_INSERT_PORT	GPIOB	
+
+#define SWPOWER_LCD_PIN		GPIO_Pin_6
+#define SWPOWER_LCD_PORT	GPIOB	
+
 #ifdef SRAM 
 #define LCD_BASE           ((uint32_t)(0x60000000))
 #define LCD_REG_ADDRESS   (*(volatile U16*)LCD_BASE)
