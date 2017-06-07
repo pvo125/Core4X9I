@@ -1,13 +1,9 @@
-﻿
+
 #include "header.h"
-
-extern SPI_InitTypeDef						SPI_InitStruct;
-extern GPIO_InitTypeDef 					GPIO_InitStruct;
-extern DMA_InitTypeDef						DMA_InitStruct;
-
 
 void MX25_LowLevel_Init(void)
 {
+	GPIO_InitTypeDef 					GPIO_InitStruct;
 	/* SPI output - port A */	
 	GPIO_InitStruct.GPIO_Pin=GPIO_Pin_5|				/* SPI1 SCK */
 													 GPIO_Pin_6|				/*	SPI1 MOSI */
@@ -30,6 +26,14 @@ void MX25_LowLevel_Init(void)
 	GPIO_InitStruct.GPIO_Speed=GPIO_Speed_50MHz;
 	GPIO_Init(GPIOA,&GPIO_InitStruct);
 	CS_HIGH();
+}
+
+void MX25_Init(void){
+	SPI_InitTypeDef						SPI_InitStruct;
+	DMA_InitTypeDef						DMA_InitStruct;
+	
+	MX25_LowLevel_Init();
+
 	/*	SPI configuration */
 	SPI_InitStruct.SPI_BaudRatePrescaler=SPI_BaudRatePrescaler_8;  //APB2=90MHz  fPCLK/8=11.25MHz
 	SPI_InitStruct.SPI_CPHA=SPI_CPHA_1Edge;
@@ -83,10 +87,7 @@ void MX25_LowLevel_Init(void)
 	DMA_InitStruct.DMA_PeripheralBurst=DMA_PeripheralBurst_Single;
 	DMA_Init(DMA2_Stream5,&DMA_InitStruct);
 	DMA_ITConfig(DMA2_Stream5, DMA_IT_TC, ENABLE);
-	
 }
-
-
 /*---------------------------------------------------------------------------------------------------*/
 void WriteDisable(void){
 	uint16_t temp;

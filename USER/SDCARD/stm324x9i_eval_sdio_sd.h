@@ -428,6 +428,8 @@ void SD_ProcessDMAIRQ(void);
 SD_Error SD_WaitReadOperation(void);
 SD_Error SD_WaitWriteOperation(void);
 SD_Error SD_HighSpeed(void);
+
+void SD_LowLevel_Init(void);
 #ifdef __cplusplus
 }
 #endif

@@ -25,6 +25,7 @@
 #define CS_LOW()	GPIO_ResetBits(GPIOA, GPIO_Pin_4)  
 #define CS_HIGH()	GPIO_SetBits(GPIOA, GPIO_Pin_4)
  void MX25_LowLevel_Init(void);
+ void MX25_Init(void);
  void WriteDisable(void);
  void WriteEnable(void);
  void WriteStatusReg_MX25L(uint8_t status);

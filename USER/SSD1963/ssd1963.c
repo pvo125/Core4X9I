@@ -41,6 +41,14 @@ void delay(uint32_t uSec){
 
 //=====================================================================================
 
+static __INLINE void LcdWriteReg(U16 Data) {
+  // ... TBD by user
+	LCD_REG_ADDRESS=Data;
+}
+static __INLINE  void LcdWriteData(U16 Data) {
+  // ... TBD by user
+	LCD_DATA_ADDRESS=Data;
+}
 void LCD_WR_REG(unsigned int command)
 {
 	LCD_REG_ADDRESS =  command;
@@ -375,18 +383,104 @@ void SSD1963_LowLevel_Init(void){
 
 }
 
-/*void LCD_BacklightOn(void)
-{
-	GPIO_SetBits(GPIOD, GPIO_Pin_13);
+void ssd1963_Init(void){
+	uint16_t temp=0;
+	
+	GPIO_ResetBits(GPIOE, GPIO_Pin_2);
+	GUI_Delay(10);
+	GPIO_SetBits(GPIOE, GPIO_Pin_2);
+	GUI_Delay(10);
+	// Set up the Phase Lock Loop circuits. This only has to be done once.
+	LcdWriteReg(CMD_SET_PLL_MN); 				// PLL multiplier, set PLL clock to 100MHz
+	LcdWriteData(0x001D); 							//  M = 29 
+	LcdWriteData(0x0002); 							//  N = 2
+	LcdWriteData(0x0004); 							// dummy value, can be anything
+	
+	LcdWriteReg(CMD_SET_PLL);  					// PLL enable
+	LcdWriteData(0x0001);  							// Use PLL output as system clock
+	// Wait 200us, allows the PLL to stabilize */
+	GUI_Delay(1);
+	LcdWriteReg(CMD_GET_PLL_STATUS);
+	while(!temp)
+	{
+		temp=LCD_DATA_ADDRESS;
+	}
+
+	LcdWriteReg(CMD_SET_PLL);
+	LcdWriteData(0x0003); 							// SSD1963 is switched to PLL output after PLL has stabilized.
+	
+	/*this is 500 us, allows the PLL to stabilize */
+	GUI_Delay(1);
+	LcdWriteReg(CMD_SOFT_RESET); 				// software reset, see SSD1963 manual p.20 Command Table.
+	GUI_Delay(10);												//The host must wait 5ms before sending any new commands. 						
+
+	LcdWriteReg(CMD_SET_PIXCLK_FREQ);		//PLL setting for PCLK, depends on LCD resolution
+	// For the 4.3" LCD				532*288*60=9192960 Hz  LCDC_FPR=99929
+	LcdWriteData(0x0001);
+	LcdWriteData(0x0086);
+	LcdWriteData(0x0059);
+
+	LcdWriteReg(CMD_SET_LCD_MODE);			// LCD SPECIFICATION
+	// We have to write 7 parameter values. Various bit values are
+	// set. See manual p.43.
+	LcdWriteData(0x0020);  							// 24 bit, FRC dithering off, TFT dithering off, other stuff
+	LcdWriteData(0x0000);  							// LFRAME signal polarities
+  LcdWriteData(0x0001);  							// 2 entries for Set Horizontal width
+	LcdWriteData(0x00DF);
+  LcdWriteData(0x0001);  							// 2 entries for Set vertical width
+	LcdWriteData(0x000F);
+  LcdWriteData(0x0000); 							// Even line RGB sequence 000 == RGB
+
+	LcdWriteReg(CMD_SET_HORIZ_PERIOD);	//HSYNC
+	LcdWriteData(((HT-1)>>8)&0x00ff);  	//Set HT= HT(532) -1=531 0x0213
+	LcdWriteData((HT-1)&0x00ff);
+	LcdWriteData(((HS+HBP)>>8)&0x00ff);  //Set HTS= HS+HBP=2+42=42  0x2D
+	LcdWriteData((HS+HBP)&0x00ff);
+	LcdWriteData((HS-1)&0x00ff);		 		//Set HTW = HPW-1=1
+	LcdWriteData(0x0000);  							//Set LPS=0000
+	LcdWriteData(0x0000);
+	LcdWriteData(0x0000);								// LPSPP. Dummy byte for TFT interface
+
+	LcdWriteReg(CMD_SET_VERT_PERIOD); 	//VSYNC
+	LcdWriteData(((VT-1)>>8)&0x00ff);   //Set VT=VP-1=287 
+	LcdWriteData((VT-1)&0x00ff);
+	LcdWriteData(((VS+VBP)>>8)&0x00ff); //Set VPS= VPW+VBP=10+12=22 
+	LcdWriteData((VS+VBP)&0x00ff);
+	LcdWriteData((VS-1)&0x00ff);  			//Set VPW=VPW-1
+	LcdWriteData(0X0000);  							//Set FPS
+	LcdWriteData(0X0000);
+	
+	LcdWriteReg(CMD_SET_SCROLL_AREA);
+	LcdWriteData(0x0000);
+	LcdWriteData(0x0000);
+	LcdWriteData(0x0001);
+	LcdWriteData(0x0010);
+	LcdWriteData(0x0002);
+	LcdWriteData(0x0020);
+	LcdWriteReg(CMD_SET_SCROLL_START);
+	LcdWriteData(272>>8);
+	LcdWriteData(272);
+		
+	LcdWriteReg(CMD_SET_ADDRESS_MODE); //rotation, see p.18
+	LcdWriteData(0x00C0);
+/*----------------------------------------------------------------------------------*/	
+	LcdWriteReg(CMD_SET_PIXDATA_IF_FMT); //pixel data interface 16bit (565 format)
+	LcdWriteData(0x0003);
+	
+	LcdWriteReg(CMD_SET_TEAR_OFF); 		
+	
+	LcdWriteReg(CMD_SET_DISPLAY_ON); 		//display on
+								
+	GUI_Delay(1);
+	LcdWriteReg(CMD_SET_PWM_CONF); 			//set PWM for Backlight. Manual p.53
+	// 6 parameters to be set
+	LcdWriteData(0x0004); 							// PWM Freq =100MHz/(256*(PWMF[7:0]+1))/256  PWMF[7:0]=4 PWM Freq=305Hz
+	LcdWriteData(brightness); 					// PWM duty cycle(50%)
+	LcdWriteData(0x0001); 							// PWM controlled by host, PWM enabled
+	LcdWriteData(0x00f0); 							// brightness level 0x00 - 0xFF
+	LcdWriteData(0x0000); 							// minimum brightness level =  0x00 - 0xFF
+	LcdWriteData(0x0000);								// brightness prescalar 0x0 - 0xF
+
+
 }
-
-
-
-void LCD_BacklightOff(void)
-{
-	GPIO_ResetBits(GPIOD, GPIO_Pin_13);
-}
-*/
-
-
 /*****END OF FILE****/

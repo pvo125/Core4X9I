@@ -181,6 +181,7 @@ void LCD_DrawRectangle(int x1, int y1, int x2, int y2, short blue, short green, 
 void LCD_DrawBMP(const unsigned short *bitmap);
 void LCD_Test_BlackToWhite(void);
 void SSD1963_LowLevel_Init(void);
+void ssd1963_Init(void);
 void LCD_DrawRectFull(uint16_t x,uint16_t y,uint16_t width,uint16_t heigh,uint16_t color);
 void LCD_DrawRect(uint16_t x,uint16_t y,uint16_t width,uint16_t heigh,uint16_t color);
 void LCD_DrawLineH(uint16_t x,uint16_t y,uint16_t width, uint16_t color);

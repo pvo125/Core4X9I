@@ -272,7 +272,7 @@ void EXTI1_IRQHandler (void)
 void EXTI4_IRQHandler (void)
 {
 	uint32_t i;
-	for(i=0;i<1000000;i++);
+	for(i=0;i<100000;i++);
 	EXTI_ClearITPendingBit(EXTI_Line4);
 	NVIC_ClearPendingIRQ(EXTI4_IRQn);
 	
@@ -397,7 +397,7 @@ void TIM7_IRQHandler (void)
 			LcdWriteData(0x0000);								// brightness prescalar 0x0 - 0xF
 			backlight=BACKLIGHT_LOW;
 		}		
-	else if((backlight==BACKLIGHT_LOW)&&(backlight_delay==2))
+	else if((backlight==BACKLIGHT_LOW)&&(backlight_delay==3))
 		{
 		/* Выключаем PWM на подсветке */
 			LcdWriteReg(CMD_SET_PWM_CONF); 			//set PWM for Backlight. Manual p.53
@@ -412,11 +412,7 @@ void TIM7_IRQHandler (void)
 			backlight_delay=0;
 			sleep_mode=1;
 		}
-		/*else if((backlight==BACKLIGHT_OFF)&&(backlight_delay==2))
-		{
-		 sleep_mode=1;
-		 backlight_delay=0;	
-		}*/
+		
 		TIM7->SR &= ~TIM_SR_UIF; 			//Сбрасываем флаг UIF
 		NVIC_ClearPendingIRQ(TIM7_IRQn);
 		

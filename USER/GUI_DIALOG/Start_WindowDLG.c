@@ -25,6 +25,7 @@
 #include "header.h"
 #include <string.h>
 #include "CAN.h"
+#include "stm324x9i_eval_sdio_sd.h"
 extern GUI_PID_STATE State;
 extern void PictureView(void);
 extern FIL pFile;
@@ -98,8 +99,7 @@ WM_HWIN hWin_message;
 
 void Suspend(void);
 void SDRAM_PinConfig(void);
-void SSD1963_PinConfig(void);	
-void TSC2046_PinConfig(void);
+
 // USER END
 
 /*********************************************************************
@@ -722,7 +722,7 @@ hALARMA=ICONVIEW_CreateEx(10,15+SCREEN_1,34,34,WM_HBKWIN,WM_CF_SHOW|WM_CF_HASTRA
 	NVIC_EnableIRQ(CAN1_RX0_IRQn);
 	NVIC_EnableIRQ(CAN1_RX1_IRQn);	
 		
-	GUI_EnableAlpha(1);
+	//GUI_EnableAlpha(1);
 	CreateStart();
 	
 	while(1)
@@ -830,7 +830,9 @@ hALARMA=ICONVIEW_CreateEx(10,15+SCREEN_1,34,34,WM_HBKWIN,WM_CF_SHOW|WM_CF_HASTRA
 }
 
 void Suspend(void){
+	__IO uint32_t StartUpCounter = 0, HSEStatus = 0;
 	GPIO_InitTypeDef GPIO_InitStruct;
+	uint8_t i;
 			
 	NVIC_DisableIRQ(TIM6_DAC_IRQn);
 	NVIC_DisableIRQ(TIM7_IRQn);
@@ -871,18 +873,24 @@ void Suspend(void){
 	GPIO_Init(GPIOG, &GPIO_InitStruct);
 	GPIO_Init(GPIOI, &GPIO_InitStruct);
 	
+	TIM7->CNT=0;
 	
 			
 	__WFI();
 /**********************************************************		  
 *						WakeUp from stop mode													*	
 **********************************************************/				
+	GPIO_InitStruct.GPIO_Pin=SWPOWER_LCD_PIN;
+	GPIO_InitStruct.GPIO_Speed=GPIO_Speed_2MHz;
+	GPIO_InitStruct.GPIO_Mode=GPIO_Mode_OUT;
+	GPIO_InitStruct.GPIO_OType=GPIO_OType_PP;
+	GPIO_InitStruct.GPIO_PuPd=GPIO_PuPd_NOPULL;
+	GPIO_Init(SWPOWER_LCD_PORT,&GPIO_InitStruct);
+	
+	GPIO_SetBits(SWPOWER_LCD_PORT, SWPOWER_LCD_PIN);		// Включаем  LDO для LCD + CAN transsiver	
+	
 	RCC->CR|= RCC_CR_HSEON;
 	while((RCC->CR&RCC_CR_HSERDY)!=RCC_CR_HSERDY) {}
-			//RCC->CFGR    PLLXTPRE=0x00   (HSE clock not divided)
-			//RCC->CFGR    PLLMUL=0x07      (PLL input clock x 9)
-			//RCC->CFGR   PLLSRC=0x01        (HSE oscillator clock selected as PLL input clock)	
-			
 	RCC->CR|= RCC_CR_PLLON;
 	while((RCC->CR& RCC_CR_PLLRDY)!=RCC_CR_PLLRDY) {}
 	/* Enable the Over-drive to extend the clock frequency to 180 Mhz */
@@ -890,72 +898,29 @@ void Suspend(void){
   while((PWR->CSR & PWR_CSR_ODRDY) == 0){}
   PWR->CR |= PWR_CR_ODSWEN;
   while((PWR->CSR & PWR_CSR_ODSWRDY) == 0){}
-	RCC->CFGR|=RCC_CFGR_SW_PLL;
+	 /* Select the main PLL as system clock source */
+   RCC->CFGR &= (uint32_t)((uint32_t)~(RCC_CFGR_SW));
+   RCC->CFGR |= RCC_CFGR_SW_PLL;
 	while((RCC->CFGR&RCC_CFGR_SWS_PLL)!=RCC_CFGR_SWS_PLL) {}
 /***********************************************************/	
 	SDRAM_PinConfig();
 	
-	/*while(FMC_Bank5_6->SDSR&FMC_SDSR_BUSY);
-	FMC_Bank5_6->SDCMR=  FMC_SDCMR_MODE_2|								// 011: Auto-refresh command
-										   FMC_SDCMR_CTB2|									// Command issued to SDRAM Bank 2
-	FMC_SDCMR_NRFS_0|FMC_SDCMR_NRFS_1|FMC_SDCMR_NRFS_2;		// Number of Auto-refresh 8 cycle (0111)*/
 	while(FMC_Bank5_6->SDSR&FMC_SDSR_BUSY);
 	FMC_Bank5_6->SDCMR =((uint32_t)0x00000000)			// 000: normal mode 
 											|FMC_SDCMR_CTB2							// Command issued to SDRAM Bank 2
 											|FMC_SDCMR_NRFS_2;					// Number of Auto-refresh 8 cycle (0111)*/
 	
-	SSD1963_PinConfig();	
-	TSC2046_PinConfig();
-/********************************************************************/
-/*					SDIO card insert  PB1	  																*/
-/********************************************************************/	
-		GPIO_InitStruct.GPIO_Pin=SDCARD_INSERT_PIN;
-		GPIO_InitStruct.GPIO_Speed=GPIO_Speed_2MHz;
-		GPIO_InitStruct.GPIO_Mode=GPIO_Mode_IN;
-		GPIO_InitStruct.GPIO_PuPd=GPIO_PuPd_UP;
-		GPIO_Init(SDCARD_INSERT_PORT,&GPIO_InitStruct);	
-		EXTI_ClearITPendingBit(EXTI_Line1);
-		NVIC_ClearPendingIRQ(EXTI1_IRQn);
-		NVIC_EnableIRQ(EXTI1_IRQn);									//Разрешение EXTI1_IRQn прерывания
-/********************************************************************/
-/*								SWPOWER_LCD 		  																*/
-/********************************************************************/			
-		GPIO_InitStruct.GPIO_Pin=SWPOWER_LCD_PIN;
-		GPIO_InitStruct.GPIO_Speed=GPIO_Speed_2MHz;
-		GPIO_InitStruct.GPIO_Mode=GPIO_Mode_OUT;
-		GPIO_InitStruct.GPIO_OType=GPIO_OType_PP;
-		GPIO_InitStruct.GPIO_PuPd=GPIO_PuPd_NOPULL;
-		GPIO_Init(SWPOWER_LCD_PORT,&GPIO_InitStruct);
-		
-		GPIO_SetBits(SWPOWER_LCD_PORT, SWPOWER_LCD_PIN);		// Включаем  LDO для LCD + CAN transsiver
-		
-		
+	SSD1963_LowLevel_Init();
+	SD_LowLevel_Init();	
+	TSC2046_LowLevel_Init();
+	MX25_LowLevel_Init();
+	
 	SysTick->VAL=0;
 	SysTick->CTRL|=SysTick_CTRL_ENABLE_Msk|SysTick_CTRL_TICKINT_Msk;
 	
-	LCD_X_DisplayDriver(0,LCD_X_INITCONTROLLER, NULL); 
-	LcdWriteReg(CMD_SET_ADDRESS_MODE); //rotation, see p.18
-	LcdWriteData(0x00C0);
-	//GUI_SetOrg(0,0);
-	GUI_SetBkColor(GUI_LIGHTBLUE);
-	GUI_ClearRect(1,17+SCREEN_1,58,270+SCREEN_1);
-	GUI_SetColor(GUI_YELLOW);
-	GUI_DrawRect(0,16+SCREEN_1,59,271+SCREEN_1);
-	GUI_SetBkColor(GUI_DARKBLUE);
-	GUI_ClearRect(0,0+SCREEN_1,470,15+SCREEN_1);
+	GUI_Delay(500);
 	
-	WM_Paint(hALARMA);
-	WM_Paint(hALARMB);
-	WM_Paint(hIcon_EXIT);	
-	WM_Paint(hIcon_BRIGHT);
-	
-	RTC_GetDate(RTC_Format_BIN, &RTC_Date);
-	GUI_DispDecAt(RTC_Date.RTC_Date,5,0+SCREEN_1,2);
-	GUI_DispString(".");
-	GUI_DispDec(RTC_Date.RTC_Month,2);
-	GUI_DispString(".20");
-	GUI_DispDec(RTC_Date.RTC_Year,2);
-	
+	ssd1963_Init();
 	if(WM_IsVisible(hWin_start))
 	{
 		WM_HideWindow(hWin_start);
@@ -966,6 +931,45 @@ void Suspend(void){
 		WM_HideWindow(hWin_menu);
 		WM_ShowWindow(hWin_menu);
 	}
+	WM_Exec();
+	
+	GUI_SetBkColor(GUI_LIGHTBLUE);
+	GUI_ClearRect(1,17+SCREEN_1,58,270+SCREEN_1);
+	GUI_SetColor(GUI_YELLOW);
+	GUI_DrawRect(0,16+SCREEN_1,59,271+SCREEN_1);
+	GUI_SetBkColor(GUI_DARKBLUE);
+	GUI_ClearRect(0,0+SCREEN_1,470,15+SCREEN_1);
+		
+	for(i=0;i<9;i++)
+		WM_Paint(hIcon[i]);
+	RTC_GetDate(RTC_Format_BIN, &RTC_Date);
+	GUI_DispDecAt(RTC_Date.RTC_Date,5,0+SCREEN_1,2);
+	GUI_DispString(".");
+	GUI_DispDec(RTC_Date.RTC_Month,2);
+	GUI_DispString(".20");
+	GUI_DispDec(RTC_Date.RTC_Year,2);
+		
+	WM_Paint(hALARMA);
+	WM_Paint(hALARMB);
+	WM_Paint(hIcon_EXIT);	
+	WM_Paint(hIcon_BRIGHT);
+	WM_Paint(PROGBAR_MEM);	
+	
+	
+	
+	
+/********************************************************************/
+/*					SDIO card insert  PB1	  																*/
+/********************************************************************/	
+		GPIO_InitStruct.GPIO_Pin=SDCARD_INSERT_PIN;
+		GPIO_InitStruct.GPIO_Speed=GPIO_Speed_2MHz;
+		GPIO_InitStruct.GPIO_Mode=GPIO_Mode_IN;
+		GPIO_InitStruct.GPIO_PuPd=GPIO_PuPd_UP;
+		GPIO_Init(SDCARD_INSERT_PORT,&GPIO_InitStruct);	
+		EXTI_ClearITPendingBit(EXTI_Line1);
+	
+	NVIC_ClearPendingIRQ(EXTI1_IRQn);
+	NVIC_EnableIRQ(EXTI1_IRQn);									//Разрешение EXTI1_IRQn прерывания
 	NVIC_EnableIRQ(TIM6_DAC_IRQn);
 	TIM7->CNT=0;
 	TIM7->SR &= ~TIM_SR_UIF; 			//Сбрасываем флаг UIF
@@ -973,6 +977,8 @@ void Suspend(void){
 	NVIC_EnableIRQ(TIM7_IRQn);
 	NVIC_EnableIRQ(RTC_WKUP_IRQn);
 	sleep_mode=0;
+	backlight=BACKLIGHT_ON;
+	backlight_delay=0;
 
 
 }
@@ -1039,92 +1045,7 @@ void SDRAM_PinConfig(void){
 
 /*
 */
-void SSD1963_PinConfig(void){
-	GPIO_InitTypeDef 	GPIO_InitStruct;
-	//Port D
-	GPIO_InitStruct.GPIO_Mode=GPIO_Mode_AF;
-	GPIO_InitStruct.GPIO_OType=GPIO_OType_PP;
-	GPIO_InitStruct.GPIO_PuPd=GPIO_PuPd_DOWN;
-	GPIO_InitStruct.GPIO_Speed=GPIO_Speed_100MHz;
-	GPIO_InitStruct.GPIO_Pin=GPIO_Pin_0|GPIO_Pin_1|GPIO_Pin_4|GPIO_Pin_5|GPIO_Pin_7|
-				GPIO_Pin_8|	GPIO_Pin_9|GPIO_Pin_10|GPIO_Pin_11|GPIO_Pin_14|GPIO_Pin_15;
-	GPIO_Init(GPIOD, &GPIO_InitStruct);
-	GPIO_PinAFConfig(GPIOD, GPIO_PinSource0,GPIO_AF_FMC);
-	GPIO_PinAFConfig(GPIOD, GPIO_PinSource1,GPIO_AF_FMC);
-	GPIO_PinAFConfig(GPIOD, GPIO_PinSource4,GPIO_AF_FMC);
-	GPIO_PinAFConfig(GPIOD, GPIO_PinSource5,GPIO_AF_FMC);
-	GPIO_PinAFConfig(GPIOD, GPIO_PinSource7,GPIO_AF_FMC);
-	GPIO_PinAFConfig(GPIOD, GPIO_PinSource8,GPIO_AF_FMC);
-	GPIO_PinAFConfig(GPIOD, GPIO_PinSource9,GPIO_AF_FMC);
-	GPIO_PinAFConfig(GPIOD, GPIO_PinSource10,GPIO_AF_FMC);
-	GPIO_PinAFConfig(GPIOD, GPIO_PinSource11,GPIO_AF_FMC);
-	GPIO_PinAFConfig(GPIOD, GPIO_PinSource14,GPIO_AF_FMC);
-	GPIO_PinAFConfig(GPIOD, GPIO_PinSource15,GPIO_AF_FMC);
-	//Port E
-	GPIO_InitStruct.GPIO_Mode=GPIO_Mode_AF;
-	GPIO_InitStruct.GPIO_OType=GPIO_OType_PP;
-	GPIO_InitStruct.GPIO_PuPd=GPIO_PuPd_DOWN;
-	GPIO_InitStruct.GPIO_Speed=GPIO_Speed_100MHz;
-	GPIO_InitStruct.GPIO_Pin=GPIO_Pin_7|GPIO_Pin_8|GPIO_Pin_9|GPIO_Pin_10|GPIO_Pin_11|
-				GPIO_Pin_12|GPIO_Pin_13|GPIO_Pin_14|GPIO_Pin_15;
-	GPIO_Init(GPIOE, &GPIO_InitStruct);
-	GPIO_PinAFConfig(GPIOE, GPIO_PinSource7,GPIO_AF_FMC);
-	GPIO_PinAFConfig(GPIOE, GPIO_PinSource8,GPIO_AF_FMC);
-	GPIO_PinAFConfig(GPIOE, GPIO_PinSource9,GPIO_AF_FMC);
-	GPIO_PinAFConfig(GPIOE, GPIO_PinSource10,GPIO_AF_FMC);
-	GPIO_PinAFConfig(GPIOE, GPIO_PinSource11,GPIO_AF_FMC);
-	GPIO_PinAFConfig(GPIOE, GPIO_PinSource12,GPIO_AF_FMC);
-	GPIO_PinAFConfig(GPIOE, GPIO_PinSource13,GPIO_AF_FMC);
-	GPIO_PinAFConfig(GPIOE, GPIO_PinSource14,GPIO_AF_FMC);
-	GPIO_PinAFConfig(GPIOE, GPIO_PinSource15,GPIO_AF_FMC);
 	
-	// LCD RESET 
-	GPIO_InitStruct.GPIO_Pin = GPIO_Pin_2;
-	GPIO_InitStruct.GPIO_Mode = GPIO_Mode_OUT;
-	GPIO_InitStruct.GPIO_OType = GPIO_OType_PP;
-	GPIO_InitStruct.GPIO_Speed = GPIO_Speed_50MHz;
-	GPIO_InitStruct.GPIO_PuPd=GPIO_PuPd_DOWN;//NOPULL
-	GPIO_Init(GPIOE, &GPIO_InitStruct);
-	
-	//GPIO_ResetBits(GPIOE, GPIO_Pin_2);
-
-}
-/*
-*/
-void TSC2046_PinConfig(void){
-	GPIO_InitTypeDef 	GPIO_InitStruct;
-	
-	GPIO_PinAFConfig(GPIOB, GPIO_PinSource13,GPIO_AF_SPI2);
-	GPIO_PinAFConfig(GPIOB, GPIO_PinSource14,GPIO_AF_SPI2);
-	GPIO_PinAFConfig(GPIOB, GPIO_PinSource15,GPIO_AF_SPI2);
-	
-	/* TSC2046 interrupt(GPIO input) - port B */
-	GPIO_InitStruct.GPIO_Pin = GPIO_Pin_11;	/* PB11  - TCH INTR  */
-	GPIO_InitStruct.GPIO_Speed = GPIO_Speed_2MHz;
-	GPIO_InitStruct.GPIO_Mode = GPIO_Mode_IN;
-	GPIO_InitStruct.GPIO_PuPd=GPIO_PuPd_UP;
-	GPIO_Init(GPIOB, &GPIO_InitStruct);
-
-	/* TSC2046 CS(GPIO output) - port B */
-	GPIO_InitStruct.GPIO_Pin = GPIO_Pin_12;	/* PB12  - TCH CS    */
-	GPIO_InitStruct.GPIO_Speed = GPIO_Speed_50MHz;
-	GPIO_InitStruct.GPIO_Mode = GPIO_Mode_OUT;
-	GPIO_InitStruct.GPIO_OType=GPIO_OType_PP;
-	GPIO_InitStruct.GPIO_PuPd=GPIO_PuPd_NOPULL;
-	GPIO_Init(GPIOB, &GPIO_InitStruct);	
-
-	//GPIOB->BSRRL=GPIO_BSRR_BS_12;	
-
-	/* TSC2046 SCK,MOSI,MISO - port B */
-
-	GPIO_InitStruct.GPIO_Pin=GPIO_Pin_13|GPIO_Pin_14|GPIO_Pin_15;	/*	PB13 - SPI2_SCK */
-	GPIO_InitStruct.GPIO_Speed=GPIO_Speed_50MHz;								/*  PB14 - SPI2_MISO*/
-	GPIO_InitStruct.GPIO_Mode=GPIO_Mode_AF;											/*  PB15 - SPI2_MOSI*/	
-	GPIO_InitStruct.GPIO_OType=GPIO_OType_PP;
-	GPIO_InitStruct.GPIO_PuPd=GPIO_PuPd_NOPULL;
-	GPIO_Init(GPIOB, &GPIO_InitStruct);	
-
-}
 // USER END
 
 /*************************** End of file ****************************/

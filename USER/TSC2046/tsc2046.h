@@ -5,5 +5,6 @@
 
 
 void TSC2046_LowLevel_Init(void);
+void TSC2046_Init(void);
 
 #endif
