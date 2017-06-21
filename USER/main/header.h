@@ -16,7 +16,7 @@
 #define ID_PROGBAR_MEM     (GUI_ID_USER + 0x27)
 
 #define MY_MESSAGE     (WM_USER + 0x01)
-#define FLASHCODE
+//#define FLASHCODE
 #define SCREEN_1		0
 #define SCREEN_2		272
 
@@ -93,6 +93,13 @@ typedef enum{
 	 BACKLIGHT_ON
 }BACKLIGHT_TypeDef;
 
+
+typedef enum{
+	PERFORMANCE_LOW=0,
+	PERFORMANCE_HIGH,
+}PERFORMANCE_TypeDef;
+
+extern PERFORMANCE_TypeDef performance;
 
 extern WIDGET_DRAW_ITEM_FUNC *pWIDGET_DRAW_ITEM_FUNC;
 extern GUI_CONST_STORAGE GUI_FONT GUI_FontArial18;

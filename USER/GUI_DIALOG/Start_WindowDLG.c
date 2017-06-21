@@ -67,6 +67,7 @@ extern RTC_AlarmTypeDef								RTC_AlarmA,RTC_AlarmB;
 #define ID_ICON_ALARM_A     (GUI_ID_USER + 0x18)
 #define ID_ICON_ALARM_B     (GUI_ID_USER + 0x19)
 #define ID_ICON_BRIGHT			(GUI_ID_USER + 0x1A)
+#define ID_ICON_PERFORM			(GUI_ID_USER + 0x29)
 
 #define ID_ICON_BLUE     (GUI_ID_USER + 0x1D)
 #define ID_ICON_GREEN     (GUI_ID_USER + 0x1E)
@@ -89,7 +90,7 @@ uint8_t sd_insert;
 uint8_t sd_ins_rem;
 WM_HWIN hWin_start;
 ICONVIEW_Handle hIcon_CALIB,hIcon_PAINT,hIcon_NEXT,hButton_BACK,hALARMA,hALARMB,hIcon_EXIT,hIcon_PHOTO,
-								hIcon_BRIGHT;
+								hIcon_BRIGHT,hIcon_PERFORM;
 ICONVIEW_Handle hIcon[9];
 int xD[]={ID_ICON_BLUE,ID_ICON_GREEN,ID_ICON_RED,ID_ICON_CYAN,ID_ICON_MAGENTA,ID_ICON_YELLOW,ID_ICON_WHITE,ID_ICON_BLACK,ID_ICON_ORANGE};
 int color[]={GUI_BLUE,GUI_GREEN,GUI_RED,GUI_CYAN,GUI_MAGENTA,GUI_YELLOW,GUI_WHITE,GUI_BLACK,GUI_ORANGE};
@@ -97,6 +98,7 @@ extern WM_HWIN hWin_menu;
 
 WM_HWIN hWin_message;
 
+void ChangePerformance(void);
 void Suspend(void);
 void SDRAM_PinConfig(void);
 
@@ -676,6 +678,9 @@ void MainTask(void)
 	ICONVIEW_AddBitmapItem(hIcon_EXIT,(const GUI_BITMAP*)(exitt+4608),"");
 #endif
 	hIcon_BRIGHT=ICONVIEW_CreateEx(10,80+SCREEN_1,34,34,WM_HBKWIN,WM_CF_SHOW|WM_CF_HASTRANS,0,ID_ICON_BRIGHT,24,24);
+	
+	hIcon_PERFORM=ICONVIEW_CreateEx(10,100+SCREEN_1,34,34,WM_HBKWIN,WM_CF_SHOW|WM_CF_HASTRANS,0,ID_ICON_PERFORM,24,24);
+	
 #ifdef FLASHCODE		
 	ICONVIEW_AddBitmapItem(hIcon_BRIGHT,&bmbrightness,"");
 #endif
@@ -828,7 +833,76 @@ hALARMA=ICONVIEW_CreateEx(10,15+SCREEN_1,34,34,WM_HBKWIN,WM_CF_SHOW|WM_CF_HASTRA
 		}
 	}
 }
-
+/*
+*/
+void ChangePerformance(void){
+	
+	while(FMC_Bank5_6->SDSR&FMC_SDSR_BUSY);
+	FMC_Bank5_6->SDCMR = ((uint32_t)0x00000004)|FMC_SDCMR_MODE_0| 	// 101  Self-Refresh mode
+											 FMC_SDCMR_CTB2| 														// Command issued to SDRAM Bank 2
+											 FMC_SDCMR_NRFS_0;													// 2 Auto-refresh cycles*/
+	// Select HSI as system clock source 
+   RCC->CFGR &= (uint32_t)((uint32_t)~(RCC_CFGR_SW));
+   RCC->CFGR |= (uint32_t)RCC_CFGR_SW_HSE; 
+	// Wait till HSE is used as system clock source 
+   while ((RCC->CFGR & (uint32_t)RCC_CFGR_SWS) != (uint32_t)0x4){ }
+		// Disable PLL 
+  RCC->CR &= ~RCC_CR_PLLON;
+		 
+	if(performance==PERFORMANCE_LOW)
+	{	// enable PERFORMANCE_HIGH
+		performance=PERFORMANCE_HIGH;
+		RCC->PLLCFGR &=~RCC_PLLCFGR_PLLP;				// 00 PLLP=2
+		PWR->CR |= PWR_CR_VOS;									// Scale 1 mode(reset) 
+	  RCC->CFGR |= RCC_CFGR_PPRE2_DIV2;				// PCLK2 = HCLK / 2
+    RCC->CFGR |= RCC_CFGR_PPRE1_DIV4;				// PCLK1 = HCLK / 4
+		
+		RCC->CR|= RCC_CR_PLLON;
+		while((RCC->CR& RCC_CR_PLLRDY)!=RCC_CR_PLLRDY) {}
+		// Enable the Over-drive to extend the clock frequency to 180 Mhz 
+		PWR->CR |= PWR_CR_ODEN;
+		while((PWR->CSR & PWR_CSR_ODRDY) == 0){}
+		PWR->CR |= PWR_CR_ODSWEN;
+		while((PWR->CSR & PWR_CSR_ODSWRDY) == 0){}
+		// Select the main PLL as system clock source 
+		RCC->CFGR &= (uint32_t)((uint32_t)~(RCC_CFGR_SW));
+		RCC->CFGR |= RCC_CFGR_SW_PLL;
+		while((RCC->CFGR&RCC_CFGR_SWS_PLL)!=RCC_CFGR_SWS_PLL) {}
+			
+		// Initialization step 8
+		while(FMC_Bank5_6->SDSR&FMC_SDSR_BUSY);
+		FMC_Bank5_6->SDRTR|=(1386<<1);													// 64mS/4096=15.625uS
+																														// 15.625*90MHz-20=1386		
+	}
+	else	
+	{	// enable PERFORMANCE_LOW
+		performance=PERFORMANCE_LOW;
+		RCC->PLLCFGR|=RCC_PLLCFGR_PLLP_0;				// 01 PLLP=4
+		PWR->CR &= ~PWR_CR_VOS;									
+		PWR->CR |= PWR_CR_VOS_0;								// Scale 3 mode <120MHz 
+		RCC->CFGR |= RCC_CFGR_PPRE2_DIV1;				// PCLK2 = HCLK / 1
+    RCC->CFGR |= RCC_CFGR_PPRE1_DIV2;				// PCLK1 = HCLK / 2
+		
+		RCC->CR|= RCC_CR_PLLON;
+		while((RCC->CR& RCC_CR_PLLRDY)!=RCC_CR_PLLRDY) {}
+		// Select the main PLL as system clock source 
+		RCC->CFGR &= (uint32_t)((uint32_t)~(RCC_CFGR_SW));
+		RCC->CFGR |= RCC_CFGR_SW_PLL;
+		while((RCC->CFGR&RCC_CFGR_SWS_PLL)!=RCC_CFGR_SWS_PLL) {}
+			
+		// Initialization step 8
+		while(FMC_Bank5_6->SDSR&FMC_SDSR_BUSY);
+		FMC_Bank5_6->SDRTR|=(683<<1);													// 64mS/4096=15.625uS
+																														// 15.625*45MHz-20=683	
+	}
+	
+	while(FMC_Bank5_6->SDSR&FMC_SDSR_BUSY);
+	FMC_Bank5_6->SDCMR =((uint32_t)0x00000000)			// 000: normal mode 
+											|FMC_SDCMR_CTB2							// Command issued to SDRAM Bank 2
+											|FMC_SDCMR_NRFS_2;					// Number of Auto-refresh 8 cycle (0111)*/
+}
+/*
+*/
 void Suspend(void){
 	__IO uint32_t StartUpCounter = 0, HSEStatus = 0;
 	GPIO_InitTypeDef GPIO_InitStruct;
@@ -841,8 +915,9 @@ void Suspend(void){
 	
 	SysTick->CTRL&=~SysTick_CTRL_ENABLE_Msk;
 	SysTick->CTRL&=~SysTick_CTRL_TICKINT_Msk;
-
-	LcdWriteReg(CMD_ENTER_SLEEP);
+	
+	 
+	//LcdWriteReg(CMD_ENTER_SLEEP);
 					
 	while(FMC_Bank5_6->SDSR&FMC_SDSR_BUSY);
 	FMC_Bank5_6->SDCMR = ((uint32_t)0x00000004)|FMC_SDCMR_MODE_0| 	// 101  Self-Refresh mode
@@ -875,11 +950,37 @@ void Suspend(void){
 	
 	TIM7->CNT=0;
 	
-			
+	
+ // Select HSI as system clock source 
+   RCC->CFGR &= (uint32_t)((uint32_t)~(RCC_CFGR_SW));
+   RCC->CFGR |= (uint32_t)RCC_CFGR_SW_HSI; 
+// Wait till HSI is used as system clock source 
+   while ((RCC->CFGR & (uint32_t)RCC_CFGR_SWS) != (uint32_t)0x0){ }
+	 
+// Disable PLL 
+  RCC->CR &= ~RCC_CR_PLLON;
+	
+	PWR->CR &= ~PWR_CR_ODSWEN;
+	while((PWR->CSR & PWR_CSR_ODSWRDY) != 0){}
+	PWR->CR &= ~PWR_CR_ODEN;	
+	while((PWR->CSR & PWR_CSR_ODRDY) != 0){}
+		
+	
+	
+
+	SCB->SCR|=SCB_SCR_SLEEPDEEP_Msk;					// Разрешаем SLEEPDEEP по команде WFI WFE	
+	
+	
+				
 	__WFI();
 /**********************************************************		  
 *						WakeUp from stop mode													*	
 **********************************************************/				
+	SCB->SCR&=~SCB_SCR_SLEEPDEEP_Msk;					// Запрешаем SLEEPDEEP по команде WFI WFE
+ 
+	//PWR->CR |= PWR_CR_VOS;
+	//PWR->CR &=~PWR_CR_UDEN;	
+	
 	GPIO_InitStruct.GPIO_Pin=SWPOWER_LCD_PIN;
 	GPIO_InitStruct.GPIO_Speed=GPIO_Speed_2MHz;
 	GPIO_InitStruct.GPIO_Mode=GPIO_Mode_OUT;
@@ -893,11 +994,13 @@ void Suspend(void){
 	while((RCC->CR&RCC_CR_HSERDY)!=RCC_CR_HSERDY) {}
 	RCC->CR|= RCC_CR_PLLON;
 	while((RCC->CR& RCC_CR_PLLRDY)!=RCC_CR_PLLRDY) {}
-	/* Enable the Over-drive to extend the clock frequency to 180 Mhz */
-  PWR->CR |= PWR_CR_ODEN;
-  while((PWR->CSR & PWR_CSR_ODRDY) == 0){}
-  PWR->CR |= PWR_CR_ODSWEN;
-  while((PWR->CSR & PWR_CSR_ODSWRDY) == 0){}
+	if(performance==PERFORMANCE_HIGH)
+	{// Enable the Over-drive to extend the clock frequency to 180 Mhz 
+		PWR->CR |= PWR_CR_ODEN;
+		while((PWR->CSR & PWR_CSR_ODRDY) == 0){}
+		PWR->CR |= PWR_CR_ODSWEN;
+		while((PWR->CSR & PWR_CSR_ODSWRDY) == 0){}
+	}
 	 /* Select the main PLL as system clock source */
    RCC->CFGR &= (uint32_t)((uint32_t)~(RCC_CFGR_SW));
    RCC->CFGR |= RCC_CFGR_SW_PLL;

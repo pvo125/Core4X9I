@@ -48,7 +48,6 @@ uint8_t yes=1,no=1;
 extern GUI_CONST_STORAGE GUI_BITMAP bmphoto;
 WM_HWIN hButton_YES,hButton_NO, hButton_CAN_Data,hButton_CAN_Remote;
 
-
 uint32_t array[]={exitt,photo,screen,paint,next,prev,date,pwm,sd,alarm,AlarmA,AlarmB,Alarm_d,add_folder,del_folder};
 uint32_t farray[]={fexit,fphoto,fscreen,fpaint,fnext,fprev,fdate,fpwm,fsd,falarm,fAlarmA,fAlarmB,fAlarm_d,fadd_folder,fdel_folder};
 /*GUI_CONST_STORAGE GUI_BITMAP *p[]={&bmexit,&bmphoto,&bmscreen,&bmpaint,&bmnext,&bmprev,&bmdate,&bmpwm,&bmsd,&bmalarm,
@@ -309,7 +308,7 @@ void Periph_Init(void){
 /* 															Инициализация таймера TIM7									 */	
 /*****************************************************************************/
 	TIM7->PSC = 45000 - 1; 			// Настраиваем делитель что таймер тикал 2000 раз в секунду
-	TIM7->ARR = 30000 ; 				// Чтоб прерывание случалось  раз в 15 секунд
+	TIM7->ARR = 10000 ; 				// Чтоб прерывание случалось  раз в 15 секунд
   TIM7->DIER |= TIM_DIER_UIE; //разрешаем прерывание от таймера подсветки дисплея
 	TIM7->EGR = TIM_EGR_UG;			//генерируем "update event". ARR и PSC грузятся из предварительного в теневой регистр. 
 	TIM7->SR&=~TIM_SR_UIF; 			//Сбрасываем флаг UIF
@@ -326,8 +325,7 @@ void Periph_Init(void){
 	NVIC_SetPriority(EXTI4_IRQn,0);
 	
 	NVIC_SetPriority(RTC_Alarm_IRQn,2);
-	DBGMCU->CR|=DBGMCU_CR_DBG_SLEEP;
-	DBGMCU->APB1FZ|=DBGMCU_APB1_FZ_DBG_TIM2_STOP;
+	
 }
 
 /****************************************************************/
@@ -590,11 +588,19 @@ int main(void){
 	NVIC_EnableIRQ(RTC_Alarm_IRQn);
 	
 	DBGMCU->CR|=DBGMCU_CR_DBG_STOP;
-	SCB->SCR|=SCB_SCR_SLEEPDEEP_Msk;					// Разрешаем SLEEPDEEP по команде WFI WFE
+	//SCB->SCR|=SCB_SCR_SLEEPDEEP_Msk;					// Разрешаем SLEEPDEEP по команде WFI WFE
 	PWR->CR&= ~PWR_CR_PDDS;										// Сбрасываем бит PDDS (Stop mode)
-	PWR->CR|=	PWR_CR_LPDS;										// Voltage regulator low-power during Stop mode
+	/*	Low-power voltage regulator ON during Stop mode*/
+	PWR->CR|=	PWR_CR_LPDS;	
 	
-	DBGMCU->APB1FZ|=DBGMCU_APB1_FZ_DBG_CAN1_STOP;
+	//Flash memory in power-down and Low-power regulator in under-drive mode when the device is in Stop mode
+	PWR->CR |=PWR_CR_FPDS|PWR_CR_LPUDS;			
+	PWR->CR &=~PWR_CR_VOS_1;		//Scale mode 3
+	
+	PWR->CR |=PWR_CR_UDEN;
+	//while(!(PWR->CSR & PWR_CSR_UDSWRDY)) {}	
+	
+	DBGMCU->APB1FZ&=~(DBGMCU_APB1_FZ_DBG_CAN1_STOP|DBGMCU_APB1_FZ_DBG_TIM2_STOP);
 	/*ChipErase_MX25L();
 	for(i=0;i<10;i++)
 		{
