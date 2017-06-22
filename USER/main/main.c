@@ -588,18 +588,8 @@ int main(void){
 	NVIC_EnableIRQ(RTC_Alarm_IRQn);
 	
 	DBGMCU->CR|=DBGMCU_CR_DBG_STOP;
-	//SCB->SCR|=SCB_SCR_SLEEPDEEP_Msk;					// Разрешаем SLEEPDEEP по команде WFI WFE
 	PWR->CR&= ~PWR_CR_PDDS;										// Сбрасываем бит PDDS (Stop mode)
-	/*	Low-power voltage regulator ON during Stop mode*/
-	PWR->CR|=	PWR_CR_LPDS;	
-	
-	//Flash memory in power-down and Low-power regulator in under-drive mode when the device is in Stop mode
-	PWR->CR |=PWR_CR_FPDS|PWR_CR_LPUDS;			
-	PWR->CR &=~PWR_CR_VOS_1;		//Scale mode 3
-	
-	PWR->CR |=PWR_CR_UDEN;
-	//while(!(PWR->CSR & PWR_CSR_UDSWRDY)) {}	
-	
+		
 	DBGMCU->APB1FZ&=~(DBGMCU_APB1_FZ_DBG_CAN1_STOP|DBGMCU_APB1_FZ_DBG_TIM2_STOP);
 	/*ChipErase_MX25L();
 	for(i=0;i<10;i++)

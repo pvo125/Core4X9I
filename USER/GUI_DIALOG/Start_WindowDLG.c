@@ -415,6 +415,13 @@ void _cbBkWin(WM_MESSAGE* pMsg) {
 			Id    = WM_GetId(pMsg->hWinSrc);
 			NCode = pMsg->Data.v;	
 			switch(Id){
+				case ID_ICON_PERFORM:
+					switch(NCode){
+						case WM_NOTIFICATION_RELEASED:
+							ChangePerformance();
+						break;
+						}
+				break;		
 				case ID_ICON_BRIGHT:
 					switch(NCode) {
 						case WM_NOTIFICATION_RELEASED:
@@ -870,8 +877,8 @@ void ChangePerformance(void){
 		while((RCC->CFGR&RCC_CFGR_SWS_PLL)!=RCC_CFGR_SWS_PLL) {}
 			
 		// Initialization step 8
-		while(FMC_Bank5_6->SDSR&FMC_SDSR_BUSY);
-		FMC_Bank5_6->SDRTR|=(1386<<1);													// 64mS/4096=15.625uS
+		//while(FMC_Bank5_6->SDSR&FMC_SDSR_BUSY);
+		//FMC_Bank5_6->SDRTR|=(1386<<1);													// 64mS/4096=15.625uS
 																														// 15.625*90MHz-20=1386		
 	}
 	else	
@@ -883,6 +890,11 @@ void ChangePerformance(void){
 		RCC->CFGR |= RCC_CFGR_PPRE2_DIV1;				// PCLK2 = HCLK / 1
     RCC->CFGR |= RCC_CFGR_PPRE1_DIV2;				// PCLK1 = HCLK / 2
 		
+		PWR->CR &= ~PWR_CR_ODSWEN;
+		while((PWR->CSR & PWR_CSR_ODSWRDY) != 0){}
+		PWR->CR &= ~PWR_CR_ODEN;	
+		while((PWR->CSR & PWR_CSR_ODRDY) != 0){}
+	
 		RCC->CR|= RCC_CR_PLLON;
 		while((RCC->CR& RCC_CR_PLLRDY)!=RCC_CR_PLLRDY) {}
 		// Select the main PLL as system clock source 
@@ -891,8 +903,8 @@ void ChangePerformance(void){
 		while((RCC->CFGR&RCC_CFGR_SWS_PLL)!=RCC_CFGR_SWS_PLL) {}
 			
 		// Initialization step 8
-		while(FMC_Bank5_6->SDSR&FMC_SDSR_BUSY);
-		FMC_Bank5_6->SDRTR|=(683<<1);													// 64mS/4096=15.625uS
+	//	while(FMC_Bank5_6->SDSR&FMC_SDSR_BUSY);
+	//	FMC_Bank5_6->SDRTR|=(683<<1);													// 64mS/4096=15.625uS
 																														// 15.625*45MHz-20=683	
 	}
 	
@@ -916,9 +928,6 @@ void Suspend(void){
 	SysTick->CTRL&=~SysTick_CTRL_ENABLE_Msk;
 	SysTick->CTRL&=~SysTick_CTRL_TICKINT_Msk;
 	
-	 
-	//LcdWriteReg(CMD_ENTER_SLEEP);
-					
 	while(FMC_Bank5_6->SDSR&FMC_SDSR_BUSY);
 	FMC_Bank5_6->SDCMR = ((uint32_t)0x00000004)|FMC_SDCMR_MODE_0| 	// 101  Self-Refresh mode
 											 FMC_SDCMR_CTB2| 														// Command issued to SDRAM Bank 2
@@ -950,7 +959,7 @@ void Suspend(void){
 	
 	TIM7->CNT=0;
 	
-	
+/*	
  // Select HSI as system clock source 
    RCC->CFGR &= (uint32_t)((uint32_t)~(RCC_CFGR_SW));
    RCC->CFGR |= (uint32_t)RCC_CFGR_SW_HSI; 
@@ -965,8 +974,15 @@ void Suspend(void){
 	PWR->CR &= ~PWR_CR_ODEN;	
 	while((PWR->CSR & PWR_CSR_ODRDY) != 0){}
 		
+	*/
+	/*	Low-power voltage regulator ON during Stop mode*/
+	PWR->CR|=	PWR_CR_LPDS;	
+	//Flash memory in power-down and Low-power regulator in under-drive mode when the device is in Stop mode
+	PWR->CR |=PWR_CR_FPDS|PWR_CR_LPUDS;			
+	//PWR->CR &=~PWR_CR_VOS_1;		//Scale mode 3
 	
-	
+	PWR->CR |=PWR_CR_UDEN;
+	//while(!(PWR->CSR & PWR_CSR_UDSWRDY)) {}	
 
 	SCB->SCR|=SCB_SCR_SLEEPDEEP_Msk;					// Разрешаем SLEEPDEEP по команде WFI WFE	
 	
@@ -978,8 +994,10 @@ void Suspend(void){
 **********************************************************/				
 	SCB->SCR&=~SCB_SCR_SLEEPDEEP_Msk;					// Запрешаем SLEEPDEEP по команде WFI WFE
  
-	//PWR->CR |= PWR_CR_VOS;
-	//PWR->CR &=~PWR_CR_UDEN;	
+	/*	Main regulator ON during Stop mode*/
+	PWR->CR&=	~PWR_CR_LPDS;	
+	PWR->CR &=~(PWR_CR_FPDS|PWR_CR_LPUDS);		
+	PWR->CR &=~PWR_CR_UDEN;	
 	
 	GPIO_InitStruct.GPIO_Pin=SWPOWER_LCD_PIN;
 	GPIO_InitStruct.GPIO_Speed=GPIO_Speed_2MHz;
