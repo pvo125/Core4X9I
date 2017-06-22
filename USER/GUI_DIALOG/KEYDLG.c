@@ -80,6 +80,7 @@
 
 #define ID_EDIT_0						(GUI_ID_USER+0x2B)
 
+extern uint32_t button_color;
 uint8_t shift;
 extern void _readDIR(char *pPath);
 BUTTON_SKINFLEX_PROPS SHIFT_PRES;
@@ -143,7 +144,7 @@ static const GUI_WIDGET_CREATE_INFO _aBUTTON_KEY[] = {
 };
 
 int _cbButtonSkin(const WIDGET_ITEM_DRAW_INFO *pDrawItemInfo){
-	#define RAD 4
+	#define RAD 3
 	GUI_RECT Rect;
 	switch(pDrawItemInfo->Cmd){
 		case WIDGET_ITEM_DRAW_BACKGROUND:
@@ -152,9 +153,9 @@ int _cbButtonSkin(const WIDGET_ITEM_DRAW_INFO *pDrawItemInfo){
 			Rect.x1=pDrawItemInfo->x1;
 			Rect.y0=pDrawItemInfo->y0;
 			Rect.y1=pDrawItemInfo->y1;
-			GUI_SetColor(GUI_LIGHTRED);
+			GUI_SetColor(button_color);
 			GUI_FillRoundedRect(Rect.x0, Rect.y0, Rect.x1, Rect.y1, RAD);
-			GUI_DrawGradientV(Rect.x0+RAD, Rect.y0, Rect.x1-RAD, (Rect.y1-Rect.y0)/2,GUI_WHITE,GUI_LIGHTRED);
+			GUI_DrawGradientV(Rect.x0+RAD, Rect.y0, Rect.x1-RAD, (Rect.y1-Rect.y0)/2,GUI_WHITE,button_color);
 			GUI_SetColor(GUI_RED);
 			GUI_DrawArc(Rect.x0 + RAD, Rect.y0 + RAD, RAD, RAD, 90, 180);
 			GUI_DrawArc(Rect.x1 - RAD, Rect.y0 + RAD, RAD, RAD, 0, 90);

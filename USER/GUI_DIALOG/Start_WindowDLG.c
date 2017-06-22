@@ -30,6 +30,8 @@ extern GUI_PID_STATE State;
 extern void PictureView(void);
 extern FIL pFile;
 
+uint32_t button_color;
+
 extern volatile uint8_t write_flashflag;
 extern volatile uint8_t new_message;
 
@@ -67,7 +69,7 @@ extern RTC_AlarmTypeDef								RTC_AlarmA,RTC_AlarmB;
 #define ID_ICON_ALARM_A     (GUI_ID_USER + 0x18)
 #define ID_ICON_ALARM_B     (GUI_ID_USER + 0x19)
 #define ID_ICON_BRIGHT			(GUI_ID_USER + 0x1A)
-#define ID_ICON_PERFORM			(GUI_ID_USER + 0x29)
+#define ID_BUTTON_PERFORM			(GUI_ID_USER + 0x29)
 
 #define ID_ICON_BLUE     (GUI_ID_USER + 0x1D)
 #define ID_ICON_GREEN     (GUI_ID_USER + 0x1E)
@@ -90,14 +92,17 @@ uint8_t sd_insert;
 uint8_t sd_ins_rem;
 WM_HWIN hWin_start;
 ICONVIEW_Handle hIcon_CALIB,hIcon_PAINT,hIcon_NEXT,hButton_BACK,hALARMA,hALARMB,hIcon_EXIT,hIcon_PHOTO,
-								hIcon_BRIGHT,hIcon_PERFORM;
+								hIcon_BRIGHT;
+								
 ICONVIEW_Handle hIcon[9];
 int xD[]={ID_ICON_BLUE,ID_ICON_GREEN,ID_ICON_RED,ID_ICON_CYAN,ID_ICON_MAGENTA,ID_ICON_YELLOW,ID_ICON_WHITE,ID_ICON_BLACK,ID_ICON_ORANGE};
 int color[]={GUI_BLUE,GUI_GREEN,GUI_RED,GUI_CYAN,GUI_MAGENTA,GUI_YELLOW,GUI_WHITE,GUI_BLACK,GUI_ORANGE};
 extern WM_HWIN hWin_menu;
 
+BUTTON_Handle hBUTTON_PERFORM;
 WM_HWIN hWin_message;
 
+extern int _cbButtonSkin(const WIDGET_ITEM_DRAW_INFO *pDrawItemInfo);
 void ChangePerformance(void);
 void Suspend(void);
 void SDRAM_PinConfig(void);
@@ -415,10 +420,26 @@ void _cbBkWin(WM_MESSAGE* pMsg) {
 			Id    = WM_GetId(pMsg->hWinSrc);
 			NCode = pMsg->Data.v;	
 			switch(Id){
-				case ID_ICON_PERFORM:
+				case ID_BUTTON_PERFORM:
 					switch(NCode){
 						case WM_NOTIFICATION_RELEASED:
 							ChangePerformance();
+							if(performance==PERFORMANCE_HIGH)
+							{
+								button_color=GUI_LIGHTRED;
+								
+								BUTTON_SetSkin(hBUTTON_PERFORM, _cbButtonSkin);
+								BUTTON_SetText(hBUTTON_PERFORM, "High");
+							}
+							else
+							{
+								button_color=GUI_GREEN;
+								
+								BUTTON_SetSkin(hBUTTON_PERFORM, _cbButtonSkin);
+								BUTTON_SetText(hBUTTON_PERFORM, "Low");
+								
+								
+							}
 						break;
 						}
 				break;		
@@ -672,6 +693,7 @@ void MainTask(void)
 		
 	NVIC_SetPriority(SysTick_IRQn,1);
 	WM_SetCallback(WM_HBKWIN, _cbBkWin);
+	pWIDGET_DRAW_ITEM_FUNC=BUTTON_SetDefaultSkin(BUTTON_SKIN_FLEX);
 	
 	GUI_SetBkColor(GUI_LIGHTBLUE);
 	GUI_ClearRect(1,17+SCREEN_1,58,270+SCREEN_1);
@@ -685,13 +707,24 @@ void MainTask(void)
 	ICONVIEW_AddBitmapItem(hIcon_EXIT,(const GUI_BITMAP*)(exitt+4608),"");
 #endif
 	hIcon_BRIGHT=ICONVIEW_CreateEx(10,80+SCREEN_1,34,34,WM_HBKWIN,WM_CF_SHOW|WM_CF_HASTRANS,0,ID_ICON_BRIGHT,24,24);
-	
-	hIcon_PERFORM=ICONVIEW_CreateEx(10,100+SCREEN_1,34,34,WM_HBKWIN,WM_CF_SHOW|WM_CF_HASTRANS,0,ID_ICON_PERFORM,24,24);
-	
 #ifdef FLASHCODE		
 	ICONVIEW_AddBitmapItem(hIcon_BRIGHT,&bmbrightness,"");
-#endif
-hALARMA=ICONVIEW_CreateEx(10,15+SCREEN_1,34,34,WM_HBKWIN,WM_CF_SHOW|WM_CF_HASTRANS,0,ID_ICON_ALARM_A,24,24);
+#endif	
+	
+	hBUTTON_PERFORM=BUTTON_CreateEx(12,125+SCREEN_1,30,30,WM_HBKWIN,WM_CF_SHOW,0,ID_BUTTON_PERFORM);
+	if(performance==PERFORMANCE_HIGH)
+	{
+		button_color=GUI_LIGHTRED;
+		BUTTON_SetSkin(hBUTTON_PERFORM, _cbButtonSkin);
+		BUTTON_SetText(hBUTTON_PERFORM, "High");
+	}
+	else
+	{
+		button_color=GUI_GREEN;
+		BUTTON_SetSkin(hBUTTON_PERFORM, _cbButtonSkin);
+		BUTTON_SetText(hBUTTON_PERFORM, "Low");
+	}
+	hALARMA=ICONVIEW_CreateEx(10,15+SCREEN_1,34,34,WM_HBKWIN,WM_CF_SHOW|WM_CF_HASTRANS,0,ID_ICON_ALARM_A,24,24);
 #ifdef FLASHCODE	
 	if((RTC->CR&RTC_CR_ALRAE)==RTC_CR_ALRAE)
 			ICONVIEW_AddBitmapItem(hALARMA,(const GUI_BITMAP*)(AlarmA+1152),"");
@@ -710,7 +743,7 @@ hALARMA=ICONVIEW_CreateEx(10,15+SCREEN_1,34,34,WM_HBKWIN,WM_CF_SHOW|WM_CF_HASTRA
 	
 	NVIC_EnableIRQ(EXTI1_IRQn);									//Разрешение EXTI3_IRQn прерывания
 	WM_SetDesktopColor(GUI_BLACK);
-	pWIDGET_DRAW_ITEM_FUNC=BUTTON_SetDefaultSkin(BUTTON_SKIN_FLEX);
+	
 	
 	RADIO_SetDefaultSkin(RADIO_SKIN_FLEX);	
 	//FRAMEWIN_SetDefaultSkinClassic();
@@ -859,10 +892,14 @@ void ChangePerformance(void){
 	if(performance==PERFORMANCE_LOW)
 	{	// enable PERFORMANCE_HIGH
 		performance=PERFORMANCE_HIGH;
+		SystemCoreClock=180000000;
 		RCC->PLLCFGR &=~RCC_PLLCFGR_PLLP;				// 00 PLLP=2
 		PWR->CR |= PWR_CR_VOS;									// Scale 1 mode(reset) 
-	  RCC->CFGR |= RCC_CFGR_PPRE2_DIV2;				// PCLK2 = HCLK / 2
-    RCC->CFGR |= RCC_CFGR_PPRE1_DIV4;				// PCLK1 = HCLK / 4
+	 		
+		RCC->CFGR &=~(RCC_CFGR_PPRE1|RCC_CFGR_PPRE2);						
+		RCC->CFGR |= RCC_CFGR_PPRE2_DIV2  		        // PCLK2 = HCLK / 2 0x100
+							  |RCC_CFGR_PPRE1_DIV4;	      	 		// PCLK1 = HCLK / 4 0x101
+		
 		
 		RCC->CR|= RCC_CR_PLLON;
 		while((RCC->CR& RCC_CR_PLLRDY)!=RCC_CR_PLLRDY) {}
@@ -877,18 +914,22 @@ void ChangePerformance(void){
 		while((RCC->CFGR&RCC_CFGR_SWS_PLL)!=RCC_CFGR_SWS_PLL) {}
 			
 		// Initialization step 8
-		//while(FMC_Bank5_6->SDSR&FMC_SDSR_BUSY);
-		//FMC_Bank5_6->SDRTR|=(1386<<1);													// 64mS/4096=15.625uS
+		while(FMC_Bank5_6->SDSR&FMC_SDSR_BUSY);
+		FMC_Bank5_6->SDRTR=(1386<<1);													// 64mS/4096=15.625uS
 																														// 15.625*90MHz-20=1386		
 	}
 	else	
 	{	// enable PERFORMANCE_LOW
 		performance=PERFORMANCE_LOW;
+		SystemCoreClock=90000000;
 		RCC->PLLCFGR|=RCC_PLLCFGR_PLLP_0;				// 01 PLLP=4
 		PWR->CR &= ~PWR_CR_VOS;									
 		PWR->CR |= PWR_CR_VOS_0;								// Scale 3 mode <120MHz 
-		RCC->CFGR |= RCC_CFGR_PPRE2_DIV1;				// PCLK2 = HCLK / 1
-    RCC->CFGR |= RCC_CFGR_PPRE1_DIV2;				// PCLK1 = HCLK / 2
+		
+		//RCC->CFGR |= RCC_CFGR_PPRE1_DIV2;				// PCLK1 = HCLK / 2
+		RCC->CFGR &=~(RCC_CFGR_PPRE1|RCC_CFGR_PPRE2);						
+		RCC->CFGR |= RCC_CFGR_PPRE2_DIV1  		        // PCLK2 = HCLK /1  0x000
+							  |RCC_CFGR_PPRE1_DIV2;	      	 		// PCLK1 = HCLK / 2 0x100
 		
 		PWR->CR &= ~PWR_CR_ODSWEN;
 		while((PWR->CSR & PWR_CSR_ODSWRDY) != 0){}
@@ -903,10 +944,12 @@ void ChangePerformance(void){
 		while((RCC->CFGR&RCC_CFGR_SWS_PLL)!=RCC_CFGR_SWS_PLL) {}
 			
 		// Initialization step 8
-	//	while(FMC_Bank5_6->SDSR&FMC_SDSR_BUSY);
-	//	FMC_Bank5_6->SDRTR|=(683<<1);													// 64mS/4096=15.625uS
-																														// 15.625*45MHz-20=683	
+		//while(FMC_Bank5_6->SDSR&FMC_SDSR_BUSY);
+		FMC_Bank5_6->SDRTR=(1386<<1);													// 64mS/4096=15.625uS
+																													// 15.625*45MHz-20=683	
 	}
+	
+	SysTick_Config(SystemCoreClock/1000);  /* SysTick IRQ each 1 ms */
 	
 	while(FMC_Bank5_6->SDSR&FMC_SDSR_BUSY);
 	FMC_Bank5_6->SDCMR =((uint32_t)0x00000000)			// 000: normal mode 
@@ -1075,7 +1118,7 @@ void Suspend(void){
 	WM_Paint(hIcon_EXIT);	
 	WM_Paint(hIcon_BRIGHT);
 	WM_Paint(PROGBAR_MEM);	
-	
+	WM_Paint(hBUTTON_PERFORM);
 	
 	
 	
