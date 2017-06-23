@@ -409,10 +409,14 @@ void TIM7_IRQHandler (void)
 			LcdWriteData(0x0000); 							// minimum brightness level =  0x00 - 0xFF
 			LcdWriteData(0x0000);								// brightness prescalar 0x0 - 0xF
 			backlight=BACKLIGHT_OFF;
+			
+			//LcdWriteReg(CMD_ENTER_SLEEP);
 			backlight_delay=0;
+		}
+	else if((backlight==BACKLIGHT_OFF)&&(backlight_delay==2))
+		{
 			sleep_mode=1;
 		}
-		
 		TIM7->SR &= ~TIM_SR_UIF; 			//Сбрасываем флаг UIF
 		NVIC_ClearPendingIRQ(TIM7_IRQn);
 		
@@ -438,7 +442,7 @@ void SD_SDIO_DMA_IRQHANDLER(void)
   */
 void CAN1_RX0_IRQHandler (void) 
 {
-
+	
 	CAN_Receive_IRQHandler(0);
 	CAN_RXProcess0();
 	
@@ -454,6 +458,7 @@ void CAN1_RX1_IRQHandler (void)
 {
 	canconnect=1;//canerr_clr=0;
 	count=0;
+	
 	CAN_Receive_IRQHandler(1);
 	CAN_RXProcess1();
 }

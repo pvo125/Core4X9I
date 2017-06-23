@@ -814,7 +814,11 @@ void MainTask(void)
 		}
 		if(sleep_mode)
 		{
-			Suspend();
+			backlight_delay=0;
+			//sleep_mode=0;
+			//if(canconnect==0)
+				Suspend();
+			
 		}
 		if(write_flashflag)
 		{
@@ -1078,6 +1082,8 @@ void Suspend(void){
 	SD_LowLevel_Init();	
 	TSC2046_LowLevel_Init();
 	MX25_LowLevel_Init();
+	bxCAN_LowLevel_Init();	
+		
 	
 	SysTick->VAL=0;
 	SysTick->CTRL|=SysTick_CTRL_ENABLE_Msk|SysTick_CTRL_TICKINT_Msk;

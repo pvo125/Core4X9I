@@ -68,17 +68,9 @@ static __INLINE  void LcdWriteData(U16 Data) {
   // ... TBD by user
 	LCD_DATA_ADDRESS=Data;
 }
-/****************************************************************************************************************
-*														bxCAN_Init
-****************************************************************************************************************/
-void bxCAN_Init(void){
-
+void bxCAN_LowLevel_Init(void){
 	GPIO_InitTypeDef GPIO_InitStruct;
-		
-	
-	/*Включаем тактирование CAN в модуле RCC*/	
-	RCC->APB1ENR|=RCC_APB1ENR_CAN1EN;
-	/*Настройка выводов CAN  CAN1_TX=PB9   CAN1_RX=PB8  */
+/*Настройка выводов CAN  CAN1_TX=PB9   CAN1_RX=PB8  */
 	
 	GPIO_InitStruct.GPIO_Mode=GPIO_Mode_AF;
 	GPIO_InitStruct.GPIO_OType=GPIO_OType_PP;
@@ -89,6 +81,16 @@ void bxCAN_Init(void){
 	
 	GPIO_PinAFConfig(CAN1_PORT,CAN1_TX_Source,GPIO_AF_CAN1);
 	GPIO_PinAFConfig(CAN1_PORT,CAN1_RX_Source,GPIO_AF_CAN1);
+}
+/****************************************************************************************************************
+*														bxCAN_Init
+****************************************************************************************************************/
+void bxCAN_Init(void){
+	 
+	bxCAN_LowLevel_Init();
+	
+	/*Включаем тактирование CAN в модуле RCC*/	
+	RCC->APB1ENR|=RCC_APB1ENR_CAN1EN;
 	
 	CAN1->RF1R|=CAN_RF0R_RFOM0;
 	CAN1->RF1R|=CAN_RF1R_RFOM1;

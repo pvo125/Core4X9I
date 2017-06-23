@@ -51,7 +51,7 @@ extern CANTX_TypeDef CAN_Data_TX;
 //extern CANRX_TypeDef CAN_Data_RX;
 //extern CANRX_TypeDef *pCAN_Data_RX[];
 
-
+void bxCAN_LowLevel_Init(void);
 void bxCAN_Init(void);
 CAN_TXSTATUS CAN_Transmit_DataFrame(CANTX_TypeDef *Data);
 CAN_TXSTATUS CAN_Transmit_RemoteFrame(uint16_t ID);
