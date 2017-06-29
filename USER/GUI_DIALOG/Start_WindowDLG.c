@@ -813,13 +813,8 @@ void MainTask(void)
 				Message("SD card is removed!", 1);
 		}
 		if(sleep_mode)
-		{
-			backlight_delay=0;
-			//sleep_mode=0;
-			//if(canconnect==0)
-				Suspend();
+			Suspend();
 			
-		}
 		if(write_flashflag)
 		{
 			count=0;
@@ -875,6 +870,7 @@ void MainTask(void)
 				}
 			}
 		}
+	__WFI();
 	}
 }
 /*
