@@ -1,4 +1,5 @@
 .\output\start_windowdlg.o: ..\USER\GUI_DIALOG\Start_WindowDLG.c
+.\output\start_windowdlg.o: D:\Keil\ARM\ARMCC\bin\..\include\stdio.h
 .\output\start_windowdlg.o: ..\USER\GUI\inc\DIALOG.h
 .\output\start_windowdlg.o: ..\USER\GUI\inc\WM.h
 .\output\start_windowdlg.o: ..\USER\GUI\inc\GUI_ConfDefaults.h

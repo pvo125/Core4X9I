@@ -73,3 +73,4 @@
 .\output\main.o: ..\USER\TSC2046\tsc2046.h
 .\output\main.o: ..\USER\SDRAM\SDRAM.h
 .\output\main.o: ..\USER\bxCAN\CAN.h
+.\output\main.o: D:\Keil\ARM\ARMCC\bin\..\include\stdio.h

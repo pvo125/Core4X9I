@@ -4,6 +4,14 @@
 #include "DIALOG.h"
 #include "CAN.h"
 
+#include <stdio.h>
+#define ITM_Port8(n)    (*((volatile unsigned char *)(0xE0000000+4*n)))
+#define ITM_Port16(n)   (*((volatile unsigned short*)(0xE0000000+4*n)))
+#define ITM_Port32(n)   (*((volatile unsigned long *)(0xE0000000+4*n)))
+//#define DEMCR           (*((volatile unsigned long *)(0xE000EDFC)))
+//#define TRCENA          0x01000000
+
+
 void assert_failed(uint8_t* file, uint32_t line)
 {
 	while(1){};
@@ -557,6 +565,33 @@ SD_Error Boot_menu (void){
 
 
 /****************************************************************/
+/*												SWO_Init															*/
+/*****************************************************************/
+#if 1
+void SWO_Init(uint32_t portBits, uint32_t cpuCoreFreqHz){
+	uint32_t SWOSpeed = 2000000; /* 2000k baud rate */
+  uint32_t SWOPrescaler = (cpuCoreFreqHz / SWOSpeed) - 1; /* SWOSpeed in Hz, note that cpuCoreFreqHz is expected to be match the CPU core clock */
+
+	CoreDebug->DEMCR=CoreDebug_DEMCR_TRCENA_Msk; 			/* enable trace in core debug */
+	ITM->LAR=0xC5ACCE55; 															/* ITM Lock Access Register, C5ACCE55 enables more write access to Control Register 0xE00 :: 0xFFC */
+	
+	TPI->SPPR=0x00000002;															/* "Selected PIN Protocol Register":(2: SWO NRZ, 1: SWO Manchester encoding) */
+	TPI->ACPR=SWOPrescaler;														/* "Async Clock Prescaler Register". Scale the baud rate of the asynchronous output */
+	ITM->TCR = (0x1UL<<16)						|//ITM_TCR_TraceBusID_Msk |
+						 (0x0UL<<8)						  |	//ITM_TCR_TSPrescale_Msk|
+						 //ITM_TCR_SWOENA_Msk			|
+						 //ITM_TCR_DWTENA_Msk			|
+						 ITM_TCR_SYNCENA_Msk 		|
+						 //ITM_TCR_TSENA_Msk			|			
+						 ITM_TCR_ITMENA_Msk; 												/* ITM Trace Control Register */
+
+	ITM->TPR = 0x00000001;//ITM_TPR_PRIVMASK_Msk; 											/* ITM Trace Privilege Register */
+  ITM->TER = portBits; 																	/* ITM Trace Enable Register. Enabled tracing on stimulus ports. One bit per stimulus port. */
+	DWT->CTRL=0x4001061F; 																/* DWT_CTRL */
+	TPI->FFCR=0x00000100; 																/* Formatter and Flush Control Register */
+}
+#endif
+/****************************************************************/
 /*					                MAIN	                      	      */
 /****************************************************************/
 int main(void){
@@ -570,8 +605,9 @@ int main(void){
 	MX25_Init();
 	TSC2046_Init();
 	bxCAN_Init();
-	
-	
+#ifdef DEBUG_MODE
+	SWO_Init(1,SystemCoreClock);
+#endif	
 	
 	brightness=(uint16_t)RTC->BKP2R;
 	if(!brightness)

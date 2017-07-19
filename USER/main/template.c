@@ -6,6 +6,7 @@ uint32_t ALARMA_ACTION;
 uint32_t ALARMB_ACTION;
 uint8_t time_show=1;
 
+#include <stm32f4xx.h>
 PERFORMANCE_TypeDef performance=PERFORMANCE_HIGH;
 
 WIDGET_DRAW_ITEM_FUNC *pWIDGET_DRAW_ITEM_FUNC;

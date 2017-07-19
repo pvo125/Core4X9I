@@ -20,7 +20,7 @@
 
 // USER START (Optionally insert additional includes)
 // USER END
-
+#include <stdio.h>
 #include "DIALOG.h"
 #include "header.h"
 #include <string.h>
@@ -87,6 +87,16 @@ extern RTC_AlarmTypeDef								RTC_AlarmA,RTC_AlarmB;
 #define FLAG_STATUS_SECTOR	0x08004000		//sector 1
 
 // USER START (Optionally insert additional defines)
+/*****************************************************************
+*													fputs
+*****************************************************************/
+struct __FILE { int handle;};
+FILE __stdout;
+FILE __stdin;
+
+int fputc(int ch, FILE *f) {
+   return ITM_SendChar(ch);
+}
 
 uint8_t sd_insert;
 uint8_t sd_ins_rem;
@@ -790,6 +800,12 @@ void MainTask(void)
 				GUI_DispDec((uint8_t)(CAN1->ESR),1);
 				canerr_disp=0;
 		}
+#ifdef DEBUG_MODE
+		if(time_disp)
+		{
+			printf("ITM_TCR %.8X\t	TPI_ACPR %.8X\t	DWT_CTRL %.8X\n",ITM->TCR,TPI->ACPR,DWT->CTRL);
+		}
+#endif		
 		if(time_disp)
 		{
 			GUI_SetFont(&GUI_Font8x16);
@@ -891,6 +907,10 @@ void ChangePerformance(void){
 		 
 	if(performance==PERFORMANCE_LOW)
 	{	// enable PERFORMANCE_HIGH
+#ifdef DEBUG_MODE		
+		//CoreDebug->DEMCR = CoreDebug_DEMCR_TRCENA_Msk; /* enable trace in core debug */
+		TPI->ACPR=0x00000059;
+#endif
 		performance=PERFORMANCE_HIGH;
 		SystemCoreClock=180000000;
 		RCC->PLLCFGR &=~RCC_PLLCFGR_PLLP;				// 00 PLLP=2
@@ -920,6 +940,10 @@ void ChangePerformance(void){
 	}
 	else	
 	{	// enable PERFORMANCE_LOW
+#ifdef DEBUG_MODE
+		//CoreDebug->DEMCR = CoreDebug_DEMCR_TRCENA_Msk; /* enable trace in core debug */
+		TPI->ACPR=0x0000002C;
+#endif
 		performance=PERFORMANCE_LOW;
 		SystemCoreClock=90000000;
 		RCC->PLLCFGR|=RCC_PLLCFGR_PLLP_0;				// 01 PLLP=4
