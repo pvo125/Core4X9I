@@ -11,6 +11,8 @@
 ".\output\stm32f4xx_sdio.o"
 ".\output\stm32f4xx_rtc.o"
 ".\output\stm32f4xx_exti.o"
+".\output\stm32f4xx_adc.o"
+".\output\stm32f4xx_tim.o"
 ".\output\main.o"
 ".\output\template.o"
 ".\output\stm32f4xx_it.o"

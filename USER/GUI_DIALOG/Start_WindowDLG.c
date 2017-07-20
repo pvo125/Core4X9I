@@ -30,6 +30,7 @@ extern GUI_PID_STATE State;
 extern void PictureView(void);
 extern FIL pFile;
 
+extern uint8_t ADCVal_ready;
 uint32_t button_color;
 
 extern volatile uint8_t write_flashflag;
@@ -711,6 +712,8 @@ void MainTask(void)
 	GUI_DrawRect(0,16+SCREEN_1,59,271+SCREEN_1);
 	GUI_SetBkColor(GUI_DARKBLUE);
 	GUI_ClearRect(0,0+SCREEN_1,470,15+SCREEN_1);
+	 GUI_DrawRoundedRect(420,0+SCREEN_1,459,14+SCREEN_1,2);
+	GUI_DrawRect(460,3+SCREEN_1,464,11+SCREEN_1);
 	
 	hIcon_EXIT=ICONVIEW_CreateEx(0,214+SCREEN_1,58,58,WM_HBKWIN,WM_CF_SHOW|WM_CF_HASTRANS,0,ID_ICON_EXIT,48,48);
 #ifdef FLASHCODE	
@@ -783,6 +786,13 @@ void MainTask(void)
 	while(1)
 	{
 		GUI_Delay(5);	
+		if(ADCVal_ready)
+		{
+			GUI_SetColor(GUI_GREEN);
+			GUI_FillRoundedRect(421, 1, 450, 13,2);
+			GUI_SetColor(GUI_YELLOW);
+		
+		}			
 		if(canerr_clr)
 		{
 			GUI_SetBkColor(GUI_DARKBLUE);
@@ -991,6 +1001,7 @@ void Suspend(void){
 	NVIC_DisableIRQ(TIM7_IRQn);
 	NVIC_DisableIRQ(RTC_WKUP_IRQn);
 	NVIC_DisableIRQ(EXTI1_IRQn);									
+	NVIC_DisableIRQ(ADC_IRQn);
 	
 	SysTick->CTRL&=~SysTick_CTRL_ENABLE_Msk;
 	SysTick->CTRL&=~SysTick_CTRL_TICKINT_Msk;
@@ -1025,6 +1036,7 @@ void Suspend(void){
 	GPIO_Init(GPIOI, &GPIO_InitStruct);
 	
 	TIM7->CNT=0;
+	ADC_Cmd(ADC1,DISABLE);
 	
 /*	
  // Select HSI as system clock source 
@@ -1065,7 +1077,10 @@ void Suspend(void){
 	PWR->CR&=	~PWR_CR_LPDS;	
 	PWR->CR &=~(PWR_CR_FPDS|PWR_CR_LPUDS);		
 	PWR->CR &=~PWR_CR_UDEN;	
-	
+/**********************************************************		  
+*						SWPOWER_LCD_PIN																*	
+**********************************************************/				
+
 	GPIO_InitStruct.GPIO_Pin=SWPOWER_LCD_PIN;
 	GPIO_InitStruct.GPIO_Speed=GPIO_Speed_2MHz;
 	GPIO_InitStruct.GPIO_Mode=GPIO_Mode_OUT;
@@ -1103,6 +1118,17 @@ void Suspend(void){
 	TSC2046_LowLevel_Init();
 	MX25_LowLevel_Init();
 	bxCAN_LowLevel_Init();	
+	
+/********************************************************************/
+/*								ADC_SWITCH_PIN	  																*/
+/********************************************************************/			
+		GPIO_InitStruct.GPIO_Pin=ADC_SWITCH_PIN;
+		GPIO_InitStruct.GPIO_Speed=GPIO_Speed_2MHz;
+		GPIO_InitStruct.GPIO_Mode=GPIO_Mode_OUT;
+		GPIO_InitStruct.GPIO_OType=GPIO_OType_OD;
+		GPIO_InitStruct.GPIO_PuPd=GPIO_PuPd_NOPULL;
+		GPIO_Init(ADC_SWITCH_PORT,&GPIO_InitStruct);
+		GPIO_ResetBits(ADC_SWITCH_PORT,ADC_SWITCH_PIN);			// Enable ADC_SWITCH Vbat/2 input for ADC1_IN3
 		
 	
 	SysTick->VAL=0;
@@ -1157,6 +1183,9 @@ void Suspend(void){
 		GPIO_InitStruct.GPIO_PuPd=GPIO_PuPd_UP;
 		GPIO_Init(SDCARD_INSERT_PORT,&GPIO_InitStruct);	
 		EXTI_ClearITPendingBit(EXTI_Line1);
+	
+	ADC_Cmd(ADC1,ENABLE);
+	NVIC_EnableIRQ(ADC_IRQn);
 	
 	NVIC_ClearPendingIRQ(EXTI1_IRQn);
 	NVIC_EnableIRQ(EXTI1_IRQn);									//Разрешение EXTI1_IRQn прерывания

@@ -74,8 +74,8 @@
             <UserProg2Dos16Mode>0</UserProg2Dos16Mode>
           </BeforeMake>
           <AfterMake>
-            <RunUserProg1>1</RunUserProg1>
-            <RunUserProg2>1</RunUserProg2>
+            <RunUserProg1>0</RunUserProg1>
+            <RunUserProg2>0</RunUserProg2>
             <UserProg1Name>$K\ARM\ARMCC\BIN\fromelf.exe --bin -o Core4x9I.bin !L</UserProg1Name>
             <UserProg2Name>D:\STM32_проекты\Core4X9I\MDK-ARM\user.bat</UserProg2Name>
             <UserProg1Dos16Mode>0</UserProg1Dos16Mode>
@@ -484,6 +484,16 @@
               <FileName>stm32f4xx_exti.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_exti.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f4xx_adc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_adc.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f4xx_tim.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_tim.c</FilePath>
             </File>
           </Files>
         </Group>

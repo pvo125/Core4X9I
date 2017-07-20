@@ -17,15 +17,25 @@
 
 #define MY_MESSAGE     (WM_USER + 0x01)
 //#define FLASHCODE
-#define DEBUG_MODE
+//#define DEBUG_MODE
 #define SCREEN_1		0
 #define SCREEN_2		272
 
 //#define SRAM
 #define NAND
 
+
 #define SDCARD_INSERT_PIN		GPIO_Pin_1
 #define SDCARD_INSERT_PORT	GPIOB	
+
+#define ADC_IN3_PIN				GPIO_Pin_3
+#define ADC_SWITCH_PIN		GPIO_Pin_8
+#define USB_DETECT_PIN		GPIO_Pin_9
+#define CHARGE_INDIC_PIN	GPIO_Pin_10
+#define ADC_IN3_PORT			GPIOA	
+#define ADC_SWITCH_PORT		GPIOH	
+#define USB_DETECT_PORT		GPIOH
+#define CHARGE_INDIC_PORT	GPIOH
 
 #define SWPOWER_LCD_PIN		GPIO_Pin_6
 #define SWPOWER_LCD_PORT	GPIOB	
@@ -134,6 +144,8 @@ extern GUI_PID_STATE State;
 extern uint8_t count_SD_open;
 
 extern uint8_t SD_buff[];
+
+extern uint16_t ADCBuff[];
 
 extern SD_Error sd_error;
 extern SD_CardInfo SDCardInfo;

@@ -157,7 +157,7 @@
             <CpuDllArguments></CpuDllArguments>
             <PeripheralDll></PeripheralDll>
             <PeripheralDllArguments></PeripheralDllArguments>
-            <InitializationFile></InitializationFile>
+            <InitializationFile>..\USER\Dbg_NORESET.ini</InitializationFile>
             <Driver>STLink\ST-LINKIII-KEIL_SWO.dll</Driver>
           </TargetDlls>
         </DebugOption>
@@ -484,6 +484,16 @@
               <FileName>stm32f4xx_exti.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_exti.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f4xx_adc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_adc.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f4xx_tim.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_tim.c</FilePath>
             </File>
           </Files>
         </Group>

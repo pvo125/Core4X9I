@@ -74,6 +74,12 @@ GPIO_InitTypeDef 							GPIO_InitStruct;
 DMA_InitTypeDef 							DMA_InitStruct;
 FMC_NORSRAMTimingInitTypeDef  FMC_NORSRAMTiming;
 FMC_NORSRAMInitTypeDef        FMC_NORSRAM;
+												
+ADC_CommonInitTypeDef					ADC_CommonInitStruct;												
+ADC_InitTypeDef								ADC_InitStruct;
+
+TIM_TimeBaseInitTypeDef				TIM_TimeBaseInitStruct;			
+TIM_OCInitTypeDef							TIM_OCInitStruct;												
 /****************************************************************/
 /*										Настройка часов			        							*/
 /****************************************************************/
@@ -168,11 +174,14 @@ void Periph_Init(void){
 	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM6|
 												 RCC_APB1Periph_TIM7|	
 												 RCC_APB1Periph_SPI2|
-												 RCC_APB1Periph_TIM2	, ENABLE);
+												 RCC_APB1Periph_TIM2|
+												 RCC_APB1Periph_TIM3	, ENABLE);
 	
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_SDIO|
 												 RCC_APB2Periph_SPI1|
+												 RCC_APB2Periph_ADC1|	
 												 RCC_APB2Periph_SYSCFG, ENABLE);
+	
 #if 0	
 /********************************************************************/
 	/*		Настройка DMA2 для вывода данных на LCD модуль							*/
@@ -244,6 +253,56 @@ void Periph_Init(void){
 		EXTI_InitStruct.EXTI_Mode=EXTI_Mode_Interrupt;
 		EXTI_InitStruct.EXTI_Trigger=EXTI_Trigger_Rising_Falling;
 		EXTI_Init(&EXTI_InitStruct);
+		
+/********************************************************************/
+/*								ADC_IN3_PIN 		  																*/
+/********************************************************************/					
+		GPIO_InitStruct.GPIO_Pin=ADC_IN3_PIN;
+		GPIO_InitStruct.GPIO_Speed=GPIO_Speed_2MHz;
+		GPIO_InitStruct.GPIO_Mode=GPIO_Mode_AN;
+		GPIO_InitStruct.GPIO_PuPd=GPIO_PuPd_NOPULL;
+		GPIO_Init(ADC_IN3_PORT,&GPIO_InitStruct);
+		
+/********************************************************************/
+/*								ADC_SWITCH_PIN	  																*/
+/********************************************************************/			
+		GPIO_InitStruct.GPIO_Pin=ADC_SWITCH_PIN;
+		GPIO_InitStruct.GPIO_Speed=GPIO_Speed_2MHz;
+		GPIO_InitStruct.GPIO_Mode=GPIO_Mode_OUT;
+		GPIO_InitStruct.GPIO_OType=GPIO_OType_OD;
+		GPIO_InitStruct.GPIO_PuPd=GPIO_PuPd_NOPULL;
+		GPIO_Init(ADC_SWITCH_PORT,&GPIO_InitStruct);
+		
+		GPIO_ResetBits(ADC_SWITCH_PORT,ADC_SWITCH_PIN);			// Enable ADC_SWITCH Vbat/2 input for ADC1_IN3
+		
+/********************************************************************/
+/*								USB_DETECT_PIN    																*/
+/********************************************************************/					
+		GPIO_InitStruct.GPIO_Pin=USB_DETECT_PIN;
+		GPIO_InitStruct.GPIO_Speed=GPIO_Speed_2MHz;
+		GPIO_InitStruct.GPIO_Mode=GPIO_Mode_IN;
+		GPIO_InitStruct.GPIO_PuPd=GPIO_PuPd_NOPULL;
+		GPIO_Init(USB_DETECT_PORT,&GPIO_InitStruct);
+		
+		SYSCFG->EXTICR[2]=SYSCFG_EXTICR3_EXTI9_PH;
+		
+		EXTI_InitStruct.EXTI_Line=EXTI_Line9;
+		EXTI_InitStruct.EXTI_LineCmd=ENABLE;
+		EXTI_InitStruct.EXTI_Mode=EXTI_Mode_Interrupt;
+		EXTI_InitStruct.EXTI_Trigger=EXTI_Trigger_Rising_Falling;
+		EXTI_Init(&EXTI_InitStruct);
+		
+		
+/********************************************************************/
+/*								CHARGE_INDIC_PIN  																*/
+/********************************************************************/					
+		GPIO_InitStruct.GPIO_Pin=CHARGE_INDIC_PIN;
+		GPIO_InitStruct.GPIO_Speed=GPIO_Speed_2MHz;
+		GPIO_InitStruct.GPIO_Mode=GPIO_Mode_IN;
+		GPIO_InitStruct.GPIO_PuPd=GPIO_PuPd_NOPULL;
+		GPIO_Init(CHARGE_INDIC_PORT,&GPIO_InitStruct);
+		
+		
 /********************************************************************/
 /*								SWPOWER_LCD 		  																*/
 /********************************************************************/			
@@ -321,6 +380,57 @@ void Periph_Init(void){
 	TIM7->EGR = TIM_EGR_UG;			//генерируем "update event". ARR и PSC грузятся из предварительного в теневой регистр. 
 	TIM7->SR&=~TIM_SR_UIF; 			//Сбрасываем флаг UIF
 	NVIC_ClearPendingIRQ(TIM7_IRQn);
+	
+	
+	DMA_InitStruct.DMA_BufferSize=4;
+	DMA_InitStruct.DMA_Channel=DMA_Channel_0;
+	DMA_InitStruct.DMA_DIR=DMA_DIR_PeripheralToMemory;
+	DMA_InitStruct.DMA_FIFOMode=DMA_FIFOMode_Disable;
+	DMA_InitStruct.DMA_FIFOThreshold=DMA_FIFOThreshold_1QuarterFull;
+	DMA_InitStruct.DMA_Memory0BaseAddr=(uint32_t)&ADCBuff;
+	DMA_InitStruct.DMA_MemoryBurst=DMA_MemoryBurst_Single;
+	DMA_InitStruct.DMA_MemoryDataSize=DMA_MemoryDataSize_HalfWord;
+	DMA_InitStruct.DMA_MemoryInc=DMA_MemoryInc_Enable;
+	DMA_InitStruct.DMA_Mode=DMA_Mode_Circular;
+	DMA_InitStruct.DMA_PeripheralBaseAddr=(uint32_t)&ADC1->DR;
+	DMA_InitStruct.DMA_PeripheralBurst=DMA_PeripheralBurst_Single;
+	DMA_InitStruct.DMA_PeripheralDataSize=DMA_PeripheralDataSize_HalfWord;
+	DMA_InitStruct.DMA_PeripheralInc=DMA_PeripheralInc_Disable;
+	DMA_InitStruct.DMA_Priority=DMA_Priority_Low;
+	DMA_Init(DMA2_Stream0,&DMA_InitStruct);
+	DMA_Cmd(DMA2_Stream0, ENABLE);
+	
+	ADC_CommonInitStruct.ADC_Mode=ADC_Mode_Independent;
+	ADC_CommonInitStruct.ADC_Prescaler=ADC_Prescaler_Div6;
+	ADC_CommonInit(&ADC_CommonInitStruct);
+	
+	ADC_InitStruct.ADC_ContinuousConvMode=DISABLE;
+	ADC_InitStruct.ADC_DataAlign=ADC_DataAlign_Right;
+	ADC_InitStruct.ADC_ExternalTrigConv=ADC_ExternalTrigConv_T3_TRGO;
+	ADC_InitStruct.ADC_ExternalTrigConvEdge=ADC_ExternalTrigConvEdge_Rising;	
+  ADC_InitStruct.ADC_NbrOfConversion=4;
+	ADC_InitStruct.ADC_Resolution=ADC_Resolution_12b;
+	ADC_InitStruct.ADC_ScanConvMode=ENABLE;
+	ADC_Init(ADC1,&ADC_InitStruct);
+	ADC_RegularChannelConfig(ADC1, ADC_Channel_3, 1, ADC_SampleTime_480Cycles);
+	ADC_RegularChannelConfig(ADC1, ADC_Channel_3, 2, ADC_SampleTime_480Cycles);
+	ADC_RegularChannelConfig(ADC1, ADC_Channel_3, 3, ADC_SampleTime_480Cycles);
+	ADC_RegularChannelConfig(ADC1, ADC_Channel_3, 4, ADC_SampleTime_480Cycles);
+	ADC_ITConfig(ADC1, ADC_IT_EOC, ENABLE);
+	ADC_DMACmd(ADC1, ENABLE);
+	ADC_DMARequestAfterLastTransferCmd(ADC1, ENABLE);	
+	ADC_Cmd(ADC1, ENABLE);
+		
+	TIM_TimeBaseInitStruct.TIM_ClockDivision=TIM_CKD_DIV1;
+	TIM_TimeBaseInitStruct.TIM_CounterMode=TIM_CounterMode_Up;
+	TIM_TimeBaseInitStruct.TIM_Period=50000;
+	TIM_TimeBaseInitStruct.TIM_Prescaler=8999;
+	TIM_TimeBaseInitStruct.TIM_RepetitionCounter=0;
+	TIM_TimeBaseInit(TIM3,&TIM_TimeBaseInitStruct);
+	TIM_SelectOutputTrigger(TIM3,TIM_TRGOSource_Update);
+	TIM3->EGR = TIM_EGR_UG;			//генерируем "update event". ARR и PSC грузятся из предварительного в теневой регистр. 
+	TIM3->SR&=~TIM_SR_UIF; 			//Сбрасываем флаг UIF
+	TIM_Cmd(TIM3, ENABLE);	
 /********************************************************************/
 /* 										Инициализация контроллера NVIC							 	*/
 /********************************************************************/
@@ -331,7 +441,8 @@ void Periph_Init(void){
 	NVIC_SetPriority(SD_SDIO_DMA_IRQn,0);
 	NVIC_SetPriority(EXTI1_IRQn,2);
 	NVIC_SetPriority(EXTI4_IRQn,0);
-	
+	NVIC_SetPriority(EXTI9_5_IRQn,2);
+	NVIC_SetPriority(ADC_IRQn,2);
 	NVIC_SetPriority(RTC_Alarm_IRQn,2);
 	
 }
@@ -619,7 +730,8 @@ int main(void){
 	NVIC_EnableIRQ(RTC_WKUP_IRQn);							//Разрешение RTC_IRQn прерывания
 	//NVIC_EnableIRQ(SDIO_IRQn);									//Разрешение SDIO_IRQn прерывания
 	NVIC_EnableIRQ(SD_SDIO_DMA_IRQn);						//Разрешение DMA2_Stream3_IRQn прерывания
-	
+	NVIC_EnableIRQ(ADC_IRQn);
+	//NVIC_EnableIRQ(EXTI9_5_IRQn);	
 	NVIC_EnableIRQ(EXTI4_IRQn);		
 	NVIC_EnableIRQ(RTC_Alarm_IRQn);
 	

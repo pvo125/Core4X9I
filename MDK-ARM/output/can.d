@@ -7,8 +7,9 @@
 .\output\can.o: D:\Keil\ARM\CMSIS\Include\core_cm4_simd.h
 .\output\can.o: ..\Libraries\CMSIS\Device\ST\STM32F4xx\Include\system_stm32f4xx.h
 .\output\can.o: ..\USER\main\stm32f4xx_conf.h
-.\output\can.o: ..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_dma.h
+.\output\can.o: ..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_adc.h
 .\output\can.o: ..\Libraries\CMSIS\Device\ST\STM32F4xx\Include\stm32f4xx.h
+.\output\can.o: ..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_dma.h
 .\output\can.o: ..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_exti.h
 .\output\can.o: ..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_gpio.h
 .\output\can.o: ..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_pwr.h
@@ -16,6 +17,7 @@
 .\output\can.o: ..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_rtc.h
 .\output\can.o: ..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_sdio.h
 .\output\can.o: ..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_spi.h
+.\output\can.o: ..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_tim.h
 .\output\can.o: ..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_fmc.h
 .\output\can.o: ..\USER\bxCAN\CAN.h
 .\output\can.o: ..\USER\main\header.h

@@ -53,8 +53,9 @@
 .\output\start_windowdlg.o: D:\Keil\ARM\CMSIS\Include\core_cm4_simd.h
 .\output\start_windowdlg.o: ..\Libraries\CMSIS\Device\ST\STM32F4xx\Include\system_stm32f4xx.h
 .\output\start_windowdlg.o: ..\USER\main\stm32f4xx_conf.h
-.\output\start_windowdlg.o: ..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_dma.h
+.\output\start_windowdlg.o: ..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_adc.h
 .\output\start_windowdlg.o: ..\Libraries\CMSIS\Device\ST\STM32F4xx\Include\stm32f4xx.h
+.\output\start_windowdlg.o: ..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_dma.h
 .\output\start_windowdlg.o: ..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_exti.h
 .\output\start_windowdlg.o: ..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_gpio.h
 .\output\start_windowdlg.o: ..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_pwr.h
@@ -62,6 +63,7 @@
 .\output\start_windowdlg.o: ..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_rtc.h
 .\output\start_windowdlg.o: ..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_sdio.h
 .\output\start_windowdlg.o: ..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_spi.h
+.\output\start_windowdlg.o: ..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_tim.h
 .\output\start_windowdlg.o: ..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_fmc.h
 .\output\start_windowdlg.o: ..\USER\FatFS\ff.h
 .\output\start_windowdlg.o: ..\USER\FatFS\integer.h

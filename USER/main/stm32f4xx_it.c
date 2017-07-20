@@ -47,6 +47,8 @@ extern volatile uint8_t new_message;
 
 extern volatile uint8_t time_disp;
 
+uint8_t ADCVal_ready;
+uint16_t VBat;
 uint8_t move_y_last;
 extern uint8_t move_y;
 extern uint8_t screen_scroll;
@@ -203,6 +205,7 @@ void RTC_WKUP_IRQHandler(void)
 	if(((RTC->TR&0x003F0000)==0)&&((RTC->TR&0x00007F00)==0)&&((RTC->TR&0x0000007F)==0))
 	{
 		RTC_GetDate(RTC_Format_BIN, &RTC_Date);
+		GUI_SetColor(GUI_YELLOW);
 		GUI_DispDecAt(RTC_Date.RTC_Date,5,0+SCREEN_1,2);
 		GUI_DispString(":");
 		GUI_DispDec(RTC_Date.RTC_Month,2);
@@ -228,6 +231,19 @@ void RTC_WKUP_IRQHandler(void)
 	
 	RTC->ISR&=~RTC_ISR_WUTF;//RTC->ISR&=~(RTC_ISR_WUTF|0x00000080);//RTC_ClearITPendingBit(RTC_IT_WUT);//RTC->ISR&=~RTC_ISR_WUTF;
 	EXTI_ClearITPendingBit(EXTI_Line22);
+}
+/**
+  * @brief  This function handles ADC_IRQHandler interrupt request.
+  * @param  None
+  * @retval None
+  */
+
+void ADC_IRQHandler (void)
+{
+	uint16_t temp;
+	temp=(ADCBuff[0]+ADCBuff[1]+ADCBuff[2]+ADCBuff[3] )/4;
+	VBat=(6590*temp)/4095;
+	ADCVal_ready=1;	
 }
 /**
   * @brief  This function handles EXTI0_IRQHandler interrupt request.
@@ -277,6 +293,7 @@ void EXTI4_IRQHandler (void)
 	NVIC_ClearPendingIRQ(EXTI4_IRQn);
 	
 }
+
 
 /**
   * @brief  This function handles TIM2_IRQHandler interrupt request.
