@@ -247,15 +247,18 @@ void ADC_IRQHandler (void)
 	temp=(ADCBuff[0]+ADCBuff[1]+ADCBuff[2]+ADCBuff[3] )/4;
 	VBat=(6590*temp)/4095;
 	Bat_percent=(VBat-3100)/10;
-	if(temp>80)
-		bat_color=GUI_DARKGREEN;
-	else if(60<temp<=80)
-		bat_color=GUI_GREEN;
-	else if(50<temp<=60)
-		bat_color=GUI_LIGHTGREEN;
-	else if(30<temp<=50)
+	if(Bat_percent>80)
+	{
+		bat_color=0x0050ff50;
+		if(Bat_percent>100) Bat_percent=100;
+	}
+	else if(60<Bat_percent<=80)
+		bat_color=0x0020E080;
+	else if(50<Bat_percent<=60)
+		bat_color=0x0000E0A0;
+	else if(30<Bat_percent<=50)
 		bat_color=GUI_LIGHTRED;
-	else if(10<temp<=30)
+	else if(10<Bat_percent<=30)
 		bat_color=GUI_DARKRED;
 	else
 		bat_color=GUI_TRANSPARENT;

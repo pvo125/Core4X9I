@@ -715,8 +715,12 @@ void MainTask(void)
 	GUI_DrawRect(0,16+SCREEN_1,59,271+SCREEN_1);
 	GUI_SetBkColor(GUI_DARKBLUE);
 	GUI_ClearRect(0,0+SCREEN_1,470,15+SCREEN_1);
-	 GUI_DrawRoundedRect(410,0+SCREEN_1,459,14+SCREEN_1,2);
-	GUI_DrawRect(460,3+SCREEN_1,464,11+SCREEN_1);
+	
+	GUI_DrawRect(409,2+SCREEN_1,437,13+SCREEN_1);
+	GUI_FillRect(438,4+SCREEN_1,440,11+SCREEN_1);
+	GUI_SetColor(GUI_DARKYELLOW);
+	GUI_DrawRect(410,3+SCREEN_1,436,12+SCREEN_1);
+	GUI_SetColor(GUI_YELLOW);
 	
 	hIcon_EXIT=ICONVIEW_CreateEx(0,214+SCREEN_1,58,58,WM_HBKWIN,WM_CF_SHOW|WM_CF_HASTRANS,0,ID_ICON_EXIT,48,48);
 #ifdef FLASHCODE	
@@ -793,9 +797,9 @@ void MainTask(void)
 		{
 			ADCVal_ready=0;
 			GUI_SetColor(bat_color);
-			GUI_FillRoundedRect(421, 1, 421+Bat_percent/2, 13,2);
-			GUI_SetColor(GUI_GRAY);
-			GUI_FillRect(421+Bat_percent/2, 1, 457, 13);
+			GUI_FillRect(411, 4, 411+Bat_percent/4, 11);
+			GUI_SetColor(0x00202020);
+			GUI_FillRect(412+Bat_percent/4, 4, 435, 11);
 		}			
 		if(canerr_clr)
 		{
@@ -822,6 +826,7 @@ void MainTask(void)
 #endif		
 		if(time_disp)
 		{
+			GUI_SetColor(GUI_YELLOW);
 			GUI_SetFont(&GUI_Font8x16);
 			GUI_DispDecAt(RTC_Time.RTC_Hours,350,0+SCREEN_1,2);
 			GUI_DispString(":");
@@ -1168,7 +1173,12 @@ void Suspend(void){
 	GUI_DispDec(RTC_Date.RTC_Month,2);
 	GUI_DispString(".20");
 	GUI_DispDec(RTC_Date.RTC_Year,2);
-		
+	
+	GUI_DrawRect(409,2+SCREEN_1,437,13+SCREEN_1);
+	GUI_FillRect(438,4+SCREEN_1,440,11+SCREEN_1);
+	GUI_SetColor(GUI_DARKYELLOW);
+	GUI_DrawRect(410,3+SCREEN_1,436,12+SCREEN_1);
+	GUI_SetColor(GUI_YELLOW);
 	WM_Paint(hALARMA);
 	WM_Paint(hALARMB);
 	WM_Paint(hIcon_EXIT);	
