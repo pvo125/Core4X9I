@@ -31,6 +31,9 @@ extern void PictureView(void);
 extern FIL pFile;
 
 extern uint8_t ADCVal_ready;
+extern uint16_t Bat_percent;
+extern GUI_COLOR bat_color;
+
 uint32_t button_color;
 
 extern volatile uint8_t write_flashflag;
@@ -712,7 +715,7 @@ void MainTask(void)
 	GUI_DrawRect(0,16+SCREEN_1,59,271+SCREEN_1);
 	GUI_SetBkColor(GUI_DARKBLUE);
 	GUI_ClearRect(0,0+SCREEN_1,470,15+SCREEN_1);
-	 GUI_DrawRoundedRect(420,0+SCREEN_1,459,14+SCREEN_1,2);
+	 GUI_DrawRoundedRect(410,0+SCREEN_1,459,14+SCREEN_1,2);
 	GUI_DrawRect(460,3+SCREEN_1,464,11+SCREEN_1);
 	
 	hIcon_EXIT=ICONVIEW_CreateEx(0,214+SCREEN_1,58,58,WM_HBKWIN,WM_CF_SHOW|WM_CF_HASTRANS,0,ID_ICON_EXIT,48,48);
@@ -788,10 +791,11 @@ void MainTask(void)
 		GUI_Delay(5);	
 		if(ADCVal_ready)
 		{
-			GUI_SetColor(GUI_GREEN);
-			GUI_FillRoundedRect(421, 1, 450, 13,2);
-			GUI_SetColor(GUI_YELLOW);
-		
+			ADCVal_ready=0;
+			GUI_SetColor(bat_color);
+			GUI_FillRoundedRect(421, 1, 421+Bat_percent/2, 13,2);
+			GUI_SetColor(GUI_GRAY);
+			GUI_FillRect(421+Bat_percent/2, 1, 457, 13);
 		}			
 		if(canerr_clr)
 		{

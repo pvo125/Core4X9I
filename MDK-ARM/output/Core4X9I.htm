@@ -3,7 +3,7 @@
 <title>Static Call Graph - [.\output\Core4X9I.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\output\Core4X9I.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5.03 [Build 76]: Last Updated: Thu Jul 20 16:56:39 2017
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5.03 [Build 76]: Last Updated: Thu Jul 20 20:06:55 2017
 <BR><P>
 <H3>Maximum Stack Usage =        744 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -901,7 +901,7 @@ Global Symbols
 <BR><BR>[Called By]<UL><LI><a href="#[337]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Periph_Init
 </UL>
 
-<P><STRONG><a name="[38]"></a>ADC_IRQHandler</STRONG> (Thumb, 58 bytes, Stack size 0 bytes, stm32f4xx_it.o(i.ADC_IRQHandler))
+<P><STRONG><a name="[38]"></a>ADC_IRQHandler</STRONG> (Thumb, 188 bytes, Stack size 0 bytes, stm32f4xx_it.o(i.ADC_IRQHandler))
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32f429_439xx.o(RESET)
 </UL>
 <P><STRONG><a name="[341]"></a>ADC_ITConfig</STRONG> (Thumb, 32 bytes, Stack size 8 bytes, stm32f4xx_adc.o(i.ADC_ITConfig))
@@ -962,7 +962,8 @@ Global Symbols
 <P><STRONG><a name="[85]"></a>BUTTON_DrawSkinFlex</STRONG> (Thumb, 562 bytes, Stack size 56 bytes, button_skinflex.o(i.BUTTON_DrawSkinFlex))
 <BR><BR>[Stack]<UL><LI>Max Depth = 264<LI>Call Chain = BUTTON_DrawSkinFlex &rArr; GUI__DrawTwinArc4 &rArr; _DrawTwinArc4 &rArr; _GetTwinArcPara
 </UL>
-<BR>[Calls]<UL><LI><a href="#[17a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_DrawVLine
+<BR>[Calls]<UL><LI><a href="#[17b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_FillRect
+<LI><a href="#[17a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_DrawVLine
 <LI><a href="#[17c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_DrawRect
 <LI><a href="#[179]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_DrawHLine
 <LI><a href="#[180]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_SetFont
@@ -975,7 +976,6 @@ Global Symbols
 <LI><a href="#[183]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_SetTextMode
 <LI><a href="#[182]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_MoveRect
 <LI><a href="#[181]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_GetClientRect
-<LI><a href="#[17b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_FillRect
 <LI><a href="#[184]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_DispStringInRect
 <LI><a href="#[17f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_DRAW__Draw
 <LI><a href="#[185]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WM_SetHasTrans
@@ -1403,10 +1403,10 @@ Global Symbols
 <BR>[Calls]<UL><LI><a href="#[1f0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WM_GetWindowSizeY
 <LI><a href="#[16c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_ALLOC_UnlockH
 <LI><a href="#[16b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_ALLOC_LockH
-<LI><a href="#[1ed]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WM__GetWindowSizeX
 <LI><a href="#[1ee]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WM__GetWindowSizeY
 <LI><a href="#[1f1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FRAMEWIN__GetTitleLimits
 <LI><a href="#[1ef]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FRAMEWIN__CalcTitleHeight
+<LI><a href="#[1ed]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WM__GetWindowSizeX
 </UL>
 <BR>[Called By]<UL><LI><a href="#[1e3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FRAMEWIN_CreateUser
 <LI><a href="#[8a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FRAMEWIN_Callback
@@ -1925,7 +1925,6 @@ Global Symbols
 <LI><a href="#[29c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_MEMDEV_GetDataPtr
 <LI><a href="#[29a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_MEMDEV_GetBitsPerPixel
 <LI><a href="#[222]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_ALLOC_AllocZero
-<LI><a href="#[3ef]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WM_SetSize
 <LI><a href="#[1cf]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_ARRAY_GetNumItems
 <LI><a href="#[230]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_ARRAY_Delete
 <LI><a href="#[17f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_DRAW__Draw
@@ -1987,6 +1986,7 @@ Global Symbols
 <LI><a href="#[22b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_ALLOC_Realloc
 <LI><a href="#[1d3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_SetValue
 <LI><a href="#[22e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_ARRAY_AddItem
+<LI><a href="#[3ef]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WM_SetSize
 <LI><a href="#[9e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WM_HandlePID
 <LI><a href="#[2ea]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI__strcmp_hp
 <LI><a href="#[3db]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WM__MoveWindow
@@ -2136,7 +2136,6 @@ Global Symbols
 <LI><a href="#[29c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_MEMDEV_GetDataPtr
 <LI><a href="#[29a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_MEMDEV_GetBitsPerPixel
 <LI><a href="#[222]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_ALLOC_AllocZero
-<LI><a href="#[3ef]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WM_SetSize
 <LI><a href="#[1cf]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_ARRAY_GetNumItems
 <LI><a href="#[230]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_ARRAY_Delete
 <LI><a href="#[17f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_DRAW__Draw
@@ -2197,6 +2196,7 @@ Global Symbols
 <LI><a href="#[22b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_ALLOC_Realloc
 <LI><a href="#[1d3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_SetValue
 <LI><a href="#[22e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_ARRAY_AddItem
+<LI><a href="#[3ef]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WM_SetSize
 <LI><a href="#[9e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WM_HandlePID
 <LI><a href="#[2ea]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI__strcmp_hp
 <LI><a href="#[3db]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WM__MoveWindow
@@ -2885,7 +2885,8 @@ Global Symbols
 <LI><a href="#[23e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WM__GetNextIVR
 <LI><a href="#[21b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_FillRect
 </UL>
-<BR>[Called By]<UL><LI><a href="#[85]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BUTTON_DrawSkinFlex
+<BR>[Called By]<UL><LI><a href="#[31e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MainTask
+<LI><a href="#[85]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BUTTON_DrawSkinFlex
 <LI><a href="#[26c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_FillRectEx
 <LI><a href="#[2f3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_OnPaint
 <LI><a href="#[12c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_Paint
@@ -4361,13 +4362,13 @@ Global Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 16<LI>Call Chain = LCD_FillRect
 </UL>
 <BR>[Called By]<UL><LI><a href="#[26d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_FillRoundedRect
+<LI><a href="#[17b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_FillRect
 <LI><a href="#[23c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_ClearRect
 <LI><a href="#[106]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUIPROP_DispChar
 <LI><a href="#[263]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_DrawGradient
 <LI><a href="#[2dc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI__DrawBitmap16bpp
 <LI><a href="#[284]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;emWin_LCD_Init
 <LI><a href="#[1ff]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_DrawBitmap
-<LI><a href="#[17b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_FillRect
 <LI><a href="#[10a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUIMONO_DispChar
 <LI><a href="#[313]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD__DrawBitmap_1bpp
 </UL>
@@ -4738,7 +4739,7 @@ Global Symbols
 <LI><a href="#[315]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MX25_Init
 </UL>
 
-<P><STRONG><a name="[31e]"></a>MainTask</STRONG> (Thumb, 1484 bytes, Stack size 32 bytes, start_windowdlg.o(i.MainTask))
+<P><STRONG><a name="[31e]"></a>MainTask</STRONG> (Thumb, 1506 bytes, Stack size 32 bytes, start_windowdlg.o(i.MainTask))
 <BR><BR>[Stack]<UL><LI>Max Depth = 744<LI>Call Chain = MainTask &rArr; Suspend &rArr; ssd1963_Init &rArr; GUI_Delay &rArr; GUI_Exec &rArr; GUI_Exec1 &rArr; WM_Exec &rArr; _DrawNext &rArr; WM__Paint &rArr; GUI_MEMDEV_Draw &rArr; GUI_MEMDEV_CopyToLCD &rArr; GUI_MEMDEV_CopyToLCDAt &rArr; GUI_MEMDEV__WriteToActiveOpaque &rArr; _WriteToActiveOpaque_8 &rArr; GUI_ALLOC_AllocNoInit &rArr; _Alloc &rArr; _InitOnce &rArr; _EnlargeBlocks &rArr;  _Alloc (Cycle)
 </UL>
 <BR>[Calls]<UL><LI><a href="#[1d4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_ReadInputDataBit
@@ -4754,6 +4755,7 @@ Global Symbols
 <LI><a href="#[2fa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ICONVIEW_SetBkColor
 <LI><a href="#[1b0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ICONVIEW_CreateEx
 <LI><a href="#[26d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_FillRoundedRect
+<LI><a href="#[17b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_FillRect
 <LI><a href="#[266]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_DrawRoundedRect
 <LI><a href="#[1b5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Flash_sect_erase
 <LI><a href="#[1b6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Flash_prog
@@ -5305,12 +5307,12 @@ Global Symbols
 <P><STRONG><a name="[1bf]"></a>SDIO_GetResponse</STRONG> (Thumb, 20 bytes, Stack size 8 bytes, stm32f4xx_sdio.o(i.SDIO_GetResponse))
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = SDIO_GetResponse
 </UL>
-<BR>[Called By]<UL><LI><a href="#[36a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SD_PowerON
-<LI><a href="#[36b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SD_InitializeCards
+<BR>[Called By]<UL><LI><a href="#[36b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SD_InitializeCards
 <LI><a href="#[360]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SDEnWideBus
 <LI><a href="#[1c2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CmdResp6Error
 <LI><a href="#[1bd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CmdResp1Error
 <LI><a href="#[367]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SD_SendStatus
+<LI><a href="#[36a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SD_PowerON
 </UL>
 
 <P><STRONG><a name="[377]"></a>SDIO_ITConfig</STRONG> (Thumb, 26 bytes, Stack size 0 bytes, stm32f4xx_sdio.o(i.SDIO_ITConfig))
@@ -5322,8 +5324,8 @@ Global Symbols
 
 <P><STRONG><a name="[364]"></a>SDIO_Init</STRONG> (Thumb, 42 bytes, Stack size 0 bytes, stm32f4xx_sdio.o(i.SDIO_Init))
 <BR><BR>[Called By]<UL><LI><a href="#[18d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SD_Init
-<LI><a href="#[36a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SD_PowerON
 <LI><a href="#[363]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SD_EnableWideBusOperation
+<LI><a href="#[36a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SD_PowerON
 </UL>
 
 <P><STRONG><a name="[1fa]"></a>SDIO_ReadData</STRONG> (Thumb, 6 bytes, Stack size 0 bytes, stm32f4xx_sdio.o(i.SDIO_ReadData))
@@ -5331,8 +5333,7 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[1f8]"></a>SDIO_SendCommand</STRONG> (Thumb, 40 bytes, Stack size 0 bytes, stm32f4xx_sdio.o(i.SDIO_SendCommand))
-<BR><BR>[Called By]<UL><LI><a href="#[36a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SD_PowerON
-<LI><a href="#[36b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SD_InitializeCards
+<BR><BR>[Called By]<UL><LI><a href="#[36b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SD_InitializeCards
 <LI><a href="#[360]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SDEnWideBus
 <LI><a href="#[1f7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FindSCR
 <LI><a href="#[37f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SD_WriteMultiBlocks
@@ -5342,6 +5343,7 @@ Global Symbols
 <LI><a href="#[37b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SD_StopTransfer
 <LI><a href="#[367]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SD_SendStatus
 <LI><a href="#[36d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SD_SelectDeselect
+<LI><a href="#[36a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SD_PowerON
 </UL>
 
 <P><STRONG><a name="[374]"></a>SDIO_SetPowerState</STRONG> (Thumb, 6 bytes, Stack size 0 bytes, stm32f4xx_sdio.o(i.SDIO_SetPowerState))
@@ -5405,11 +5407,11 @@ Global Symbols
 <BR>[Calls]<UL><LI><a href="#[364]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SDIO_Init
 <LI><a href="#[1d5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SDIO_DeInit
 <LI><a href="#[369]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SD_LowLevel_Init
-<LI><a href="#[36a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SD_PowerON
 <LI><a href="#[36b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SD_InitializeCards
 <LI><a href="#[36c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SD_GetCardInfo
 <LI><a href="#[363]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SD_EnableWideBusOperation
 <LI><a href="#[36d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SD_SelectDeselect
+<LI><a href="#[36a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SD_PowerON
 </UL>
 <BR>[Called By]<UL><LI><a href="#[2d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;EXTI1_IRQHandler
 <LI><a href="#[18c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Boot_menu
@@ -7069,6 +7071,7 @@ Global Symbols
 <LI><a href="#[3f9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_FindNext_IVR
 </UL>
 <BR>[Called By]<UL><LI><a href="#[26d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_FillRoundedRect
+<LI><a href="#[17b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_FillRect
 <LI><a href="#[266]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_DrawRoundedRect
 <LI><a href="#[17a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_DrawVLine
 <LI><a href="#[17c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_DrawRect
@@ -7084,7 +7087,6 @@ Global Symbols
 <LI><a href="#[262]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_DrawGradientH
 <LI><a href="#[252]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI__DispLine
 <LI><a href="#[177]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI__DrawTwinArc4
-<LI><a href="#[17b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_FillRect
 <LI><a href="#[289]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_MEMDEV_CopyToLCDAt
 <LI><a href="#[2e0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI__FillTrippleArc
 <LI><a href="#[260]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_DrawFocusRect
@@ -7134,6 +7136,7 @@ Global Symbols
 <LI><a href="#[3f0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WM__ActivateClipRect
 </UL>
 <BR>[Called By]<UL><LI><a href="#[26d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_FillRoundedRect
+<LI><a href="#[17b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_FillRect
 <LI><a href="#[266]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_DrawRoundedRect
 <LI><a href="#[17a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_DrawVLine
 <LI><a href="#[17c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_DrawRect
@@ -7148,7 +7151,6 @@ Global Symbols
 <LI><a href="#[262]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_DrawGradientH
 <LI><a href="#[252]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI__DispLine
 <LI><a href="#[177]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI__DrawTwinArc4
-<LI><a href="#[17b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_FillRect
 <LI><a href="#[289]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_MEMDEV_CopyToLCDAt
 <LI><a href="#[2e0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI__FillTrippleArc
 <LI><a href="#[260]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_DrawFocusRect
@@ -8345,8 +8347,7 @@ Local Symbols
 <LI><a href="#[1be]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SDIO_GetCommandResponse
 <LI><a href="#[1bc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SDIO_ClearFlag
 </UL>
-<BR>[Called By]<UL><LI><a href="#[36a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SD_PowerON
-<LI><a href="#[360]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SDEnWideBus
+<BR>[Called By]<UL><LI><a href="#[360]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SDEnWideBus
 <LI><a href="#[1f7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FindSCR
 <LI><a href="#[37f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SD_WriteMultiBlocks
 <LI><a href="#[37e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SD_WriteBlock
@@ -8355,6 +8356,7 @@ Local Symbols
 <LI><a href="#[37b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SD_StopTransfer
 <LI><a href="#[367]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SD_SendStatus
 <LI><a href="#[36d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SD_SelectDeselect
+<LI><a href="#[36a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SD_PowerON
 </UL>
 
 <P><STRONG><a name="[1c0]"></a>CmdResp2Error</STRONG> (Thumb, 68 bytes, Stack size 16 bytes, stm324x9i_eval_sdio_sd.o(i.CmdResp2Error))
@@ -9169,8 +9171,8 @@ Local Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[44c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_Data2Index_16bpp_B16
 </UL>
-<BR>[Address Reference Count : 2]<UL><LI> guidrv_flexcolor_func66720.o(.data)
-<LI> guidrv_flexcolor_func66720.o(i.GUIDRV_FlexColor_SetReadFunc66720_B16)
+<BR>[Address Reference Count : 2]<UL><LI> guidrv_flexcolor_func66720.o(i.GUIDRV_FlexColor_SetReadFunc66720_B16)
+<LI> guidrv_flexcolor_func66720.o(.data)
 </UL>
 <P><STRONG><a name="[98]"></a>_ReadPixel_16bpp_B16_II</STRONG> (Thumb, 32 bytes, Stack size 24 bytes, guidrv_flexcolor_func66720.o(i._ReadPixel_16bpp_B16_II))
 <BR><BR>[Stack]<UL><LI>Max Depth = 24<LI>Call Chain = _ReadPixel_16bpp_B16_II
@@ -9189,8 +9191,8 @@ Local Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[44c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_Data2Index_16bpp_B16
 </UL>
-<BR>[Address Reference Count : 2]<UL><LI> guidrv_flexcolor_func66720.o(.data)
-<LI> guidrv_flexcolor_func66720.o(i.GUIDRV_FlexColor_SetReadFunc66720_B16)
+<BR>[Address Reference Count : 2]<UL><LI> guidrv_flexcolor_func66720.o(i.GUIDRV_FlexColor_SetReadFunc66720_B16)
+<LI> guidrv_flexcolor_func66720.o(.data)
 </UL>
 <P><STRONG><a name="[99]"></a>_ReadRect_16bpp_B16_II</STRONG> (Thumb, 62 bytes, Stack size 40 bytes, guidrv_flexcolor_func66720.o(i._ReadRect_16bpp_B16_II))
 <BR><BR>[Stack]<UL><LI>Max Depth = 40<LI>Call Chain = _ReadRect_16bpp_B16_II
@@ -9447,6 +9449,7 @@ Local Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 328<LI>Call Chain = _OnPaint &rArr; GUI_SetAlpha &rArr; _InitAlpha &rArr; GUI_DEVICE_Create &rArr; GUI_ALLOC_GetFixedBlock &rArr; _InitOnce &rArr; _EnlargeBlocks &rArr;  _Alloc (Cycle)
 </UL>
 <BR>[Calls]<UL><LI><a href="#[1c5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_SetAlpha
+<LI><a href="#[17b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_FillRect
 <LI><a href="#[210]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_SetBkColor
 <LI><a href="#[23c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_ClearRect
 <LI><a href="#[180]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_SetFont
@@ -9458,7 +9461,6 @@ Local Symbols
 <LI><a href="#[17e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WM__IsEnabled
 <LI><a href="#[183]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_SetTextMode
 <LI><a href="#[182]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_MoveRect
-<LI><a href="#[17b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_FillRect
 <LI><a href="#[3c3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WM_GetInsideRectExScrollbar
 <LI><a href="#[3c1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WM_GetHasTrans
 <LI><a href="#[3d3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI__IntersectRect
@@ -10121,8 +10123,8 @@ Local Symbols
 <LI><a href="#[16b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_ALLOC_LockH
 <LI><a href="#[29c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_MEMDEV_GetDataPtr
 <LI><a href="#[2d2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI__AlphaSuppressMixing
-<LI><a href="#[3ef]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WM_SetSize
 <LI><a href="#[28f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_MEMDEV__CreateFixed
+<LI><a href="#[3ef]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WM_SetSize
 <LI><a href="#[ca]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WM__Paint1
 <LI><a href="#[304]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_GetYSize
 <LI><a href="#[303]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_GetXSize
@@ -10247,12 +10249,12 @@ Local Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[1f0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WM_GetWindowSizeY
 <LI><a href="#[3c6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WM_GetWindowSizeX
+<LI><a href="#[17b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_FillRect
 <LI><a href="#[16c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_ALLOC_UnlockH
 <LI><a href="#[16b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_ALLOC_LockH
 <LI><a href="#[23d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WM__InitIVRSearch
 <LI><a href="#[23e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WM__GetNextIVR
 <LI><a href="#[1e8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_SetColor
-<LI><a href="#[17b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_FillRect
 <LI><a href="#[1d9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FRAMEWIN__CalcPositions
 <LI><a href="#[256]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WM_SetUserClipRect
 <LI><a href="#[148]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WIDGET_EFFECT_3D_DrawUp

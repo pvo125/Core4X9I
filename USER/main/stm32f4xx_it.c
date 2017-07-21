@@ -47,8 +47,11 @@ extern volatile uint8_t new_message;
 
 extern volatile uint8_t time_disp;
 
+
 uint8_t ADCVal_ready;
-uint16_t VBat;
+uint16_t VBat,Bat_percent;
+GUI_COLOR bat_color;
+
 uint8_t move_y_last;
 extern uint8_t move_y;
 extern uint8_t screen_scroll;
@@ -243,6 +246,20 @@ void ADC_IRQHandler (void)
 	uint16_t temp;
 	temp=(ADCBuff[0]+ADCBuff[1]+ADCBuff[2]+ADCBuff[3] )/4;
 	VBat=(6590*temp)/4095;
+	Bat_percent=(VBat-3100)/10;
+	if(temp>80)
+		bat_color=GUI_DARKGREEN;
+	else if(60<temp<=80)
+		bat_color=GUI_GREEN;
+	else if(50<temp<=60)
+		bat_color=GUI_LIGHTGREEN;
+	else if(30<temp<=50)
+		bat_color=GUI_LIGHTRED;
+	else if(10<temp<=30)
+		bat_color=GUI_DARKRED;
+	else
+		bat_color=GUI_TRANSPARENT;
+	
 	ADCVal_ready=1;	
 }
 /**
