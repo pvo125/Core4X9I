@@ -281,7 +281,7 @@ void Periph_Init(void){
 		GPIO_InitStruct.GPIO_Pin=USB_DETECT_PIN;
 		GPIO_InitStruct.GPIO_Speed=GPIO_Speed_2MHz;
 		GPIO_InitStruct.GPIO_Mode=GPIO_Mode_IN;
-		GPIO_InitStruct.GPIO_PuPd=GPIO_PuPd_NOPULL;
+		GPIO_InitStruct.GPIO_PuPd=GPIO_PuPd_DOWN;
 		GPIO_Init(USB_DETECT_PORT,&GPIO_InitStruct);
 		
 		SYSCFG->EXTICR[2]=SYSCFG_EXTICR3_EXTI9_PH;
@@ -441,7 +441,7 @@ void Periph_Init(void){
 	NVIC_SetPriority(SD_SDIO_DMA_IRQn,0);
 	NVIC_SetPriority(EXTI1_IRQn,2);
 	NVIC_SetPriority(EXTI4_IRQn,0);
-	NVIC_SetPriority(EXTI9_5_IRQn,2);
+	NVIC_SetPriority(EXTI9_5_IRQn,3);
 	NVIC_SetPriority(ADC_IRQn,2);
 	NVIC_SetPriority(RTC_Alarm_IRQn,2);
 	
@@ -731,7 +731,7 @@ int main(void){
 	//NVIC_EnableIRQ(SDIO_IRQn);									//Разрешение SDIO_IRQn прерывания
 	NVIC_EnableIRQ(SD_SDIO_DMA_IRQn);						//Разрешение DMA2_Stream3_IRQn прерывания
 	NVIC_EnableIRQ(ADC_IRQn);
-	//NVIC_EnableIRQ(EXTI9_5_IRQn);	
+	NVIC_EnableIRQ(EXTI9_5_IRQn);	
 	NVIC_EnableIRQ(EXTI4_IRQn);		
 	NVIC_EnableIRQ(RTC_Alarm_IRQn);
 	

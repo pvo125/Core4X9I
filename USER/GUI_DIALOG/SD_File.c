@@ -61,10 +61,14 @@ extern void _drawGIF(char *Path,char *fn);
 extern void _cbBkWin(WM_MESSAGE* pMsg);
 extern int _cbButtonEXIT(const WIDGET_ITEM_DRAW_INFO *pDrawItemInfo);
 
+extern uint8_t bat_disp;
+
 WM_HWIN hWin_SD;
 extern WM_HWIN hWin_menu;
 extern WM_HWIN BUTTON_KEY(WM_HWIN hWin);
 extern ICONVIEW_Handle hALARMA,hALARMB,hIcon_EXIT,hIcon_BRIGHT;
+
+extern BUTTON_Handle hBUTTON_PERFORM;
  
 extern RTC_DateTypeDef			RTC_Date;
 char *pPath;
@@ -196,6 +200,7 @@ static void _cbEXIT(WM_MESSAGE *pMsg){
 						switch(NCode){
 							case WM_NOTIFICATION_RELEASED:
 								hButton=WM_GetDialogItem(pMsg->hWin, ID_BUTTON_EXIT);
+								bat_disp=1;
 								time_show=1;
 								WM_DeleteWindow(hButton);
 								GUI_SetAlpha(0);
@@ -211,6 +216,14 @@ static void _cbEXIT(WM_MESSAGE *pMsg){
 								GUI_DispDec(RTC_Date.RTC_Month,2);
 								GUI_DispString(".20");
 								GUI_DispDec(RTC_Date.RTC_Year,2);
+								GUI_DrawRect(409,2+SCREEN_1,437,13+SCREEN_1);
+								
+								GUI_FillRect(438,4+SCREEN_1,440,11+SCREEN_1);
+								GUI_SetColor(GUI_DARKYELLOW);
+								GUI_DrawRect(410,3+SCREEN_1,436,12+SCREEN_1);
+								GUI_SetColor(GUI_YELLOW);
+								
+								WM_ShowWindow(hBUTTON_PERFORM);		
 								WM_ShowWindow(PROGBAR_MEM);
 								WM_ShowWindow(hIcon_EXIT);
 								WM_ShowWindow(hIcon_BRIGHT);
@@ -390,6 +403,7 @@ static void _cbSD(WM_MESSAGE * pMsg) {
 							}
 							else     /* For open file*/
 							{
+								bat_disp=0;
 								strcat(Path,"/");
 								strcat(Path,Buff);
 								pPath=strchr(Buff,'\0');
@@ -398,6 +412,7 @@ static void _cbSD(WM_MESSAGE * pMsg) {
 								if((*pPath=='j')||(*pPath=='J'))	
 								{
 									time_show=0;
+									WM_HideWindow(hBUTTON_PERFORM);
 									WM_HideWindow(hWin_menu);
 									WM_HideWindow(hIcon_EXIT);
 									WM_HideWindow(hIcon_BRIGHT);
@@ -416,6 +431,7 @@ static void _cbSD(WM_MESSAGE * pMsg) {
 								else if((*pPath=='b')||(*pPath=='B'))
 								{
 									time_show=0;
+									WM_HideWindow(hBUTTON_PERFORM);
 									WM_HideWindow(hWin_menu);
 									WM_HideWindow(hIcon_EXIT);
 									WM_HideWindow(hIcon_BRIGHT);
@@ -432,8 +448,9 @@ static void _cbSD(WM_MESSAGE * pMsg) {
 									WM_SetCallback(WM_HBKWIN, _cbEXIT);
 								}
 								else if((*pPath=='g')||(*pPath=='G'))
-									{
-										time_show=0;
+								{
+									time_show=0;
+									WM_HideWindow(hBUTTON_PERFORM);
 									WM_HideWindow(hWin_menu);
 									WM_HideWindow(hIcon_EXIT);
 									WM_HideWindow(hIcon_BRIGHT);

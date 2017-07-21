@@ -47,8 +47,8 @@ extern volatile uint8_t new_message;
 
 extern volatile uint8_t time_disp;
 
-
-uint8_t ADCVal_ready;
+extern GUI_COLOR color_array[];
+uint8_t ADCVal_ready,bat_disp=1;
 uint16_t VBat,Bat_percent;
 GUI_COLOR bat_color;
 
@@ -56,6 +56,8 @@ uint8_t move_y_last;
 extern uint8_t move_y;
 extern uint8_t screen_scroll;
 extern uint16_t screen_x;
+
+volatile uint8_t number_array;
 
 volatile uint8_t canconnect,canerr_clr,canerr_disp;
 static volatile uint8_t count;
@@ -230,6 +232,18 @@ void RTC_WKUP_IRQHandler(void)
 			}
 		}
 	}
+	if(GPIOH->IDR & GPIO_IDR_IDR_9)
+	{
+		if(ADCVal_ready==0)
+		{
+			Bat_percent+=20;
+			if(Bat_percent>100) Bat_percent=0;
+			bat_color=color_array[number_array];
+			number_array--;
+			if(number_array==0)	number_array=6;
+			ADCVal_ready=1;
+		}
+	}
 	RTC_GetTime(RTC_Format_BIN, &RTC_Time);
 	
 	RTC->ISR&=~RTC_ISR_WUTF;//RTC->ISR&=~(RTC_ISR_WUTF|0x00000080);//RTC_ClearITPendingBit(RTC_IT_WUT);//RTC->ISR&=~RTC_ISR_WUTF;
@@ -249,21 +263,21 @@ void ADC_IRQHandler (void)
 	Bat_percent=(VBat-3100)/10;
 	if(Bat_percent>80)
 	{
-		bat_color=0x0050ff50;
+		bat_color=color_array[1];
 		if(Bat_percent>100) Bat_percent=100;
 	}
-	else if(60<Bat_percent<=80)
-		bat_color=0x0020E080;
-	else if(50<Bat_percent<=60)
-		bat_color=0x0000E0A0;
-	else if(30<Bat_percent<=50)
-		bat_color=GUI_LIGHTRED;
-	else if(10<Bat_percent<=30)
-		bat_color=GUI_DARKRED;
-	else
-		bat_color=GUI_TRANSPARENT;
-	
-	ADCVal_ready=1;	
+	else if(60<Bat_percent<=80)	bat_color=color_array[2];
+		
+	else if(50<Bat_percent<=60)	bat_color=color_array[3];
+		
+	else if(30<Bat_percent<=50)	bat_color=color_array[4];
+		
+	else if(10<Bat_percent<=30)	bat_color=color_array[5];
+		
+	else	bat_color=color_array[6];
+		
+	if(bat_disp)
+		ADCVal_ready=1;	
 }
 /**
   * @brief  This function handles EXTI0_IRQHandler interrupt request.
@@ -314,7 +328,61 @@ void EXTI4_IRQHandler (void)
 	
 }
 
+/**
+  * @brief  This function handles EXTI9_5_IRQHandler interrupt request.
+  * @param  None
+  * @retval None
+  */
+void EXTI9_5_IRQHandler (void)
+{
+	uint32_t i;
+	for(i=0;i<10000000;i++);
+	
+	if(GPIOH->IDR & GPIO_IDR_IDR_9)
+	{
+		backlight_delay=0;
+		if(backlight==BACKLIGHT_LOW)	
+			{
+				LcdWriteReg(CMD_SET_PWM_CONF); 			//set PWM for Backlight. Manual p.53
+					// 6 parameters to be set
+				LcdWriteData(0x0004); 							// PWM Freq =100MHz/(256*(PWMF[7:0]+1))/256  PWMF[7:0]=4 PWM Freq=305Hz
+				LcdWriteData(brightness); 					// PWM duty cycle(50%)
+				LcdWriteData(0x0001); 							// PWM controlled by host, PWM enable
+				LcdWriteData(0x00f0); 							// brightness level 0x00 - 0xFF
+				LcdWriteData(0x0000); 							// minimum brightness level =  0x00 - 0xFF
+				LcdWriteData(0x0000);								// brightness prescalar 0x0 - 0xF
+				backlight=BACKLIGHT_ON;
+			}
+			else if(backlight==BACKLIGHT_OFF)
+			{
+				LcdWriteReg(CMD_EXIT_SLEEP);
+				for(i=0;i<1000000;i++);	
+				LcdWriteReg(CMD_SET_PWM_CONF); 			//set PWM for Backlight. Manual p.53
+					// 6 parameters to be set
+				LcdWriteData(0x0004); 							// PWM Freq =100MHz/(256*(PWMF[7:0]+1))/256  PWMF[7:0]=4 PWM Freq=305Hz
+				LcdWriteData(brightness); 					// PWM duty cycle(50%)
+				LcdWriteData(0x0001); 							// PWM controlled by host, PWM enable
+				LcdWriteData(0x00f0); 							// brightness level 0x00 - 0xFF
+				LcdWriteData(0x0000); 							// minimum brightness level =  0x00 - 0xFF
+				LcdWriteData(0x0000);								// brightness prescalar 0x0 - 0xF
+				backlight=BACKLIGHT_ON;
+			}
+			TIM7->CNT=0;					
+		
+		number_array=6;
+		Bat_percent=0;
+		ADC_Cmd(ADC1,DISABLE);
+	}
+	else
+	{
+		ADC_Cmd(ADC1,ENABLE);
+		TIM3->EGR = TIM_EGR_UG;			//генерируем "update event". ARR и PSC грузятся из предварительного в теневой регистр. 
+		TIM3->SR&=~TIM_SR_UIF; 			//Сбрасываем флаг UIF	
+	}
+	EXTI_ClearITPendingBit(EXTI_Line9);
+	NVIC_ClearPendingIRQ(EXTI9_5_IRQn);
 
+}
 /**
   * @brief  This function handles TIM2_IRQHandler interrupt request.
   * @param  None
@@ -452,7 +520,7 @@ void TIM7_IRQHandler (void)
 		}
 	else if((backlight==BACKLIGHT_OFF)&&(backlight_delay==1))
 		{
-				if(canconnect==0)
+				if((canconnect==0)&&(!(GPIOH->IDR&GPIO_IDR_IDR_9)))
 					sleep_mode=1;
 				else
 					backlight_delay=0;

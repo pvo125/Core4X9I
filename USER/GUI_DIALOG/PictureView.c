@@ -39,11 +39,12 @@
 // USER START (Optionally insert additional defines)
 #define RAD 1
 int Time_1;
+extern uint8_t bat_disp;
 extern volatile int Time;
 GUI_MEMDEV_Handle hMem;
 WM_HWIN hWin_photo;
 extern ICONVIEW_Handle hALARMA,hALARMB,hIcon_EXIT,hIcon_BRIGHT;
- 
+extern BUTTON_Handle hBUTTON_PERFORM; 
 extern RTC_DateTypeDef			RTC_Date;
 extern GUI_CONST_STORAGE GUI_BITMAP bmhourglass;
 void _drawJPG(char *Path,char *fn);
@@ -582,12 +583,20 @@ static void _cbPhoto(WM_MESSAGE * pMsg) {
 							GUI_DispString(".20");
 							GUI_DispDec(RTC_Date.RTC_Year,2);
 							
+							GUI_DrawRect(409,2+SCREEN_1,437,13+SCREEN_1);
+							GUI_FillRect(438,4+SCREEN_1,440,11+SCREEN_1);
+							GUI_SetColor(GUI_DARKYELLOW);
+							GUI_DrawRect(410,3+SCREEN_1,436,12+SCREEN_1);
+							GUI_SetColor(GUI_YELLOW);
+						
+							WM_ShowWindow(hBUTTON_PERFORM);
 							WM_ShowWindow(PROGBAR_MEM);
 							WM_ShowWindow(hIcon_EXIT);
 							WM_ShowWindow(hIcon_BRIGHT);
 							WM_ShowWindow(hALARMA);
 							WM_ShowWindow(hALARMB);
 							
+							bat_disp=1;
 							time_show=1;
 							CreateStart();
 						break;	

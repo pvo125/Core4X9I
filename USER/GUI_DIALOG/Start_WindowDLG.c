@@ -30,7 +30,7 @@ extern GUI_PID_STATE State;
 extern void PictureView(void);
 extern FIL pFile;
 
-extern uint8_t ADCVal_ready;
+extern uint8_t ADCVal_ready,bat_disp;
 extern uint16_t Bat_percent;
 extern GUI_COLOR bat_color;
 
@@ -66,7 +66,7 @@ extern RTC_AlarmTypeDef								RTC_AlarmA,RTC_AlarmB;
 
 #define ID_WINDOW_1     (GUI_ID_USER + 0x1B)
 #define ID_BUTTON_BACK     (GUI_ID_USER + 0x1C)
-#define ID_ICON_PAINT     (GUI_ID_USER + 0x15)
+//#define ID_ICON_PAINT     (GUI_ID_USER + 0x15)
 #define ID_ICON_EXIT 			(GUI_ID_USER + 0x16)
 #define ID_ICON_PHOTO     (GUI_ID_USER + 0x17)
 
@@ -105,7 +105,7 @@ int fputc(int ch, FILE *f) {
 uint8_t sd_insert;
 uint8_t sd_ins_rem;
 WM_HWIN hWin_start;
-ICONVIEW_Handle hIcon_CALIB,hIcon_PAINT,hIcon_NEXT,hButton_BACK,hALARMA,hALARMB,hIcon_EXIT,hIcon_PHOTO,
+ICONVIEW_Handle hIcon_CALIB,/*hIcon_PAINT*/hIcon_NEXT,hButton_BACK,hALARMA,hALARMB,hIcon_EXIT,hIcon_PHOTO,
 								hIcon_BRIGHT;
 								
 ICONVIEW_Handle hIcon[9];
@@ -120,6 +120,8 @@ extern int _cbButtonSkin(const WIDGET_ITEM_DRAW_INFO *pDrawItemInfo);
 void ChangePerformance(void);
 void Suspend(void);
 void SDRAM_PinConfig(void);
+
+GUI_COLOR color_array[]={0,0x00008000,0x0020ff50,0x0000E0A0,GUI_ORANGE,GUI_LIGHTRED,GUI_RED};
 
 // USER END
 
@@ -258,14 +260,16 @@ static void _cbSTART(WM_MESSAGE* pMsg) {
 									}
 									else
 									{			
-										WM_HideWindow(hIcon_EXIT);
-										WM_HideWindow(hIcon_BRIGHT);	
-										WM_HideWindow(hWin_start);
-																
-										WM_HideWindow(hALARMA);
-										WM_HideWindow(hALARMB);
-										WM_HideWindow(PROGBAR_MEM);
 										#ifdef FLASHCODE
+											WM_HideWindow(hIcon_EXIT);
+											WM_HideWindow(hIcon_BRIGHT);	
+											WM_HideWindow(hWin_start);
+											WM_HideWindow(hBUTTON_PERFORM);
+											WM_HideWindow(hALARMA);
+											WM_HideWindow(hALARMB);
+											WM_HideWindow(PROGBAR_MEM);
+										
+											bat_disp=0;
 											time_show=0;
 											PictureView();
 										#endif
@@ -312,18 +316,12 @@ static void _cbSTART(WM_MESSAGE* pMsg) {
             }
 					break;
 					
-					case ID_ICON_PAINT: // Notifications sent by 'Button'
+					/*case ID_ICON_PAINT:  Notifications sent by 'Button'
 					switch(NCode) {
 							case WM_NOTIFICATION_RELEASED:
 							NVIC_DisableIRQ(TIM7_IRQn);
 							NVIC_DisableIRQ(RTC_WKUP_IRQn);
 							time_show=0;
-							/*WM_HideWindow(hIcon_EXIT);
-							WM_HideWindow(hIcon_BRIGHT);
-							WM_HideWindow(hWin_start);
-							WM_HideWindow(hALARMA);
-							WM_HideWindow(hALARMB);
-							WM_HideWindow(PROGBAR_MEM);*/
 							move_y=0;
 							GUI_SetOrg(0,544);
 							screen_scroll=1;
@@ -342,7 +340,7 @@ static void _cbSTART(WM_MESSAGE* pMsg) {
 						 	drawmode=1;	
 						break;
 						}
-					break;		
+					break;*/		
 					
 				}	
 			break;	
@@ -651,7 +649,7 @@ void CreateStart(void)
 		hWin_start=WINDOW_CreateEx(60,15+SCREEN_1,410, 257,WM_HBKWIN, WM_CF_SHOW,0,ID_WINDOW_0,_cbSTART);	
 		WINDOW_SetBkColor(hWin_start, GUI_LIGHTBLUE);	
 				
-		hIcon_PHOTO=ICONVIEW_CreateEx(240,0,58,65,hWin_start,WM_CF_SHOW|WM_CF_HASTRANS,0,ID_ICON_PHOTO,48,65);
+		hIcon_PHOTO=ICONVIEW_CreateEx(340,90,58,65,hWin_start,WM_CF_SHOW|WM_CF_HASTRANS,0,ID_ICON_PHOTO,48,65);
 #ifdef FLASHCODE	
 		ICONVIEW_AddBitmapItem(hIcon_PHOTO,(const GUI_BITMAP*)(photo+4608),"IMAGE");
 #endif
@@ -666,13 +664,13 @@ void CreateStart(void)
 		ICONVIEW_SetFont(hIcon_CALIB,&GUI_Font8x18);
 		ICONVIEW_SetIconAlign(hIcon_CALIB, ICONVIEW_IA_TOP);
 		
-		hIcon_PAINT=ICONVIEW_CreateEx(340,90,58,65,hWin_start,WM_CF_SHOW|WM_CF_HASTRANS,0,ID_ICON_PAINT,48,65);
+/*		hIcon_PAINT=ICONVIEW_CreateEx(340,90,58,65,hWin_start,WM_CF_SHOW|WM_CF_HASTRANS,0,ID_ICON_PAINT,48,65);
 #ifdef FLASHCODE	
 		ICONVIEW_AddBitmapItem(hIcon_PAINT,(const GUI_BITMAP*)(paint+4608),"PAINT");
 #endif
 		ICONVIEW_SetFont(hIcon_PAINT,&GUI_Font8x18);
 		ICONVIEW_SetIconAlign(hIcon_PAINT, ICONVIEW_IA_TOP);
-		
+*/		
 		hIcon_NEXT=ICONVIEW_CreateEx(340,200,58,58,hWin_start,WM_CF_SHOW|WM_CF_HASTRANS,0,ID_ICON_NEXT,48,48);
 #ifdef FLASHCODE		
 	ICONVIEW_AddBitmapItem(hIcon_NEXT,(const GUI_BITMAP*)(next+4608),"");
@@ -795,11 +793,18 @@ void MainTask(void)
 		GUI_Delay(5);	
 		if(ADCVal_ready)
 		{
+			if(Bat_percent>0)
+			{
+				GUI_SetColor(bat_color);
+				GUI_FillRect(411, 4, 410+Bat_percent/4, 11);
+			}
+			if(Bat_percent<100)
+			{
+				GUI_SetColor(0x00202020);
+				GUI_FillRect(411+Bat_percent/4, 4, 435, 11);
+			}
+			GUI_SetColor(GUI_YELLOW);
 			ADCVal_ready=0;
-			GUI_SetColor(bat_color);
-			GUI_FillRect(411, 4, 411+Bat_percent/4, 11);
-			GUI_SetColor(0x00202020);
-			GUI_FillRect(412+Bat_percent/4, 4, 435, 11);
 		}			
 		if(canerr_clr)
 		{
@@ -826,7 +831,6 @@ void MainTask(void)
 #endif		
 		if(time_disp)
 		{
-			GUI_SetColor(GUI_YELLOW);
 			GUI_SetFont(&GUI_Font8x16);
 			GUI_DispDecAt(RTC_Time.RTC_Hours,350,0+SCREEN_1,2);
 			GUI_DispString(":");
@@ -895,13 +899,6 @@ void MainTask(void)
 					NVIC_EnableIRQ(TIM6_DAC_IRQn);
 					screen_scroll=0;
 					scroll_down=0;
-					//if(!hWin_photo)
-					//	PictureView();
-					
-					/*TIM7->CNT=0;
-					NVIC_EnableIRQ(TIM7_IRQn);
-					NVIC_EnableIRQ(RTC_WKUP_IRQn);
-					NVIC_EnableIRQ(TIM6_DAC_IRQn);*/
 				}
 			}
 		}
@@ -1034,7 +1031,7 @@ void Suspend(void){
 													 GPIO_Pin_9|GPIO_Pin_10|GPIO_Pin_11|GPIO_Pin_12|GPIO_Pin_13|GPIO_Pin_14|GPIO_Pin_15;
 	GPIO_Init(GPIOE, &GPIO_InitStruct);
 	GPIO_InitStruct.GPIO_Pin=GPIO_Pin_0|GPIO_Pin_1|GPIO_Pin_2|GPIO_Pin_3|GPIO_Pin_4|GPIO_Pin_5/*|GPIO_Pin_6|GPIO_Pin_7*/|GPIO_Pin_8|
-													 GPIO_Pin_9|GPIO_Pin_10|GPIO_Pin_11|GPIO_Pin_12|GPIO_Pin_13|GPIO_Pin_14|GPIO_Pin_15;
+													 /*GPIO_Pin_9|*/GPIO_Pin_10|GPIO_Pin_11|GPIO_Pin_12|GPIO_Pin_13|GPIO_Pin_14|GPIO_Pin_15;
 	GPIO_Init(GPIOH, &GPIO_InitStruct);
 	
 	GPIO_InitStruct.GPIO_Pin=GPIO_Pin_All;
@@ -1179,6 +1176,7 @@ void Suspend(void){
 	GUI_SetColor(GUI_DARKYELLOW);
 	GUI_DrawRect(410,3+SCREEN_1,436,12+SCREEN_1);
 	GUI_SetColor(GUI_YELLOW);
+	
 	WM_Paint(hALARMA);
 	WM_Paint(hALARMB);
 	WM_Paint(hIcon_EXIT);	
@@ -1200,6 +1198,9 @@ void Suspend(void){
 	
 	ADC_Cmd(ADC1,ENABLE);
 	NVIC_EnableIRQ(ADC_IRQn);
+	TIM3->EGR = TIM_EGR_UG;			//генерируем "update event". ARR и PSC грузятся из предварительного в теневой регистр. 
+	TIM3->SR&=~TIM_SR_UIF; 			//Сбрасываем флаг UIF	
+	
 	
 	NVIC_ClearPendingIRQ(EXTI1_IRQn);
 	NVIC_EnableIRQ(EXTI1_IRQn);									//Разрешение EXTI1_IRQn прерывания
