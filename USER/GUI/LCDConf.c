@@ -103,6 +103,7 @@ extern uint16_t move_y;
 extern volatile int16_t linescroll;
 extern volatile uint16_t first_touch;
 extern uint8_t screen_scroll;
+extern volatile uint8_t backlight_flag;
 /*********************************************************************
 *
 *       Configuration checking
@@ -295,29 +296,13 @@ void _CheckUpdateTouch(void)
 				backlight_delay=0;
 				if(backlight==BACKLIGHT_LOW)	
 				{
-					LcdWriteReg(CMD_SET_PWM_CONF); 			//set PWM for Backlight. Manual p.53
-					// 6 parameters to be set
-					LcdWriteData(0x0004); 							// PWM Freq =100MHz/(256*(PWMF[7:0]+1))/256  PWMF[7:0]=4 PWM Freq=305Hz
-					LcdWriteData(brightness); 					// PWM duty cycle(50%)
-					LcdWriteData(0x0001); 							// PWM controlled by host, PWM enable
-					LcdWriteData(0x00f0); 							// brightness level 0x00 - 0xFF
-					LcdWriteData(0x0000); 							// minimum brightness level =  0x00 - 0xFF
-					LcdWriteData(0x0000);								// brightness prescalar 0x0 - 0xF
+					backlight_flag=1;
 					backlight=BACKLIGHT_ON;
 				}
-				else if(backlight==BACKLIGHT_OFF)
+				else if(backlight==BACKLIGHT_OFF_SLEEP)
 				{
-					LcdWriteReg(CMD_EXIT_SLEEP);
-					
-					LcdWriteReg(CMD_SET_PWM_CONF); 			//set PWM for Backlight. Manual p.53
-					// 6 parameters to be set
-					LcdWriteData(0x0004); 							// PWM Freq =100MHz/(256*(PWMF[7:0]+1))/256  PWMF[7:0]=4 PWM Freq=305Hz
-					LcdWriteData(brightness); 					// PWM duty cycle(50%)
-					LcdWriteData(0x0001); 							// PWM controlled by host, PWM enable
-					LcdWriteData(0x00f0); 							// brightness level 0x00 - 0xFF
-					LcdWriteData(0x0000); 							// minimum brightness level =  0x00 - 0xFF
-					LcdWriteData(0x0000);								// brightness prescalar 0x0 - 0xF
-					backlight=BACKLIGHT_ON;
+					backlight_flag=1;
+					backlight=BACKLIGHT_SLEEPtoON;
 				}
 				TIM7->CNT=0;					// Каждый раз при нажатии на экран обнуляем таймер подсветки	
 				GPIO_ResetBits(GPIOB, GPIO_Pin_12);    //GPIOB->BSRR=GPIO_BSRR_BR_12;
@@ -705,9 +690,9 @@ int LCD_X_DisplayDriver(unsigned LayerIndex, unsigned Cmd, void * pData) {
 
 		void LCD_Reset(void)
 {
-	GPIO_ResetBits(GPIOE, GPIO_Pin_2);
+	GPIO_ResetBits(LCD_RESET_PORT, LCD_RESET_PIN);
 	GUI_Delay(10);
-	GPIO_SetBits(GPIOE, GPIO_Pin_2);
+	GPIO_SetBits(LCD_RESET_PORT, LCD_RESET_PIN);
 	GUI_Delay(10);
 }
 /*************************** End of file ****************************/

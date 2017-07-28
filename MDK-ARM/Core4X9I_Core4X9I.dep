@@ -1,6 +1,6 @@
 Dependencies for Project 'Core4X9I', Target 'Core4X9I': (DO NOT MODIFY !)
-F (..\Libraries\CMSIS\Device\ST\STM32F4xx\Source\Templates\arm\startup_stm32f429_439xx.s)(0x5971C065)(--cpu Cortex-M4.fp -g --apcs=interwork -I D:\Keil\ARM\RV31\INC-I D:\Keil\ARM\CMSIS\Include-I D:\Keil\ARM\Inc\ST\STM32F4xx--list .\startup_stm32f429_439xx.lst --xref -o .\output\startup_stm32f429_439xx.o --depend .\output\startup_stm32f429_439xx.d)
-F (..\Libraries\CMSIS\Device\ST\STM32F4xx\Source\Templates\system_stm32f4xx.c)(0x594B8E59)(-c --cpu Cortex-M4.fp -g -O0 --apcs=interwork --split_sections -I..\Libraries\CMSIS\Device\ST\STM32F4xx\Include -I..\Libraries\CMSIS\Device\ST\STM32F4xx\Source\Templates -I..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\Libraries\STM32F4xx_StdPeriph_Driver\src -I..\USER\main -I..\MDK-ARM -I..\USER -I..\USER\GUI -I..\USER\GUI_DIALOG -I..\USER\SDCARD -I..\USER\ssd1963 -I..\USER\GUI\inc -I..\USER\FatFS -I..\USER\FatFS\option -I..\USER\MX25 -I..\USER\TSC2046 -I..\USER\SDRAM -I..\USER\PNG -I..\USER\Fonts -I..\USER\bxCAN --C99-I D:\Keil\ARM\RV31\INC-I D:\Keil\ARM\CMSIS\Include-I D:\Keil\ARM\Inc\ST\STM32F4xx-DUSE_STDPERIPH_DRIVER -DSTM32F429X-o .\output\system_stm32f4xx.o --omf_browse .\output\system_stm32f4xx.crf --depend .\output\system_stm32f4xx.d)
+F (..\Libraries\CMSIS\Device\ST\STM32F4xx\Source\Templates\arm\startup_stm32f429_439xx.s)(0x597AF32B)(--cpu Cortex-M4.fp -g --apcs=interwork -I D:\Keil\ARM\RV31\INC-I D:\Keil\ARM\CMSIS\Include-I D:\Keil\ARM\Inc\ST\STM32F4xx--list .\startup_stm32f429_439xx.lst --xref -o .\output\startup_stm32f429_439xx.o --depend .\output\startup_stm32f429_439xx.d)
+F (..\Libraries\CMSIS\Device\ST\STM32F4xx\Source\Templates\system_stm32f4xx.c)(0x5976C23E)(-c --cpu Cortex-M4.fp -g -O0 --apcs=interwork --split_sections -I..\Libraries\CMSIS\Device\ST\STM32F4xx\Include -I..\Libraries\CMSIS\Device\ST\STM32F4xx\Source\Templates -I..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\Libraries\STM32F4xx_StdPeriph_Driver\src -I..\USER\main -I..\MDK-ARM -I..\USER -I..\USER\GUI -I..\USER\GUI_DIALOG -I..\USER\SDCARD -I..\USER\ssd1963 -I..\USER\GUI\inc -I..\USER\FatFS -I..\USER\FatFS\option -I..\USER\MX25 -I..\USER\TSC2046 -I..\USER\SDRAM -I..\USER\PNG -I..\USER\Fonts -I..\USER\bxCAN --C99-I D:\Keil\ARM\RV31\INC-I D:\Keil\ARM\CMSIS\Include-I D:\Keil\ARM\Inc\ST\STM32F4xx-DUSE_STDPERIPH_DRIVER -DSTM32F429X-o .\output\system_stm32f4xx.o --omf_browse .\output\system_stm32f4xx.crf --depend .\output\system_stm32f4xx.d)
 I (..\Libraries\CMSIS\Device\ST\STM32F4xx\Include\stm32f4xx.h)(0x59477AC4)
 I (D:\Keil\ARM\CMSIS\Include\core_cm4.h)(0x532C05D2)
 I (D:\Keil\ARM\ARMCC\include\stdint.h)(0x51C7D364)
@@ -20,7 +20,7 @@ I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_sdio.h)(0x59477AC4)
 I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_spi.h)(0x59477AC4)
 I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_tim.h)(0x59477AC4)
 I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_fmc.h)(0x59477AC4)
-I (..\USER\main\header.h)(0x5971C065)
+I (..\USER\main\header.h)(0x5979A599)
 I (..\USER\GUI\inc\GUI.h)(0x59477AC6)
 I (..\USER\GUI\inc\GUI_ConfDefaults.h)(0x59477AC6)
 I (..\USER\GUI\inc\GUIConf.h)(0x59477AC6)
@@ -66,7 +66,7 @@ I (..\USER\GUI\inc\TREEVIEW.h)(0x59477AC6)
 I (..\USER\FatFS\ff.h)(0x59477AC5)
 I (..\USER\FatFS\integer.h)(0x59477AC5)
 I (..\USER\FatFS\ffconf.h)(0x59477AC5)
-I (..\USER\SDCARD\stm324x9i_eval_sdio_sd.h)(0x59477AC6)
+I (..\USER\SDCARD\stm324x9i_eval_sdio_sd.h)(0x5978643E)
 I (..\USER\ssd1963\ssd1963.h)(0x59477AC6)
 I (..\USER\MX25\mx25l8005.h)(0x59477AC6)
 I (..\USER\GUI\LCDConf.h)(0x59477AC6)
@@ -315,7 +315,7 @@ I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_rtc.h)(0x59477AC4)
 I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_sdio.h)(0x59477AC4)
 I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_spi.h)(0x59477AC4)
 I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_fmc.h)(0x59477AC4)
-F (..\USER\main\main.c)(0x5971C81A)(-c --cpu Cortex-M4.fp -g -O0 --apcs=interwork --split_sections -I..\Libraries\CMSIS\Device\ST\STM32F4xx\Include -I..\Libraries\CMSIS\Device\ST\STM32F4xx\Source\Templates -I..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\Libraries\STM32F4xx_StdPeriph_Driver\src -I..\USER\main -I..\MDK-ARM -I..\USER -I..\USER\GUI -I..\USER\GUI_DIALOG -I..\USER\SDCARD -I..\USER\ssd1963 -I..\USER\GUI\inc -I..\USER\FatFS -I..\USER\FatFS\option -I..\USER\MX25 -I..\USER\TSC2046 -I..\USER\SDRAM -I..\USER\PNG -I..\USER\Fonts -I..\USER\bxCAN --C99-I D:\Keil\ARM\RV31\INC-I D:\Keil\ARM\CMSIS\Include-I D:\Keil\ARM\Inc\ST\STM32F4xx-DUSE_STDPERIPH_DRIVER -DSTM32F429X-o .\output\main.o --omf_browse .\output\main.crf --depend .\output\main.d)
+F (..\USER\main\main.c)(0x5979B11E)(-c --cpu Cortex-M4.fp -g -O0 --apcs=interwork --split_sections -I..\Libraries\CMSIS\Device\ST\STM32F4xx\Include -I..\Libraries\CMSIS\Device\ST\STM32F4xx\Source\Templates -I..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\Libraries\STM32F4xx_StdPeriph_Driver\src -I..\USER\main -I..\MDK-ARM -I..\USER -I..\USER\GUI -I..\USER\GUI_DIALOG -I..\USER\SDCARD -I..\USER\ssd1963 -I..\USER\GUI\inc -I..\USER\FatFS -I..\USER\FatFS\option -I..\USER\MX25 -I..\USER\TSC2046 -I..\USER\SDRAM -I..\USER\PNG -I..\USER\Fonts -I..\USER\bxCAN --C99-I D:\Keil\ARM\RV31\INC-I D:\Keil\ARM\CMSIS\Include-I D:\Keil\ARM\Inc\ST\STM32F4xx-DUSE_STDPERIPH_DRIVER -DSTM32F429X-o .\output\main.o --omf_browse .\output\main.crf --depend .\output\main.d)
 I (..\Libraries\CMSIS\Device\ST\STM32F4xx\Include\stm32f4xx.h)(0x59477AC4)
 I (D:\Keil\ARM\CMSIS\Include\core_cm4.h)(0x532C05D2)
 I (D:\Keil\ARM\ARMCC\include\stdint.h)(0x51C7D364)
@@ -336,7 +336,7 @@ I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_spi.h)(0x59477AC4)
 I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_tim.h)(0x59477AC4)
 I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_fmc.h)(0x59477AC4)
 I (D:\Keil\ARM\ARMCC\include\stdlib.h)(0x51C7D364)
-I (..\USER\main\header.h)(0x5971C065)
+I (..\USER\main\header.h)(0x5979A599)
 I (..\USER\GUI\inc\GUI.h)(0x59477AC6)
 I (..\USER\GUI\inc\GUI_ConfDefaults.h)(0x59477AC6)
 I (..\USER\GUI\inc\GUIConf.h)(0x59477AC6)
@@ -382,7 +382,7 @@ I (..\USER\GUI\inc\TREEVIEW.h)(0x59477AC6)
 I (..\USER\FatFS\ff.h)(0x59477AC5)
 I (..\USER\FatFS\integer.h)(0x59477AC5)
 I (..\USER\FatFS\ffconf.h)(0x59477AC5)
-I (..\USER\SDCARD\stm324x9i_eval_sdio_sd.h)(0x59477AC6)
+I (..\USER\SDCARD\stm324x9i_eval_sdio_sd.h)(0x5978643E)
 I (..\USER\ssd1963\ssd1963.h)(0x59477AC6)
 I (..\USER\MX25\mx25l8005.h)(0x59477AC6)
 I (..\USER\GUI\LCDConf.h)(0x59477AC6)
@@ -390,7 +390,7 @@ I (..\USER\TSC2046\tsc2046.h)(0x59477AC6)
 I (..\USER\SDRAM\SDRAM.h)(0x59477AC6)
 I (..\USER\bxCAN\CAN.h)(0x594CD9DD)
 I (D:\Keil\ARM\ARMCC\include\stdio.h)(0x51C7D364)
-F (..\USER\main\template.c)(0x59703A88)(-c --cpu Cortex-M4.fp -g -O0 --apcs=interwork --split_sections -I..\Libraries\CMSIS\Device\ST\STM32F4xx\Include -I..\Libraries\CMSIS\Device\ST\STM32F4xx\Source\Templates -I..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\Libraries\STM32F4xx_StdPeriph_Driver\src -I..\USER\main -I..\MDK-ARM -I..\USER -I..\USER\GUI -I..\USER\GUI_DIALOG -I..\USER\SDCARD -I..\USER\ssd1963 -I..\USER\GUI\inc -I..\USER\FatFS -I..\USER\FatFS\option -I..\USER\MX25 -I..\USER\TSC2046 -I..\USER\SDRAM -I..\USER\PNG -I..\USER\Fonts -I..\USER\bxCAN --C99-I D:\Keil\ARM\RV31\INC-I D:\Keil\ARM\CMSIS\Include-I D:\Keil\ARM\Inc\ST\STM32F4xx-DUSE_STDPERIPH_DRIVER -DSTM32F429X-o .\output\template.o --omf_browse .\output\template.crf --depend .\output\template.d)
+F (..\USER\main\template.c)(0x5979A599)(-c --cpu Cortex-M4.fp -g -O0 --apcs=interwork --split_sections -I..\Libraries\CMSIS\Device\ST\STM32F4xx\Include -I..\Libraries\CMSIS\Device\ST\STM32F4xx\Source\Templates -I..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\Libraries\STM32F4xx_StdPeriph_Driver\src -I..\USER\main -I..\MDK-ARM -I..\USER -I..\USER\GUI -I..\USER\GUI_DIALOG -I..\USER\SDCARD -I..\USER\ssd1963 -I..\USER\GUI\inc -I..\USER\FatFS -I..\USER\FatFS\option -I..\USER\MX25 -I..\USER\TSC2046 -I..\USER\SDRAM -I..\USER\PNG -I..\USER\Fonts -I..\USER\bxCAN --C99-I D:\Keil\ARM\RV31\INC-I D:\Keil\ARM\CMSIS\Include-I D:\Keil\ARM\Inc\ST\STM32F4xx-DUSE_STDPERIPH_DRIVER -DSTM32F429X-o .\output\template.o --omf_browse .\output\template.crf --depend .\output\template.d)
 I (..\Libraries\CMSIS\Device\ST\STM32F4xx\Include\stm32f4xx.h)(0x59477AC4)
 I (D:\Keil\ARM\CMSIS\Include\core_cm4.h)(0x532C05D2)
 I (D:\Keil\ARM\ARMCC\include\stdint.h)(0x51C7D364)
@@ -410,7 +410,7 @@ I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_sdio.h)(0x59477AC4)
 I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_spi.h)(0x59477AC4)
 I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_tim.h)(0x59477AC4)
 I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_fmc.h)(0x59477AC4)
-I (..\USER\main\header.h)(0x5971C065)
+I (..\USER\main\header.h)(0x5979A599)
 I (..\USER\GUI\inc\GUI.h)(0x59477AC6)
 I (..\USER\GUI\inc\GUI_ConfDefaults.h)(0x59477AC6)
 I (..\USER\GUI\inc\GUIConf.h)(0x59477AC6)
@@ -456,14 +456,14 @@ I (..\USER\GUI\inc\TREEVIEW.h)(0x59477AC6)
 I (..\USER\FatFS\ff.h)(0x59477AC5)
 I (..\USER\FatFS\integer.h)(0x59477AC5)
 I (..\USER\FatFS\ffconf.h)(0x59477AC5)
-I (..\USER\SDCARD\stm324x9i_eval_sdio_sd.h)(0x59477AC6)
+I (..\USER\SDCARD\stm324x9i_eval_sdio_sd.h)(0x5978643E)
 I (..\USER\ssd1963\ssd1963.h)(0x59477AC6)
 I (..\USER\MX25\mx25l8005.h)(0x59477AC6)
 I (..\USER\GUI\LCDConf.h)(0x59477AC6)
 I (..\USER\TSC2046\tsc2046.h)(0x59477AC6)
 I (..\USER\SDRAM\SDRAM.h)(0x59477AC6)
-F (..\USER\main\stm32f4xx_it.c)(0x5971C87B)(-c --cpu Cortex-M4.fp -g -O0 --apcs=interwork --split_sections -I..\Libraries\CMSIS\Device\ST\STM32F4xx\Include -I..\Libraries\CMSIS\Device\ST\STM32F4xx\Source\Templates -I..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\Libraries\STM32F4xx_StdPeriph_Driver\src -I..\USER\main -I..\MDK-ARM -I..\USER -I..\USER\GUI -I..\USER\GUI_DIALOG -I..\USER\SDCARD -I..\USER\ssd1963 -I..\USER\GUI\inc -I..\USER\FatFS -I..\USER\FatFS\option -I..\USER\MX25 -I..\USER\TSC2046 -I..\USER\SDRAM -I..\USER\PNG -I..\USER\Fonts -I..\USER\bxCAN --C99-I D:\Keil\ARM\RV31\INC-I D:\Keil\ARM\CMSIS\Include-I D:\Keil\ARM\Inc\ST\STM32F4xx-DUSE_STDPERIPH_DRIVER -DSTM32F429X-o .\output\stm32f4xx_it.o --omf_browse .\output\stm32f4xx_it.crf --depend .\output\stm32f4xx_it.d)
-I (..\USER\main\header.h)(0x5971C065)
+F (..\USER\main\stm32f4xx_it.c)(0x5979B11E)(-c --cpu Cortex-M4.fp -g -O0 --apcs=interwork --split_sections -I..\Libraries\CMSIS\Device\ST\STM32F4xx\Include -I..\Libraries\CMSIS\Device\ST\STM32F4xx\Source\Templates -I..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\Libraries\STM32F4xx_StdPeriph_Driver\src -I..\USER\main -I..\MDK-ARM -I..\USER -I..\USER\GUI -I..\USER\GUI_DIALOG -I..\USER\SDCARD -I..\USER\ssd1963 -I..\USER\GUI\inc -I..\USER\FatFS -I..\USER\FatFS\option -I..\USER\MX25 -I..\USER\TSC2046 -I..\USER\SDRAM -I..\USER\PNG -I..\USER\Fonts -I..\USER\bxCAN --C99-I D:\Keil\ARM\RV31\INC-I D:\Keil\ARM\CMSIS\Include-I D:\Keil\ARM\Inc\ST\STM32F4xx-DUSE_STDPERIPH_DRIVER -DSTM32F429X-o .\output\stm32f4xx_it.o --omf_browse .\output\stm32f4xx_it.crf --depend .\output\stm32f4xx_it.d)
+I (..\USER\main\header.h)(0x5979A599)
 I (..\Libraries\CMSIS\Device\ST\STM32F4xx\Include\stm32f4xx.h)(0x59477AC4)
 I (D:\Keil\ARM\CMSIS\Include\core_cm4.h)(0x532C05D2)
 I (D:\Keil\ARM\ARMCC\include\stdint.h)(0x51C7D364)
@@ -528,14 +528,14 @@ I (..\USER\GUI\inc\TREEVIEW.h)(0x59477AC6)
 I (..\USER\FatFS\ff.h)(0x59477AC5)
 I (..\USER\FatFS\integer.h)(0x59477AC5)
 I (..\USER\FatFS\ffconf.h)(0x59477AC5)
-I (..\USER\SDCARD\stm324x9i_eval_sdio_sd.h)(0x59477AC6)
+I (..\USER\SDCARD\stm324x9i_eval_sdio_sd.h)(0x5978643E)
 I (..\USER\ssd1963\ssd1963.h)(0x59477AC6)
 I (..\USER\MX25\mx25l8005.h)(0x59477AC6)
 I (..\USER\GUI\LCDConf.h)(0x59477AC6)
 I (..\USER\TSC2046\tsc2046.h)(0x59477AC6)
 I (..\USER\SDRAM\SDRAM.h)(0x59477AC6)
 I (..\USER\bxCAN\CAN.h)(0x594CD9DD)
-F (..\USER\main\header.h)(0x5971C065)()
+F (..\USER\main\header.h)(0x5979A599)()
 F (..\USER\GUI\GUI_X.c)(0x59477AC6)(-c --cpu Cortex-M4.fp -g -O0 --apcs=interwork --split_sections -I..\Libraries\CMSIS\Device\ST\STM32F4xx\Include -I..\Libraries\CMSIS\Device\ST\STM32F4xx\Source\Templates -I..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\Libraries\STM32F4xx_StdPeriph_Driver\src -I..\USER\main -I..\MDK-ARM -I..\USER -I..\USER\GUI -I..\USER\GUI_DIALOG -I..\USER\SDCARD -I..\USER\ssd1963 -I..\USER\GUI\inc -I..\USER\FatFS -I..\USER\FatFS\option -I..\USER\MX25 -I..\USER\TSC2046 -I..\USER\SDRAM -I..\USER\PNG -I..\USER\Fonts -I..\USER\bxCAN --C99-I D:\Keil\ARM\RV31\INC-I D:\Keil\ARM\CMSIS\Include-I D:\Keil\ARM\Inc\ST\STM32F4xx-DUSE_STDPERIPH_DRIVER -DSTM32F429X-o .\output\gui_x.o --omf_browse .\output\gui_x.crf --depend .\output\gui_x.d)
 I (..\Libraries\CMSIS\Device\ST\STM32F4xx\Include\stm32f4xx.h)(0x59477AC4)
 I (D:\Keil\ARM\CMSIS\Include\core_cm4.h)(0x532C05D2)
@@ -591,7 +591,7 @@ I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_sdio.h)(0x59477AC4)
 I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_spi.h)(0x59477AC4)
 I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_tim.h)(0x59477AC4)
 I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_fmc.h)(0x59477AC4)
-F (..\USER\GUI\LCDConf.c)(0x594CD9DD)(-c --cpu Cortex-M4.fp -g -O0 --apcs=interwork --split_sections -I..\Libraries\CMSIS\Device\ST\STM32F4xx\Include -I..\Libraries\CMSIS\Device\ST\STM32F4xx\Source\Templates -I..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\Libraries\STM32F4xx_StdPeriph_Driver\src -I..\USER\main -I..\MDK-ARM -I..\USER -I..\USER\GUI -I..\USER\GUI_DIALOG -I..\USER\SDCARD -I..\USER\ssd1963 -I..\USER\GUI\inc -I..\USER\FatFS -I..\USER\FatFS\option -I..\USER\MX25 -I..\USER\TSC2046 -I..\USER\SDRAM -I..\USER\PNG -I..\USER\Fonts -I..\USER\bxCAN --C99-I D:\Keil\ARM\RV31\INC-I D:\Keil\ARM\CMSIS\Include-I D:\Keil\ARM\Inc\ST\STM32F4xx-DUSE_STDPERIPH_DRIVER -DSTM32F429X-o .\output\lcdconf.o --omf_browse .\output\lcdconf.crf --depend .\output\lcdconf.d)
+F (..\USER\GUI\LCDConf.c)(0x5979846D)(-c --cpu Cortex-M4.fp -g -O0 --apcs=interwork --split_sections -I..\Libraries\CMSIS\Device\ST\STM32F4xx\Include -I..\Libraries\CMSIS\Device\ST\STM32F4xx\Source\Templates -I..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\Libraries\STM32F4xx_StdPeriph_Driver\src -I..\USER\main -I..\MDK-ARM -I..\USER -I..\USER\GUI -I..\USER\GUI_DIALOG -I..\USER\SDCARD -I..\USER\ssd1963 -I..\USER\GUI\inc -I..\USER\FatFS -I..\USER\FatFS\option -I..\USER\MX25 -I..\USER\TSC2046 -I..\USER\SDRAM -I..\USER\PNG -I..\USER\Fonts -I..\USER\bxCAN --C99-I D:\Keil\ARM\RV31\INC-I D:\Keil\ARM\CMSIS\Include-I D:\Keil\ARM\Inc\ST\STM32F4xx-DUSE_STDPERIPH_DRIVER -DSTM32F429X-o .\output\lcdconf.o --omf_browse .\output\lcdconf.crf --depend .\output\lcdconf.d)
 I (..\Libraries\CMSIS\Device\ST\STM32F4xx\Include\stm32f4xx.h)(0x59477AC4)
 I (D:\Keil\ARM\CMSIS\Include\core_cm4.h)(0x532C05D2)
 I (D:\Keil\ARM\ARMCC\include\stdint.h)(0x51C7D364)
@@ -620,7 +620,7 @@ I (..\USER\GUI\inc\LCD.h)(0x59477AC6)
 I (..\USER\GUI\inc\Global.h)(0x59477AC6)
 I (..\USER\GUI\inc\GUI_Version.h)(0x59477AC6)
 I (..\USER\GUI\GUIDRV_FlexColor.h)(0x59477AC6)
-I (..\USER\main\header.h)(0x5971C065)
+I (..\USER\main\header.h)(0x5979A599)
 I (..\USER\GUI\inc\DIALOG.h)(0x59477AC6)
 I (..\USER\GUI\inc\WM.h)(0x59477AC6)
 I (..\USER\GUI\inc\WM_GUI.h)(0x59477AC6)
@@ -659,7 +659,7 @@ I (..\USER\GUI\inc\TREEVIEW.h)(0x59477AC6)
 I (..\USER\FatFS\ff.h)(0x59477AC5)
 I (..\USER\FatFS\integer.h)(0x59477AC5)
 I (..\USER\FatFS\ffconf.h)(0x59477AC5)
-I (..\USER\SDCARD\stm324x9i_eval_sdio_sd.h)(0x59477AC6)
+I (..\USER\SDCARD\stm324x9i_eval_sdio_sd.h)(0x5978643E)
 I (..\USER\MX25\mx25l8005.h)(0x59477AC6)
 I (..\USER\GUI\LCDConf.h)(0x59477AC6)
 I (..\USER\TSC2046\tsc2046.h)(0x59477AC6)
@@ -667,7 +667,7 @@ I (..\USER\SDRAM\SDRAM.h)(0x59477AC6)
 I (D:\Keil\ARM\ARMCC\include\stdbool.h)(0x51C7D364)
 I (D:\Keil\ARM\ARMCC\include\stdlib.h)(0x51C7D364)
 F (..\USER\GUI\STemWin522_CM4_Keil.lib)(0x59477AC6)()
-F (..\USER\GUI_DIALOG\Start_WindowDLG.c)(0x5971BB25)(-c --cpu Cortex-M4.fp -g -O0 --apcs=interwork --split_sections -I..\Libraries\CMSIS\Device\ST\STM32F4xx\Include -I..\Libraries\CMSIS\Device\ST\STM32F4xx\Source\Templates -I..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\Libraries\STM32F4xx_StdPeriph_Driver\src -I..\USER\main -I..\MDK-ARM -I..\USER -I..\USER\GUI -I..\USER\GUI_DIALOG -I..\USER\SDCARD -I..\USER\ssd1963 -I..\USER\GUI\inc -I..\USER\FatFS -I..\USER\FatFS\option -I..\USER\MX25 -I..\USER\TSC2046 -I..\USER\SDRAM -I..\USER\PNG -I..\USER\Fonts -I..\USER\bxCAN --C99-I D:\Keil\ARM\RV31\INC-I D:\Keil\ARM\CMSIS\Include-I D:\Keil\ARM\Inc\ST\STM32F4xx-DUSE_STDPERIPH_DRIVER -DSTM32F429X-o .\output\start_windowdlg.o --omf_browse .\output\start_windowdlg.crf --depend .\output\start_windowdlg.d)
+F (..\USER\GUI_DIALOG\Start_WindowDLG.c)(0x597A9DE1)(-c --cpu Cortex-M4.fp -g -O0 --apcs=interwork --split_sections -I..\Libraries\CMSIS\Device\ST\STM32F4xx\Include -I..\Libraries\CMSIS\Device\ST\STM32F4xx\Source\Templates -I..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\Libraries\STM32F4xx_StdPeriph_Driver\src -I..\USER\main -I..\MDK-ARM -I..\USER -I..\USER\GUI -I..\USER\GUI_DIALOG -I..\USER\SDCARD -I..\USER\ssd1963 -I..\USER\GUI\inc -I..\USER\FatFS -I..\USER\FatFS\option -I..\USER\MX25 -I..\USER\TSC2046 -I..\USER\SDRAM -I..\USER\PNG -I..\USER\Fonts -I..\USER\bxCAN --C99-I D:\Keil\ARM\RV31\INC-I D:\Keil\ARM\CMSIS\Include-I D:\Keil\ARM\Inc\ST\STM32F4xx-DUSE_STDPERIPH_DRIVER -DSTM32F429X-o .\output\start_windowdlg.o --omf_browse .\output\start_windowdlg.crf --depend .\output\start_windowdlg.d)
 I (D:\Keil\ARM\ARMCC\include\stdio.h)(0x51C7D364)
 I (..\USER\GUI\inc\DIALOG.h)(0x59477AC6)
 I (..\USER\GUI\inc\WM.h)(0x59477AC6)
@@ -711,7 +711,7 @@ I (..\USER\GUI\inc\SLIDER.h)(0x59477AC6)
 I (..\USER\GUI\inc\SPINBOX.h)(0x59477AC6)
 I (..\USER\GUI\inc\TEXT.h)(0x59477AC6)
 I (..\USER\GUI\inc\TREEVIEW.h)(0x59477AC6)
-I (..\USER\main\header.h)(0x5971C065)
+I (..\USER\main\header.h)(0x5979A599)
 I (..\Libraries\CMSIS\Device\ST\STM32F4xx\Include\stm32f4xx.h)(0x59477AC4)
 I (D:\Keil\ARM\CMSIS\Include\core_cm4.h)(0x532C05D2)
 I (D:\Keil\ARM\ARMCC\include\stdint.h)(0x51C7D364)
@@ -734,7 +734,7 @@ I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_fmc.h)(0x59477AC4)
 I (..\USER\FatFS\ff.h)(0x59477AC5)
 I (..\USER\FatFS\integer.h)(0x59477AC5)
 I (..\USER\FatFS\ffconf.h)(0x59477AC5)
-I (..\USER\SDCARD\stm324x9i_eval_sdio_sd.h)(0x59477AC6)
+I (..\USER\SDCARD\stm324x9i_eval_sdio_sd.h)(0x5978643E)
 I (..\USER\ssd1963\ssd1963.h)(0x59477AC6)
 I (..\USER\MX25\mx25l8005.h)(0x59477AC6)
 I (..\USER\GUI\LCDConf.h)(0x59477AC6)
@@ -742,7 +742,7 @@ I (..\USER\TSC2046\tsc2046.h)(0x59477AC6)
 I (..\USER\SDRAM\SDRAM.h)(0x59477AC6)
 I (D:\Keil\ARM\ARMCC\include\string.h)(0x51C7D364)
 I (..\USER\bxCAN\CAN.h)(0x594CD9DD)
-F (..\USER\GUI_DIALOG\MENUDLG.c)(0x59477AC6)(-c --cpu Cortex-M4.fp -g -O0 --apcs=interwork --split_sections -I..\Libraries\CMSIS\Device\ST\STM32F4xx\Include -I..\Libraries\CMSIS\Device\ST\STM32F4xx\Source\Templates -I..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\Libraries\STM32F4xx_StdPeriph_Driver\src -I..\USER\main -I..\MDK-ARM -I..\USER -I..\USER\GUI -I..\USER\GUI_DIALOG -I..\USER\SDCARD -I..\USER\ssd1963 -I..\USER\GUI\inc -I..\USER\FatFS -I..\USER\FatFS\option -I..\USER\MX25 -I..\USER\TSC2046 -I..\USER\SDRAM -I..\USER\PNG -I..\USER\Fonts -I..\USER\bxCAN --C99-I D:\Keil\ARM\RV31\INC-I D:\Keil\ARM\CMSIS\Include-I D:\Keil\ARM\Inc\ST\STM32F4xx-DUSE_STDPERIPH_DRIVER -DSTM32F429X-o .\output\menudlg.o --omf_browse .\output\menudlg.crf --depend .\output\menudlg.d)
+F (..\USER\GUI_DIALOG\MENUDLG.c)(0x597860AC)(-c --cpu Cortex-M4.fp -g -O0 --apcs=interwork --split_sections -I..\Libraries\CMSIS\Device\ST\STM32F4xx\Include -I..\Libraries\CMSIS\Device\ST\STM32F4xx\Source\Templates -I..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\Libraries\STM32F4xx_StdPeriph_Driver\src -I..\USER\main -I..\MDK-ARM -I..\USER -I..\USER\GUI -I..\USER\GUI_DIALOG -I..\USER\SDCARD -I..\USER\ssd1963 -I..\USER\GUI\inc -I..\USER\FatFS -I..\USER\FatFS\option -I..\USER\MX25 -I..\USER\TSC2046 -I..\USER\SDRAM -I..\USER\PNG -I..\USER\Fonts -I..\USER\bxCAN --C99-I D:\Keil\ARM\RV31\INC-I D:\Keil\ARM\CMSIS\Include-I D:\Keil\ARM\Inc\ST\STM32F4xx-DUSE_STDPERIPH_DRIVER -DSTM32F429X-o .\output\menudlg.o --omf_browse .\output\menudlg.crf --depend .\output\menudlg.d)
 I (..\USER\GUI\inc\DIALOG.h)(0x59477AC6)
 I (..\USER\GUI\inc\WM.h)(0x59477AC6)
 I (..\USER\GUI\inc\GUI_ConfDefaults.h)(0x59477AC6)
@@ -785,7 +785,7 @@ I (..\USER\GUI\inc\SLIDER.h)(0x59477AC6)
 I (..\USER\GUI\inc\SPINBOX.h)(0x59477AC6)
 I (..\USER\GUI\inc\TEXT.h)(0x59477AC6)
 I (..\USER\GUI\inc\TREEVIEW.h)(0x59477AC6)
-I (..\USER\main\header.h)(0x5971C065)
+I (..\USER\main\header.h)(0x5979A599)
 I (..\Libraries\CMSIS\Device\ST\STM32F4xx\Include\stm32f4xx.h)(0x59477AC4)
 I (D:\Keil\ARM\CMSIS\Include\core_cm4.h)(0x532C05D2)
 I (D:\Keil\ARM\ARMCC\include\stdint.h)(0x51C7D364)
@@ -808,7 +808,7 @@ I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_fmc.h)(0x59477AC4)
 I (..\USER\FatFS\ff.h)(0x59477AC5)
 I (..\USER\FatFS\integer.h)(0x59477AC5)
 I (..\USER\FatFS\ffconf.h)(0x59477AC5)
-I (..\USER\SDCARD\stm324x9i_eval_sdio_sd.h)(0x59477AC6)
+I (..\USER\SDCARD\stm324x9i_eval_sdio_sd.h)(0x5978643E)
 I (..\USER\ssd1963\ssd1963.h)(0x59477AC6)
 I (..\USER\MX25\mx25l8005.h)(0x59477AC6)
 I (..\USER\GUI\LCDConf.h)(0x59477AC6)
@@ -857,7 +857,7 @@ I (..\USER\GUI\inc\SLIDER.h)(0x59477AC6)
 I (..\USER\GUI\inc\SPINBOX.h)(0x59477AC6)
 I (..\USER\GUI\inc\TEXT.h)(0x59477AC6)
 I (..\USER\GUI\inc\TREEVIEW.h)(0x59477AC6)
-I (..\USER\main\header.h)(0x5971C065)
+I (..\USER\main\header.h)(0x5979A599)
 I (..\Libraries\CMSIS\Device\ST\STM32F4xx\Include\stm32f4xx.h)(0x59477AC4)
 I (D:\Keil\ARM\CMSIS\Include\core_cm4.h)(0x532C05D2)
 I (D:\Keil\ARM\ARMCC\include\stdint.h)(0x51C7D364)
@@ -880,7 +880,7 @@ I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_fmc.h)(0x59477AC4)
 I (..\USER\FatFS\ff.h)(0x59477AC5)
 I (..\USER\FatFS\integer.h)(0x59477AC5)
 I (..\USER\FatFS\ffconf.h)(0x59477AC5)
-I (..\USER\SDCARD\stm324x9i_eval_sdio_sd.h)(0x59477AC6)
+I (..\USER\SDCARD\stm324x9i_eval_sdio_sd.h)(0x5978643E)
 I (..\USER\ssd1963\ssd1963.h)(0x59477AC6)
 I (..\USER\MX25\mx25l8005.h)(0x59477AC6)
 I (..\USER\GUI\LCDConf.h)(0x59477AC6)
@@ -929,7 +929,7 @@ I (..\USER\GUI\inc\SLIDER.h)(0x59477AC6)
 I (..\USER\GUI\inc\SPINBOX.h)(0x59477AC6)
 I (..\USER\GUI\inc\TEXT.h)(0x59477AC6)
 I (..\USER\GUI\inc\TREEVIEW.h)(0x59477AC6)
-I (..\USER\main\header.h)(0x5971C065)
+I (..\USER\main\header.h)(0x5979A599)
 I (..\Libraries\CMSIS\Device\ST\STM32F4xx\Include\stm32f4xx.h)(0x59477AC4)
 I (D:\Keil\ARM\CMSIS\Include\core_cm4.h)(0x532C05D2)
 I (D:\Keil\ARM\ARMCC\include\stdint.h)(0x51C7D364)
@@ -952,7 +952,7 @@ I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_fmc.h)(0x59477AC4)
 I (..\USER\FatFS\ff.h)(0x59477AC5)
 I (..\USER\FatFS\integer.h)(0x59477AC5)
 I (..\USER\FatFS\ffconf.h)(0x59477AC5)
-I (..\USER\SDCARD\stm324x9i_eval_sdio_sd.h)(0x59477AC6)
+I (..\USER\SDCARD\stm324x9i_eval_sdio_sd.h)(0x5978643E)
 I (..\USER\ssd1963\ssd1963.h)(0x59477AC6)
 I (..\USER\MX25\mx25l8005.h)(0x59477AC6)
 I (..\USER\GUI\LCDConf.h)(0x59477AC6)
@@ -1001,7 +1001,7 @@ I (..\USER\GUI\inc\SLIDER.h)(0x59477AC6)
 I (..\USER\GUI\inc\SPINBOX.h)(0x59477AC6)
 I (..\USER\GUI\inc\TEXT.h)(0x59477AC6)
 I (..\USER\GUI\inc\TREEVIEW.h)(0x59477AC6)
-I (..\USER\main\header.h)(0x5971C065)
+I (..\USER\main\header.h)(0x5979A599)
 I (..\Libraries\CMSIS\Device\ST\STM32F4xx\Include\stm32f4xx.h)(0x59477AC4)
 I (D:\Keil\ARM\CMSIS\Include\core_cm4.h)(0x532C05D2)
 I (D:\Keil\ARM\ARMCC\include\stdint.h)(0x51C7D364)
@@ -1024,13 +1024,13 @@ I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_fmc.h)(0x59477AC4)
 I (..\USER\FatFS\ff.h)(0x59477AC5)
 I (..\USER\FatFS\integer.h)(0x59477AC5)
 I (..\USER\FatFS\ffconf.h)(0x59477AC5)
-I (..\USER\SDCARD\stm324x9i_eval_sdio_sd.h)(0x59477AC6)
+I (..\USER\SDCARD\stm324x9i_eval_sdio_sd.h)(0x5978643E)
 I (..\USER\ssd1963\ssd1963.h)(0x59477AC6)
 I (..\USER\MX25\mx25l8005.h)(0x59477AC6)
 I (..\USER\GUI\LCDConf.h)(0x59477AC6)
 I (..\USER\TSC2046\tsc2046.h)(0x59477AC6)
 I (..\USER\SDRAM\SDRAM.h)(0x59477AC6)
-F (..\USER\GUI_DIALOG\SD_File.c)(0x59719D92)(-c --cpu Cortex-M4.fp -g -O0 --apcs=interwork --split_sections -I..\Libraries\CMSIS\Device\ST\STM32F4xx\Include -I..\Libraries\CMSIS\Device\ST\STM32F4xx\Source\Templates -I..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\Libraries\STM32F4xx_StdPeriph_Driver\src -I..\USER\main -I..\MDK-ARM -I..\USER -I..\USER\GUI -I..\USER\GUI_DIALOG -I..\USER\SDCARD -I..\USER\ssd1963 -I..\USER\GUI\inc -I..\USER\FatFS -I..\USER\FatFS\option -I..\USER\MX25 -I..\USER\TSC2046 -I..\USER\SDRAM -I..\USER\PNG -I..\USER\Fonts -I..\USER\bxCAN --C99-I D:\Keil\ARM\RV31\INC-I D:\Keil\ARM\CMSIS\Include-I D:\Keil\ARM\Inc\ST\STM32F4xx-DUSE_STDPERIPH_DRIVER -DSTM32F429X-o .\output\sd_file.o --omf_browse .\output\sd_file.crf --depend .\output\sd_file.d)
+F (..\USER\GUI_DIALOG\SD_File.c)(0x5977FE3B)(-c --cpu Cortex-M4.fp -g -O0 --apcs=interwork --split_sections -I..\Libraries\CMSIS\Device\ST\STM32F4xx\Include -I..\Libraries\CMSIS\Device\ST\STM32F4xx\Source\Templates -I..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\Libraries\STM32F4xx_StdPeriph_Driver\src -I..\USER\main -I..\MDK-ARM -I..\USER -I..\USER\GUI -I..\USER\GUI_DIALOG -I..\USER\SDCARD -I..\USER\ssd1963 -I..\USER\GUI\inc -I..\USER\FatFS -I..\USER\FatFS\option -I..\USER\MX25 -I..\USER\TSC2046 -I..\USER\SDRAM -I..\USER\PNG -I..\USER\Fonts -I..\USER\bxCAN --C99-I D:\Keil\ARM\RV31\INC-I D:\Keil\ARM\CMSIS\Include-I D:\Keil\ARM\Inc\ST\STM32F4xx-DUSE_STDPERIPH_DRIVER -DSTM32F429X-o .\output\sd_file.o --omf_browse .\output\sd_file.crf --depend .\output\sd_file.d)
 I (..\USER\GUI\inc\DIALOG.h)(0x59477AC6)
 I (..\USER\GUI\inc\WM.h)(0x59477AC6)
 I (..\USER\GUI\inc\GUI_ConfDefaults.h)(0x59477AC6)
@@ -1073,7 +1073,7 @@ I (..\USER\GUI\inc\SLIDER.h)(0x59477AC6)
 I (..\USER\GUI\inc\SPINBOX.h)(0x59477AC6)
 I (..\USER\GUI\inc\TEXT.h)(0x59477AC6)
 I (..\USER\GUI\inc\TREEVIEW.h)(0x59477AC6)
-I (..\USER\main\header.h)(0x5971C065)
+I (..\USER\main\header.h)(0x5979A599)
 I (..\Libraries\CMSIS\Device\ST\STM32F4xx\Include\stm32f4xx.h)(0x59477AC4)
 I (D:\Keil\ARM\CMSIS\Include\core_cm4.h)(0x532C05D2)
 I (D:\Keil\ARM\ARMCC\include\stdint.h)(0x51C7D364)
@@ -1096,7 +1096,7 @@ I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_fmc.h)(0x59477AC4)
 I (..\USER\FatFS\ff.h)(0x59477AC5)
 I (..\USER\FatFS\integer.h)(0x59477AC5)
 I (..\USER\FatFS\ffconf.h)(0x59477AC5)
-I (..\USER\SDCARD\stm324x9i_eval_sdio_sd.h)(0x59477AC6)
+I (..\USER\SDCARD\stm324x9i_eval_sdio_sd.h)(0x5978643E)
 I (..\USER\ssd1963\ssd1963.h)(0x59477AC6)
 I (..\USER\MX25\mx25l8005.h)(0x59477AC6)
 I (..\USER\GUI\LCDConf.h)(0x59477AC6)
@@ -1148,7 +1148,7 @@ I (..\USER\GUI\inc\SLIDER.h)(0x59477AC6)
 I (..\USER\GUI\inc\SPINBOX.h)(0x59477AC6)
 I (..\USER\GUI\inc\TEXT.h)(0x59477AC6)
 I (..\USER\GUI\inc\TREEVIEW.h)(0x59477AC6)
-I (..\USER\main\header.h)(0x5971C065)
+I (..\USER\main\header.h)(0x5979A599)
 I (..\Libraries\CMSIS\Device\ST\STM32F4xx\Include\stm32f4xx.h)(0x59477AC4)
 I (D:\Keil\ARM\CMSIS\Include\core_cm4.h)(0x532C05D2)
 I (D:\Keil\ARM\ARMCC\include\stdint.h)(0x51C7D364)
@@ -1171,14 +1171,14 @@ I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_fmc.h)(0x59477AC4)
 I (..\USER\FatFS\ff.h)(0x59477AC5)
 I (..\USER\FatFS\integer.h)(0x59477AC5)
 I (..\USER\FatFS\ffconf.h)(0x59477AC5)
-I (..\USER\SDCARD\stm324x9i_eval_sdio_sd.h)(0x59477AC6)
+I (..\USER\SDCARD\stm324x9i_eval_sdio_sd.h)(0x5978643E)
 I (..\USER\ssd1963\ssd1963.h)(0x59477AC6)
 I (..\USER\MX25\mx25l8005.h)(0x59477AC6)
 I (..\USER\GUI\LCDConf.h)(0x59477AC6)
 I (..\USER\TSC2046\tsc2046.h)(0x59477AC6)
 I (..\USER\SDRAM\SDRAM.h)(0x59477AC6)
 I (D:\Keil\ARM\ARMCC\include\string.h)(0x51C7D364)
-F (..\USER\GUI_DIALOG\PictureView.c)(0x59719E3C)(-c --cpu Cortex-M4.fp -g -O0 --apcs=interwork --split_sections -I..\Libraries\CMSIS\Device\ST\STM32F4xx\Include -I..\Libraries\CMSIS\Device\ST\STM32F4xx\Source\Templates -I..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\Libraries\STM32F4xx_StdPeriph_Driver\src -I..\USER\main -I..\MDK-ARM -I..\USER -I..\USER\GUI -I..\USER\GUI_DIALOG -I..\USER\SDCARD -I..\USER\ssd1963 -I..\USER\GUI\inc -I..\USER\FatFS -I..\USER\FatFS\option -I..\USER\MX25 -I..\USER\TSC2046 -I..\USER\SDRAM -I..\USER\PNG -I..\USER\Fonts -I..\USER\bxCAN --C99-I D:\Keil\ARM\RV31\INC-I D:\Keil\ARM\CMSIS\Include-I D:\Keil\ARM\Inc\ST\STM32F4xx-DUSE_STDPERIPH_DRIVER -DSTM32F429X-o .\output\pictureview.o --omf_browse .\output\pictureview.crf --depend .\output\pictureview.d)
+F (..\USER\GUI_DIALOG\PictureView.c)(0x5977FE75)(-c --cpu Cortex-M4.fp -g -O0 --apcs=interwork --split_sections -I..\Libraries\CMSIS\Device\ST\STM32F4xx\Include -I..\Libraries\CMSIS\Device\ST\STM32F4xx\Source\Templates -I..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\Libraries\STM32F4xx_StdPeriph_Driver\src -I..\USER\main -I..\MDK-ARM -I..\USER -I..\USER\GUI -I..\USER\GUI_DIALOG -I..\USER\SDCARD -I..\USER\ssd1963 -I..\USER\GUI\inc -I..\USER\FatFS -I..\USER\FatFS\option -I..\USER\MX25 -I..\USER\TSC2046 -I..\USER\SDRAM -I..\USER\PNG -I..\USER\Fonts -I..\USER\bxCAN --C99-I D:\Keil\ARM\RV31\INC-I D:\Keil\ARM\CMSIS\Include-I D:\Keil\ARM\Inc\ST\STM32F4xx-DUSE_STDPERIPH_DRIVER -DSTM32F429X-o .\output\pictureview.o --omf_browse .\output\pictureview.crf --depend .\output\pictureview.d)
 I (..\USER\GUI\inc\DIALOG.h)(0x59477AC6)
 I (..\USER\GUI\inc\WM.h)(0x59477AC6)
 I (..\USER\GUI\inc\GUI_ConfDefaults.h)(0x59477AC6)
@@ -1221,7 +1221,7 @@ I (..\USER\GUI\inc\SLIDER.h)(0x59477AC6)
 I (..\USER\GUI\inc\SPINBOX.h)(0x59477AC6)
 I (..\USER\GUI\inc\TEXT.h)(0x59477AC6)
 I (..\USER\GUI\inc\TREEVIEW.h)(0x59477AC6)
-I (..\USER\main\header.h)(0x5971C065)
+I (..\USER\main\header.h)(0x5979A599)
 I (..\Libraries\CMSIS\Device\ST\STM32F4xx\Include\stm32f4xx.h)(0x59477AC4)
 I (D:\Keil\ARM\CMSIS\Include\core_cm4.h)(0x532C05D2)
 I (D:\Keil\ARM\ARMCC\include\stdint.h)(0x51C7D364)
@@ -1244,7 +1244,7 @@ I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_fmc.h)(0x59477AC4)
 I (..\USER\FatFS\ff.h)(0x59477AC5)
 I (..\USER\FatFS\integer.h)(0x59477AC5)
 I (..\USER\FatFS\ffconf.h)(0x59477AC5)
-I (..\USER\SDCARD\stm324x9i_eval_sdio_sd.h)(0x59477AC6)
+I (..\USER\SDCARD\stm324x9i_eval_sdio_sd.h)(0x5978643E)
 I (..\USER\ssd1963\ssd1963.h)(0x59477AC6)
 I (..\USER\MX25\mx25l8005.h)(0x59477AC6)
 I (..\USER\GUI\LCDConf.h)(0x59477AC6)
@@ -1259,7 +1259,7 @@ I (..\USER\FatFS\diskio.h)(0x59477AC5)
 F (..\USER\FatFS\diskio.c)(0x59477AC5)(-c --cpu Cortex-M4.fp -g -O0 --apcs=interwork --split_sections -I..\Libraries\CMSIS\Device\ST\STM32F4xx\Include -I..\Libraries\CMSIS\Device\ST\STM32F4xx\Source\Templates -I..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\Libraries\STM32F4xx_StdPeriph_Driver\src -I..\USER\main -I..\MDK-ARM -I..\USER -I..\USER\GUI -I..\USER\GUI_DIALOG -I..\USER\SDCARD -I..\USER\ssd1963 -I..\USER\GUI\inc -I..\USER\FatFS -I..\USER\FatFS\option -I..\USER\MX25 -I..\USER\TSC2046 -I..\USER\SDRAM -I..\USER\PNG -I..\USER\Fonts -I..\USER\bxCAN --C99-I D:\Keil\ARM\RV31\INC-I D:\Keil\ARM\CMSIS\Include-I D:\Keil\ARM\Inc\ST\STM32F4xx-DUSE_STDPERIPH_DRIVER -DSTM32F429X-o .\output\diskio.o --omf_browse .\output\diskio.crf --depend .\output\diskio.d)
 I (..\USER\FatFS\diskio.h)(0x59477AC5)
 I (..\USER\FatFS\integer.h)(0x59477AC5)
-I (..\USER\main\header.h)(0x5971C065)
+I (..\USER\main\header.h)(0x5979A599)
 I (..\Libraries\CMSIS\Device\ST\STM32F4xx\Include\stm32f4xx.h)(0x59477AC4)
 I (D:\Keil\ARM\CMSIS\Include\core_cm4.h)(0x532C05D2)
 I (D:\Keil\ARM\ARMCC\include\stdint.h)(0x51C7D364)
@@ -1323,7 +1323,7 @@ I (..\USER\GUI\inc\TEXT.h)(0x59477AC6)
 I (..\USER\GUI\inc\TREEVIEW.h)(0x59477AC6)
 I (..\USER\FatFS\ff.h)(0x59477AC5)
 I (..\USER\FatFS\ffconf.h)(0x59477AC5)
-I (..\USER\SDCARD\stm324x9i_eval_sdio_sd.h)(0x59477AC6)
+I (..\USER\SDCARD\stm324x9i_eval_sdio_sd.h)(0x5978643E)
 I (..\USER\ssd1963\ssd1963.h)(0x59477AC6)
 I (..\USER\MX25\mx25l8005.h)(0x59477AC6)
 I (..\USER\GUI\LCDConf.h)(0x59477AC6)
@@ -1334,7 +1334,7 @@ I (..\USER\FatFS\option\../ff.h)(0x59477AC5)
 I (..\USER\FatFS\option\../integer.h)(0x59477AC5)
 I (..\USER\FatFS\option\../ffconf.h)(0x59477AC5)
 F (..\USER\SDCARD\stm324x9i_eval_sdio_sd.c)(0x59477AC6)(-c --cpu Cortex-M4.fp -g -O0 --apcs=interwork --split_sections -I..\Libraries\CMSIS\Device\ST\STM32F4xx\Include -I..\Libraries\CMSIS\Device\ST\STM32F4xx\Source\Templates -I..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\Libraries\STM32F4xx_StdPeriph_Driver\src -I..\USER\main -I..\MDK-ARM -I..\USER -I..\USER\GUI -I..\USER\GUI_DIALOG -I..\USER\SDCARD -I..\USER\ssd1963 -I..\USER\GUI\inc -I..\USER\FatFS -I..\USER\FatFS\option -I..\USER\MX25 -I..\USER\TSC2046 -I..\USER\SDRAM -I..\USER\PNG -I..\USER\Fonts -I..\USER\bxCAN --C99-I D:\Keil\ARM\RV31\INC-I D:\Keil\ARM\CMSIS\Include-I D:\Keil\ARM\Inc\ST\STM32F4xx-DUSE_STDPERIPH_DRIVER -DSTM32F429X-o .\output\stm324x9i_eval_sdio_sd.o --omf_browse .\output\stm324x9i_eval_sdio_sd.crf --depend .\output\stm324x9i_eval_sdio_sd.d)
-I (..\USER\SDCARD\stm324x9i_eval_sdio_sd.h)(0x59477AC6)
+I (..\USER\SDCARD\stm324x9i_eval_sdio_sd.h)(0x5978643E)
 I (..\Libraries\CMSIS\Device\ST\STM32F4xx\Include\stm32f4xx.h)(0x59477AC4)
 I (D:\Keil\ARM\CMSIS\Include\core_cm4.h)(0x532C05D2)
 I (D:\Keil\ARM\ARMCC\include\stdint.h)(0x51C7D364)
@@ -1355,7 +1355,7 @@ I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_spi.h)(0x59477AC4)
 I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_tim.h)(0x59477AC4)
 I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_fmc.h)(0x59477AC4)
 F (..\USER\MX25\mx25l8005.c)(0x59477AC6)(-c --cpu Cortex-M4.fp -g -O0 --apcs=interwork --split_sections -I..\Libraries\CMSIS\Device\ST\STM32F4xx\Include -I..\Libraries\CMSIS\Device\ST\STM32F4xx\Source\Templates -I..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\Libraries\STM32F4xx_StdPeriph_Driver\src -I..\USER\main -I..\MDK-ARM -I..\USER -I..\USER\GUI -I..\USER\GUI_DIALOG -I..\USER\SDCARD -I..\USER\ssd1963 -I..\USER\GUI\inc -I..\USER\FatFS -I..\USER\FatFS\option -I..\USER\MX25 -I..\USER\TSC2046 -I..\USER\SDRAM -I..\USER\PNG -I..\USER\Fonts -I..\USER\bxCAN --C99-I D:\Keil\ARM\RV31\INC-I D:\Keil\ARM\CMSIS\Include-I D:\Keil\ARM\Inc\ST\STM32F4xx-DUSE_STDPERIPH_DRIVER -DSTM32F429X-o .\output\mx25l8005.o --omf_browse .\output\mx25l8005.crf --depend .\output\mx25l8005.d)
-I (..\USER\main\header.h)(0x5971C065)
+I (..\USER\main\header.h)(0x5979A599)
 I (..\Libraries\CMSIS\Device\ST\STM32F4xx\Include\stm32f4xx.h)(0x59477AC4)
 I (D:\Keil\ARM\CMSIS\Include\core_cm4.h)(0x532C05D2)
 I (D:\Keil\ARM\ARMCC\include\stdint.h)(0x51C7D364)
@@ -1420,13 +1420,13 @@ I (..\USER\GUI\inc\TREEVIEW.h)(0x59477AC6)
 I (..\USER\FatFS\ff.h)(0x59477AC5)
 I (..\USER\FatFS\integer.h)(0x59477AC5)
 I (..\USER\FatFS\ffconf.h)(0x59477AC5)
-I (..\USER\SDCARD\stm324x9i_eval_sdio_sd.h)(0x59477AC6)
+I (..\USER\SDCARD\stm324x9i_eval_sdio_sd.h)(0x5978643E)
 I (..\USER\ssd1963\ssd1963.h)(0x59477AC6)
 I (..\USER\MX25\mx25l8005.h)(0x59477AC6)
 I (..\USER\GUI\LCDConf.h)(0x59477AC6)
 I (..\USER\TSC2046\tsc2046.h)(0x59477AC6)
 I (..\USER\SDRAM\SDRAM.h)(0x59477AC6)
-F (..\USER\SSD1963\ssd1963.c)(0x59477AC6)(-c --cpu Cortex-M4.fp -g -O0 --apcs=interwork --split_sections -I..\Libraries\CMSIS\Device\ST\STM32F4xx\Include -I..\Libraries\CMSIS\Device\ST\STM32F4xx\Source\Templates -I..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\Libraries\STM32F4xx_StdPeriph_Driver\src -I..\USER\main -I..\MDK-ARM -I..\USER -I..\USER\GUI -I..\USER\GUI_DIALOG -I..\USER\SDCARD -I..\USER\ssd1963 -I..\USER\GUI\inc -I..\USER\FatFS -I..\USER\FatFS\option -I..\USER\MX25 -I..\USER\TSC2046 -I..\USER\SDRAM -I..\USER\PNG -I..\USER\Fonts -I..\USER\bxCAN --C99-I D:\Keil\ARM\RV31\INC-I D:\Keil\ARM\CMSIS\Include-I D:\Keil\ARM\Inc\ST\STM32F4xx-DUSE_STDPERIPH_DRIVER -DSTM32F429X-o .\output\ssd1963.o --omf_browse .\output\ssd1963.crf --depend .\output\ssd1963.d)
+F (..\USER\SSD1963\ssd1963.c)(0x5979846D)(-c --cpu Cortex-M4.fp -g -O0 --apcs=interwork --split_sections -I..\Libraries\CMSIS\Device\ST\STM32F4xx\Include -I..\Libraries\CMSIS\Device\ST\STM32F4xx\Source\Templates -I..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\Libraries\STM32F4xx_StdPeriph_Driver\src -I..\USER\main -I..\MDK-ARM -I..\USER -I..\USER\GUI -I..\USER\GUI_DIALOG -I..\USER\SDCARD -I..\USER\ssd1963 -I..\USER\GUI\inc -I..\USER\FatFS -I..\USER\FatFS\option -I..\USER\MX25 -I..\USER\TSC2046 -I..\USER\SDRAM -I..\USER\PNG -I..\USER\Fonts -I..\USER\bxCAN --C99-I D:\Keil\ARM\RV31\INC-I D:\Keil\ARM\CMSIS\Include-I D:\Keil\ARM\Inc\ST\STM32F4xx-DUSE_STDPERIPH_DRIVER -DSTM32F429X-o .\output\ssd1963.o --omf_browse .\output\ssd1963.crf --depend .\output\ssd1963.d)
 I (..\Libraries\CMSIS\Device\ST\STM32F4xx\Include\stm32f4xx.h)(0x59477AC4)
 I (D:\Keil\ARM\CMSIS\Include\core_cm4.h)(0x532C05D2)
 I (D:\Keil\ARM\ARMCC\include\stdint.h)(0x51C7D364)
@@ -1446,7 +1446,7 @@ I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_sdio.h)(0x59477AC4)
 I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_spi.h)(0x59477AC4)
 I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_tim.h)(0x59477AC4)
 I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_fmc.h)(0x59477AC4)
-I (..\USER\main\header.h)(0x5971C065)
+I (..\USER\main\header.h)(0x5979A599)
 I (..\USER\GUI\inc\GUI.h)(0x59477AC6)
 I (..\USER\GUI\inc\GUI_ConfDefaults.h)(0x59477AC6)
 I (..\USER\GUI\inc\GUIConf.h)(0x59477AC6)
@@ -1492,7 +1492,7 @@ I (..\USER\GUI\inc\TREEVIEW.h)(0x59477AC6)
 I (..\USER\FatFS\ff.h)(0x59477AC5)
 I (..\USER\FatFS\integer.h)(0x59477AC5)
 I (..\USER\FatFS\ffconf.h)(0x59477AC5)
-I (..\USER\SDCARD\stm324x9i_eval_sdio_sd.h)(0x59477AC6)
+I (..\USER\SDCARD\stm324x9i_eval_sdio_sd.h)(0x5978643E)
 I (..\USER\ssd1963\ssd1963.h)(0x59477AC6)
 I (..\USER\MX25\mx25l8005.h)(0x59477AC6)
 I (..\USER\GUI\LCDConf.h)(0x59477AC6)
@@ -1518,7 +1518,7 @@ I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_sdio.h)(0x59477AC4)
 I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_spi.h)(0x59477AC4)
 I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_tim.h)(0x59477AC4)
 I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_fmc.h)(0x59477AC4)
-I (..\USER\main\header.h)(0x5971C065)
+I (..\USER\main\header.h)(0x5979A599)
 I (..\USER\GUI\inc\GUI.h)(0x59477AC6)
 I (..\USER\GUI\inc\GUI_ConfDefaults.h)(0x59477AC6)
 I (..\USER\GUI\inc\GUIConf.h)(0x59477AC6)
@@ -1564,7 +1564,7 @@ I (..\USER\GUI\inc\TREEVIEW.h)(0x59477AC6)
 I (..\USER\FatFS\ff.h)(0x59477AC5)
 I (..\USER\FatFS\integer.h)(0x59477AC5)
 I (..\USER\FatFS\ffconf.h)(0x59477AC5)
-I (..\USER\SDCARD\stm324x9i_eval_sdio_sd.h)(0x59477AC6)
+I (..\USER\SDCARD\stm324x9i_eval_sdio_sd.h)(0x5978643E)
 I (..\USER\ssd1963\ssd1963.h)(0x59477AC6)
 I (..\USER\MX25\mx25l8005.h)(0x59477AC6)
 I (..\USER\GUI\LCDConf.h)(0x59477AC6)
@@ -1590,7 +1590,7 @@ I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_sdio.h)(0x59477AC4)
 I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_spi.h)(0x59477AC4)
 I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_tim.h)(0x59477AC4)
 I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_fmc.h)(0x59477AC4)
-I (..\USER\main\header.h)(0x5971C065)
+I (..\USER\main\header.h)(0x5979A599)
 I (..\USER\GUI\inc\GUI.h)(0x59477AC6)
 I (..\USER\GUI\inc\GUI_ConfDefaults.h)(0x59477AC6)
 I (..\USER\GUI\inc\GUIConf.h)(0x59477AC6)
@@ -1636,13 +1636,13 @@ I (..\USER\GUI\inc\TREEVIEW.h)(0x59477AC6)
 I (..\USER\FatFS\ff.h)(0x59477AC5)
 I (..\USER\FatFS\integer.h)(0x59477AC5)
 I (..\USER\FatFS\ffconf.h)(0x59477AC5)
-I (..\USER\SDCARD\stm324x9i_eval_sdio_sd.h)(0x59477AC6)
+I (..\USER\SDCARD\stm324x9i_eval_sdio_sd.h)(0x5978643E)
 I (..\USER\ssd1963\ssd1963.h)(0x59477AC6)
 I (..\USER\MX25\mx25l8005.h)(0x59477AC6)
 I (..\USER\GUI\LCDConf.h)(0x59477AC6)
 I (..\USER\TSC2046\tsc2046.h)(0x59477AC6)
 I (..\USER\SDRAM\SDRAM.h)(0x59477AC6)
-F (..\USER\bxCAN\CAN.c)(0x594CD9DD)(-c --cpu Cortex-M4.fp -g -O0 --apcs=interwork --split_sections -I..\Libraries\CMSIS\Device\ST\STM32F4xx\Include -I..\Libraries\CMSIS\Device\ST\STM32F4xx\Source\Templates -I..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\Libraries\STM32F4xx_StdPeriph_Driver\src -I..\USER\main -I..\MDK-ARM -I..\USER -I..\USER\GUI -I..\USER\GUI_DIALOG -I..\USER\SDCARD -I..\USER\ssd1963 -I..\USER\GUI\inc -I..\USER\FatFS -I..\USER\FatFS\option -I..\USER\MX25 -I..\USER\TSC2046 -I..\USER\SDRAM -I..\USER\PNG -I..\USER\Fonts -I..\USER\bxCAN --C99-I D:\Keil\ARM\RV31\INC-I D:\Keil\ARM\CMSIS\Include-I D:\Keil\ARM\Inc\ST\STM32F4xx-DUSE_STDPERIPH_DRIVER -DSTM32F429X-o .\output\can.o --omf_browse .\output\can.crf --depend .\output\can.d)
+F (..\USER\bxCAN\CAN.c)(0x5979674C)(-c --cpu Cortex-M4.fp -g -O0 --apcs=interwork --split_sections -I..\Libraries\CMSIS\Device\ST\STM32F4xx\Include -I..\Libraries\CMSIS\Device\ST\STM32F4xx\Source\Templates -I..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\Libraries\STM32F4xx_StdPeriph_Driver\src -I..\USER\main -I..\MDK-ARM -I..\USER -I..\USER\GUI -I..\USER\GUI_DIALOG -I..\USER\SDCARD -I..\USER\ssd1963 -I..\USER\GUI\inc -I..\USER\FatFS -I..\USER\FatFS\option -I..\USER\MX25 -I..\USER\TSC2046 -I..\USER\SDRAM -I..\USER\PNG -I..\USER\Fonts -I..\USER\bxCAN --C99-I D:\Keil\ARM\RV31\INC-I D:\Keil\ARM\CMSIS\Include-I D:\Keil\ARM\Inc\ST\STM32F4xx-DUSE_STDPERIPH_DRIVER -DSTM32F429X-o .\output\can.o --omf_browse .\output\can.crf --depend .\output\can.d)
 I (..\Libraries\CMSIS\Device\ST\STM32F4xx\Include\stm32f4xx.h)(0x59477AC4)
 I (D:\Keil\ARM\CMSIS\Include\core_cm4.h)(0x532C05D2)
 I (D:\Keil\ARM\ARMCC\include\stdint.h)(0x51C7D364)
@@ -1663,7 +1663,7 @@ I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_spi.h)(0x59477AC4)
 I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_tim.h)(0x59477AC4)
 I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_fmc.h)(0x59477AC4)
 I (..\USER\bxCAN\CAN.h)(0x594CD9DD)
-I (..\USER\main\header.h)(0x5971C065)
+I (..\USER\main\header.h)(0x5979A599)
 I (..\USER\GUI\inc\GUI.h)(0x59477AC6)
 I (..\USER\GUI\inc\GUI_ConfDefaults.h)(0x59477AC6)
 I (..\USER\GUI\inc\GUIConf.h)(0x59477AC6)
@@ -1709,7 +1709,7 @@ I (..\USER\GUI\inc\TREEVIEW.h)(0x59477AC6)
 I (..\USER\FatFS\ff.h)(0x59477AC5)
 I (..\USER\FatFS\integer.h)(0x59477AC5)
 I (..\USER\FatFS\ffconf.h)(0x59477AC5)
-I (..\USER\SDCARD\stm324x9i_eval_sdio_sd.h)(0x59477AC6)
+I (..\USER\SDCARD\stm324x9i_eval_sdio_sd.h)(0x5978643E)
 I (..\USER\ssd1963\ssd1963.h)(0x59477AC6)
 I (..\USER\MX25\mx25l8005.h)(0x59477AC6)
 I (..\USER\GUI\LCDConf.h)(0x59477AC6)

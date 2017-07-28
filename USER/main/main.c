@@ -58,9 +58,10 @@ WM_HWIN hButton_YES,hButton_NO, hButton_CAN_Data,hButton_CAN_Remote;
 
 uint32_t array[]={exitt,photo,screen,paint,next,prev,date,pwm,sd,alarm,AlarmA,AlarmB,Alarm_d,add_folder,del_folder};
 uint32_t farray[]={fexit,fphoto,fscreen,fpaint,fnext,fprev,fdate,fpwm,fsd,falarm,fAlarmA,fAlarmB,fAlarm_d,fadd_folder,fdel_folder};
-/*GUI_CONST_STORAGE GUI_BITMAP *p[]={&bmexit,&bmphoto,&bmscreen,&bmpaint,&bmnext,&bmprev,&bmdate,&bmpwm,&bmsd,&bmalarm,
-																		&bmAlarmA,&bmAlarmB,&bmAlarm_D,&bmadd_folder,&bmdel_folder};*/
-
+#if 0
+GUI_CONST_STORAGE GUI_BITMAP *p[]={&bmexit,&bmphoto,&bmscreen,&bmpaint,&bmnext,&bmprev,&bmdate,&bmpwm,&bmsd,&bmalarm,
+																		&bmAlarmA,&bmAlarmB,&bmAlarm_D,&bmadd_folder,&bmdel_folder};
+#endif
 const char *CardType[]={"MULTIMEDIA CARD","SECURE DIGITAL CARD","SECURE DIGITAL IO_CARD",
 												"HIGH SPEED MULTIMEDIA CARD","SECURE DIGITAL IO COMBO_CARD",
 												"HIGH CAPACITY SD_CARD","HIGH CAPACITY MMC_CARD"};
@@ -163,7 +164,8 @@ uint8_t RTC_init(void){
 /*		    Настройка конфигурации  периферийных модулей		      */
 /****************************************************************/
 void Periph_Init(void){
-		
+	uint32_t i;	
+	
 	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOA|
 												 RCC_AHB1Periph_GPIOB|
 												 RCC_AHB1Periph_GPIOC|
@@ -204,50 +206,40 @@ void Periph_Init(void){
 	DMA_Init(DMA2_Stream7,&DMA_InitStruct);
 #endif	
 /********************************************************************/
-/*																																	*/
+/*								WKUP_BUTTON_PIN																									*/
 /********************************************************************/	
+	GPIO_InitStruct.GPIO_Pin=WKUP_BUTTON_PIN;
 	GPIO_InitStruct.GPIO_Mode=GPIO_Mode_IN;
 	GPIO_InitStruct.GPIO_OType=GPIO_OType_PP;
-	GPIO_InitStruct.GPIO_Pin=GPIO_Pin_4;
 	GPIO_InitStruct.GPIO_PuPd=GPIO_PuPd_UP;
 	GPIO_InitStruct.GPIO_Speed=GPIO_Speed_2MHz;
-	GPIO_Init(GPIOE,&GPIO_InitStruct);
+	GPIO_Init(WKUP_BUTTON_PORT,&GPIO_InitStruct);
 	
-	EXTI_InitStruct.EXTI_Line=EXTI_Line4;
+	EXTI_InitStruct.EXTI_Line=EXTI_Line2;
 	EXTI_InitStruct.EXTI_LineCmd=ENABLE;
 	EXTI_InitStruct.EXTI_Mode=EXTI_Mode_Interrupt;
 	EXTI_InitStruct.EXTI_Trigger=EXTI_Trigger_Falling;
 	EXTI_Init(&EXTI_InitStruct);
-	
-	SYSCFG->EXTICR[1]=SYSCFG_EXTICR2_EXTI4_PE;
-	
-	
-	EXTI_InitStruct.EXTI_Line=EXTI_Line22;
-	EXTI_InitStruct.EXTI_LineCmd=ENABLE;
-	EXTI_InitStruct.EXTI_Mode=EXTI_Mode_Interrupt;
-	EXTI_InitStruct.EXTI_Trigger=EXTI_Trigger_Rising;
-	EXTI_Init(&EXTI_InitStruct);
-	
-/***********************************************/
-/*				  	Настройка будильника	       		 */			
-/***********************************************/
-	EXTI_InitStruct.EXTI_Line=EXTI_Line17;
+		
+/********************************************************************/
+/*				  Настройка прерывания будильника и часов черех EXTI			*/			
+/********************************************************************/
+		
+	EXTI_InitStruct.EXTI_Line=EXTI_Line17|EXTI_Line22;;
 	EXTI_InitStruct.EXTI_LineCmd=ENABLE;
 	EXTI_InitStruct.EXTI_Mode=EXTI_Mode_Interrupt;
 	EXTI_InitStruct.EXTI_Trigger=EXTI_Trigger_Rising;
 	EXTI_Init(&EXTI_InitStruct);
 	
 /********************************************************************/
-/*					SDIO card insert  PB1	  																*/
+/*					SDCARD_INSERT_PIN;		  																*/
 /********************************************************************/	
 		GPIO_InitStruct.GPIO_Pin=SDCARD_INSERT_PIN;
 		GPIO_InitStruct.GPIO_Speed=GPIO_Speed_2MHz;
 		GPIO_InitStruct.GPIO_Mode=GPIO_Mode_IN;
 		GPIO_InitStruct.GPIO_PuPd=GPIO_PuPd_UP;
 		GPIO_Init(SDCARD_INSERT_PORT,&GPIO_InitStruct);
-		
-		SYSCFG->EXTICR[0]=SYSCFG_EXTICR1_EXTI1_PB;
-		
+					
 		EXTI_InitStruct.EXTI_Line=EXTI_Line1;
 		EXTI_InitStruct.EXTI_LineCmd=ENABLE;
 		EXTI_InitStruct.EXTI_Mode=EXTI_Mode_Interrupt;
@@ -281,18 +273,15 @@ void Periph_Init(void){
 		GPIO_InitStruct.GPIO_Pin=USB_DETECT_PIN;
 		GPIO_InitStruct.GPIO_Speed=GPIO_Speed_2MHz;
 		GPIO_InitStruct.GPIO_Mode=GPIO_Mode_IN;
-		GPIO_InitStruct.GPIO_PuPd=GPIO_PuPd_DOWN;
+		GPIO_InitStruct.GPIO_PuPd=GPIO_PuPd_NOPULL;
 		GPIO_Init(USB_DETECT_PORT,&GPIO_InitStruct);
 		
-		SYSCFG->EXTICR[2]=SYSCFG_EXTICR3_EXTI9_PH;
-		
-		EXTI_InitStruct.EXTI_Line=EXTI_Line9;
+		EXTI_InitStruct.EXTI_Line=EXTI_Line6;
 		EXTI_InitStruct.EXTI_LineCmd=ENABLE;
 		EXTI_InitStruct.EXTI_Mode=EXTI_Mode_Interrupt;
 		EXTI_InitStruct.EXTI_Trigger=EXTI_Trigger_Rising_Falling;
 		EXTI_Init(&EXTI_InitStruct);
-		
-		
+
 /********************************************************************/
 /*								CHARGE_INDIC_PIN  																*/
 /********************************************************************/					
@@ -301,8 +290,7 @@ void Periph_Init(void){
 		GPIO_InitStruct.GPIO_Mode=GPIO_Mode_IN;
 		GPIO_InitStruct.GPIO_PuPd=GPIO_PuPd_NOPULL;
 		GPIO_Init(CHARGE_INDIC_PORT,&GPIO_InitStruct);
-		
-		
+	
 /********************************************************************/
 /*								SWPOWER_LCD 		  																*/
 /********************************************************************/			
@@ -314,6 +302,9 @@ void Periph_Init(void){
 		GPIO_Init(SWPOWER_LCD_PORT,&GPIO_InitStruct);
 		
 		GPIO_SetBits(SWPOWER_LCD_PORT, SWPOWER_LCD_PIN);		// Включаем  LDO для LCD + CAN transsiver
+	
+	// Задержка на дальнейшую инициализацию модуля LCD пока напряжение не установится 
+		for(i=0;i<2000000;i++);
 		
 // PF7 выход push-pull без подтяжки для моргания светодиодом
 		GPIO_InitStruct.GPIO_Pin=GPIO_Pin_7;
@@ -321,7 +312,15 @@ void Periph_Init(void){
 		GPIO_InitStruct.GPIO_OType=GPIO_OType_PP;
 		GPIO_InitStruct.GPIO_PuPd=GPIO_PuPd_NOPULL;
 		GPIO_InitStruct.GPIO_Speed=GPIO_Low_Speed;
-		GPIO_Init(GPIOF,&GPIO_InitStruct);			
+		GPIO_Init(GPIOF,&GPIO_InitStruct);	
+
+/********************************************************************/
+/*								SYSCFG						 																*/
+/********************************************************************/
+		
+		SYSCFG->EXTICR[0] |=SYSCFG_EXTICR1_EXTI1_PI;
+		SYSCFG->EXTICR[0] |=SYSCFG_EXTICR1_EXTI2_PE;
+		SYSCFG->EXTICR[1] |=SYSCFG_EXTICR2_EXTI6_PI;
 
 /*****************************************************************************/
 /* 															Инициализация таймера TIM2									 */	
@@ -419,8 +418,11 @@ void Periph_Init(void){
 	ADC_ITConfig(ADC1, ADC_IT_EOC, ENABLE);
 	ADC_DMACmd(ADC1, ENABLE);
 	ADC_DMARequestAfterLastTransferCmd(ADC1, ENABLE);	
-	ADC_Cmd(ADC1, ENABLE);
-		
+	if(USB_DETECT_PORT->IDR & USB_DETECT_IDRx)
+		ADC_Cmd(ADC1, DISABLE);
+	else
+		ADC_Cmd(ADC1, ENABLE);
+	
 	TIM_TimeBaseInitStruct.TIM_ClockDivision=TIM_CKD_DIV1;
 	TIM_TimeBaseInitStruct.TIM_CounterMode=TIM_CounterMode_Up;
 	TIM_TimeBaseInitStruct.TIM_Period=50000;
@@ -440,7 +442,7 @@ void Periph_Init(void){
 	NVIC_SetPriority(RTC_WKUP_IRQn,2);
 	NVIC_SetPriority(SD_SDIO_DMA_IRQn,0);
 	NVIC_SetPriority(EXTI1_IRQn,2);
-	NVIC_SetPriority(EXTI4_IRQn,0);
+	NVIC_SetPriority(EXTI2_IRQn,0);
 	NVIC_SetPriority(EXTI9_5_IRQn,3);
 	NVIC_SetPriority(ADC_IRQn,2);
 	NVIC_SetPriority(RTC_Alarm_IRQn,2);
@@ -678,7 +680,7 @@ SD_Error Boot_menu (void){
 /****************************************************************/
 /*												SWO_Init															*/
 /*****************************************************************/
-#if 1
+#if 0
 void SWO_Init(uint32_t portBits, uint32_t cpuCoreFreqHz){
 	uint32_t SWOSpeed = 2000000; /* 2000k baud rate */
   uint32_t SWOPrescaler = (cpuCoreFreqHz / SWOSpeed) - 1; /* SWOSpeed in Hz, note that cpuCoreFreqHz is expected to be match the CPU core clock */
@@ -732,14 +734,15 @@ int main(void){
 	NVIC_EnableIRQ(SD_SDIO_DMA_IRQn);						//Разрешение DMA2_Stream3_IRQn прерывания
 	NVIC_EnableIRQ(ADC_IRQn);
 	NVIC_EnableIRQ(EXTI9_5_IRQn);	
-	NVIC_EnableIRQ(EXTI4_IRQn);		
+	NVIC_EnableIRQ(EXTI2_IRQn);		
 	NVIC_EnableIRQ(RTC_Alarm_IRQn);
 	
 	DBGMCU->CR|=DBGMCU_CR_DBG_STOP;
 	PWR->CR&= ~PWR_CR_PDDS;										// Сбрасываем бит PDDS (Stop mode)
 		
 	DBGMCU->APB1FZ&=~(DBGMCU_APB1_FZ_DBG_CAN1_STOP|DBGMCU_APB1_FZ_DBG_TIM2_STOP);
-	/*ChipErase_MX25L();
+#if 0
+	ChipErase_MX25L();
 	for(i=0;i<10;i++)
 		{
 			Prg_MX25L_16(farray[i],2304,(const unsigned short*)p[i]->pData);
@@ -750,8 +753,8 @@ int main(void){
 		{
 			Prg_MX25L_16(farray[i],576,(const unsigned short*)p[i]->pData);
 			Prg_MX25L_8(farray[i]+1152,20,(const uint8_t*)p[i]);
-		}*/
-		
+		}
+#endif		
 		for(i=0;i<10;i++)
 		{
 			Read_MX25L(farray[i],4628,(uint8_t* )array[i]);			//0x0-0x1214  exit
@@ -776,9 +779,11 @@ int main(void){
 	if(RTC->BKP3R==0)
 		Touch_calibration();
 	
-	if(GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_1)==0)
+	if(!(SDCARD_INSERT_PORT->IDR & SDCARD_INSERT_IDR))
+	{
+		sd_insert=1;
 		Boot_menu();
-			
+	}	
 	MainTask();
 	while(1) {}
 }

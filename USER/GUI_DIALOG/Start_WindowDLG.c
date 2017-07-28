@@ -45,8 +45,11 @@ uint8_t screen_scroll=0;
 int16_t linescroll=272;
 uint8_t scroll_up=0,scroll_down=0;;
 
+volatile USBCONN_TypeDef usb_conn;
+extern volatile uint8_t backlight_flag;
 extern volatile uint8_t canerr_clr,canerr_disp,canconnect;
 volatile uint8_t time_disp;
+volatile uint8_t date_disp;
 
 extern RTC_TimeTypeDef								RTC_Time;
 extern RTC_DateTypeDef								RTC_Date;
@@ -102,8 +105,9 @@ int fputc(int ch, FILE *f) {
    return ITM_SendChar(ch);
 }
 
-uint8_t sd_insert;
-uint8_t sd_ins_rem;
+extern volatile uint8_t disp_sd;
+
+
 WM_HWIN hWin_start;
 ICONVIEW_Handle hIcon_CALIB,/*hIcon_PAINT*/hIcon_NEXT,hButton_BACK,hALARMA,hALARMB,hIcon_EXIT,hIcon_PHOTO,
 								hIcon_BRIGHT;
@@ -120,8 +124,9 @@ extern int _cbButtonSkin(const WIDGET_ITEM_DRAW_INFO *pDrawItemInfo);
 void ChangePerformance(void);
 void Suspend(void);
 void SDRAM_PinConfig(void);
+void LCD_Change_backlight(void);
 
-GUI_COLOR color_array[]={0,0x00008000,0x0020ff50,0x0000E0A0,GUI_ORANGE,GUI_LIGHTRED,GUI_RED};
+GUI_COLOR color_array[]={GUI_RED,GUI_LIGHTRED,GUI_ORANGE,0x0000E0A0,0x0020ff50};
 
 // USER END
 
@@ -246,7 +251,7 @@ static void _cbSTART(WM_MESSAGE* pMsg) {
 				case ID_ICON_PHOTO: // Notifications sent by 'Button'
 					switch(NCode) {
 						case WM_NOTIFICATION_RELEASED:
-							if(GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_1)==0)
+							if(!(SDCARD_INSERT_PORT->IDR & SDCARD_INSERT_IDR))
 								{
 									Path[0]='0';
 									Path[1]=':';
@@ -359,7 +364,19 @@ void _cbBkWin(WM_MESSAGE* pMsg) {
 		case WM_TOUCH:
 		break;	
 		case WM_TOUCH_CHILD:
-			if(GPIOB->IDR & GPIO_IDR_IDR_11)	break;
+			if(GPIOB->IDR & GPIO_IDR_IDR_11)
+			{
+				if((first_touch-State.y)<=72)
+					{	
+						if(linescroll)
+						{
+							move_y=272;
+							screen_scroll=1;
+							scroll_down=1;
+						}
+					}						
+				break;
+			}
 			if(move_y==0)			break;
 			if(!first_touch)
 				first_touch=State.y;
@@ -389,8 +406,9 @@ void _cbBkWin(WM_MESSAGE* pMsg) {
 							LcdWriteReg(CMD_SET_SCROLL_START);
 							LcdWriteData((linescroll)>>8);
 							LcdWriteData(linescroll);
-							if(linescroll<252)
+							if(linescroll<220)
 							{
+								bat_disp=0;
 								NVIC_DisableIRQ(TIM6_DAC_IRQn);
 								first_touch=0;
 								GUI_SetOrg(0,SCREEN_2);
@@ -562,7 +580,7 @@ void _cbBkWin(WM_MESSAGE* pMsg) {
 							scroll_down=1;
 							TIM6->ARR=100;
 							TIM6->EGR = TIM_EGR_UG;
-							
+							bat_disp=1;	
 						break;	
 						}
 					break;
@@ -687,12 +705,7 @@ void CreateStart(void)
 		WM_ShowWindow(hALARMB);
 		WM_ShowWindow(PROGBAR_MEM);*/
 	}
-		RTC_GetDate(RTC_Format_BIN, &RTC_Date);
-		GUI_DispDecAt(RTC_Date.RTC_Date,5,0+SCREEN_1,2);
-		GUI_DispString(".");
-		GUI_DispDec(RTC_Date.RTC_Month,2);
-		GUI_DispString(".20");
-		GUI_DispDec(RTC_Date.RTC_Year,2);
+		date_disp=1;
 		
 		__enable_irq();
 }
@@ -721,9 +734,9 @@ void MainTask(void)
 	GUI_SetColor(GUI_YELLOW);
 	
 	hIcon_EXIT=ICONVIEW_CreateEx(0,214+SCREEN_1,58,58,WM_HBKWIN,WM_CF_SHOW|WM_CF_HASTRANS,0,ID_ICON_EXIT,48,48);
-#ifdef FLASHCODE	
+//#ifdef FLASHCODE	
 	ICONVIEW_AddBitmapItem(hIcon_EXIT,(const GUI_BITMAP*)(exitt+4608),"");
-#endif
+//#endif
 	hIcon_BRIGHT=ICONVIEW_CreateEx(10,80+SCREEN_1,34,34,WM_HBKWIN,WM_CF_SHOW|WM_CF_HASTRANS,0,ID_ICON_BRIGHT,24,24);
 #ifdef FLASHCODE		
 	ICONVIEW_AddBitmapItem(hIcon_BRIGHT,&bmbrightness,"");
@@ -791,6 +804,12 @@ void MainTask(void)
 	while(1)
 	{
 		GUI_Delay(5);	
+		
+		if(backlight_flag)
+		{
+			backlight_flag=0;
+			LCD_Change_backlight();
+		}	
 		if(ADCVal_ready)
 		{
 			if(Bat_percent>0)
@@ -832,24 +851,44 @@ void MainTask(void)
 		if(time_disp)
 		{
 			GUI_SetFont(&GUI_Font8x16);
+			RTC_GetTime(RTC_Format_BIN, &RTC_Time);
 			GUI_DispDecAt(RTC_Time.RTC_Hours,350,0+SCREEN_1,2);
 			GUI_DispString(":");
 			GUI_DispDec(RTC_Time.RTC_Minutes,2);
 			time_disp=0;	
 		}
-		
-		if(sd_ins_rem)
+		if(date_disp)
+		{
+			GUI_SetFont(&GUI_Font8x16);
+			RTC_GetDate(RTC_Format_BIN, &RTC_Date);
+			GUI_DispDecAt(RTC_Date.RTC_Date,5,0+SCREEN_1,2);
+			GUI_DispString(":");
+			GUI_DispDec(RTC_Date.RTC_Month,2);
+			GUI_DispString(":20");
+			GUI_DispDec(RTC_Date.RTC_Year,2);
+			date_disp=0;
+		}
+		if(disp_sd)
 		{	
-			sd_ins_rem=0;
-			if(GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_1)==0)	
+			if((!(SDCARD_INSERT_PORT->IDR & SDCARD_INSERT_IDR))&&(!sd_insert))	
 			{
+				sd_error=SD_Init();
+				sd_insert=1;
+				if(sd_error==SD_OK)
+					f_mount(0,&fs);
 				if(sd_error==SD_OK)
 					Message("SD card is OK!",1);
 				else
 					Message("SD card is error!", 0);
 			}			
-			else
+			else if((SDCARD_INSERT_PORT->IDR & SDCARD_INSERT_IDR)&&(sd_insert))	
+			{
+				SDIO_DeInit();
+				f_mount(0,NULL);
+				sd_insert=0;
 				Message("SD card is removed!", 1);
+			}
+			disp_sd=0;
 		}
 		if(sleep_mode)
 			Suspend();
@@ -890,15 +929,18 @@ void MainTask(void)
 			}
 			else if(scroll_down)
 			{
-				linescroll+=4;
-				LcdWriteReg(CMD_SET_SCROLL_START);
-				LcdWriteData(linescroll>>8);
-				LcdWriteData(linescroll);
 				if(linescroll==move_y)
 				{ 
 					NVIC_EnableIRQ(TIM6_DAC_IRQn);
 					screen_scroll=0;
 					scroll_down=0;
+				}
+				else
+				{
+					linescroll+=4;
+					LcdWriteReg(CMD_SET_SCROLL_START);
+					LcdWriteData(linescroll>>8);
+					LcdWriteData(linescroll);
 				}
 			}
 		}
@@ -985,7 +1027,7 @@ void ChangePerformance(void){
 			
 		// Initialization step 8
 		//while(FMC_Bank5_6->SDSR&FMC_SDSR_BUSY);
-		FMC_Bank5_6->SDRTR=(1386<<1);													// 64mS/4096=15.625uS
+		FMC_Bank5_6->SDRTR=(683<<1);													// 64mS/4096=15.625uS
 																													// 15.625*45MHz-20=683	
 	}
 	
@@ -1027,19 +1069,23 @@ void Suspend(void){
 	GPIO_InitStruct.GPIO_Pin=GPIO_Pin_0|GPIO_Pin_1|GPIO_Pin_2|/*GPIO_Pin_3|GPIO_Pin_4|*/GPIO_Pin_5|GPIO_Pin_6|GPIO_Pin_7|GPIO_Pin_8|GPIO_Pin_9|
 													 GPIO_Pin_10|GPIO_Pin_11|GPIO_Pin_12|GPIO_Pin_13|GPIO_Pin_14|GPIO_Pin_15;
 	GPIO_Init(GPIOB, &GPIO_InitStruct);
-	GPIO_InitStruct.GPIO_Pin=/*GPIO_Pin_0|GPIO_Pin_1*/GPIO_Pin_2|GPIO_Pin_3|GPIO_Pin_5|GPIO_Pin_6|GPIO_Pin_7|GPIO_Pin_8|
+	GPIO_InitStruct.GPIO_Pin=/*GPIO_Pin_0|GPIO_Pin_1|GPIO_Pin_2|*/GPIO_Pin_3|GPIO_Pin_4|GPIO_Pin_5|GPIO_Pin_6|GPIO_Pin_7|GPIO_Pin_8|
 													 GPIO_Pin_9|GPIO_Pin_10|GPIO_Pin_11|GPIO_Pin_12|GPIO_Pin_13|GPIO_Pin_14|GPIO_Pin_15;
 	GPIO_Init(GPIOE, &GPIO_InitStruct);
 	GPIO_InitStruct.GPIO_Pin=GPIO_Pin_0|GPIO_Pin_1|GPIO_Pin_2|GPIO_Pin_3|GPIO_Pin_4|GPIO_Pin_5/*|GPIO_Pin_6|GPIO_Pin_7*/|GPIO_Pin_8|
-													 /*GPIO_Pin_9|*/GPIO_Pin_10|GPIO_Pin_11|GPIO_Pin_12|GPIO_Pin_13|GPIO_Pin_14|GPIO_Pin_15;
+													 GPIO_Pin_9|GPIO_Pin_10|GPIO_Pin_11|GPIO_Pin_12|GPIO_Pin_13|GPIO_Pin_14|GPIO_Pin_15;
 	GPIO_Init(GPIOH, &GPIO_InitStruct);
+	
+	GPIO_InitStruct.GPIO_Pin=GPIO_Pin_0|GPIO_Pin_1|GPIO_Pin_2|GPIO_Pin_3|GPIO_Pin_4|GPIO_Pin_5/*|GPIO_Pin_6*/|GPIO_Pin_7|GPIO_Pin_8|
+													 GPIO_Pin_9|GPIO_Pin_10|GPIO_Pin_11|GPIO_Pin_12|GPIO_Pin_13|GPIO_Pin_14|GPIO_Pin_15;
+	GPIO_Init(GPIOI, &GPIO_InitStruct);
 	
 	GPIO_InitStruct.GPIO_Pin=GPIO_Pin_All;
 	GPIO_Init(GPIOC, &GPIO_InitStruct);
 	GPIO_Init(GPIOD, &GPIO_InitStruct);
 	GPIO_Init(GPIOF, &GPIO_InitStruct);
 	GPIO_Init(GPIOG, &GPIO_InitStruct);
-	GPIO_Init(GPIOI, &GPIO_InitStruct);
+	
 	
 	TIM7->CNT=0;
 	ADC_Cmd(ADC1,DISABLE);
@@ -1164,13 +1210,9 @@ void Suspend(void){
 		
 	for(i=0;i<9;i++)
 		WM_Paint(hIcon[i]);
-	RTC_GetDate(RTC_Format_BIN, &RTC_Date);
-	GUI_DispDecAt(RTC_Date.RTC_Date,5,0+SCREEN_1,2);
-	GUI_DispString(".");
-	GUI_DispDec(RTC_Date.RTC_Month,2);
-	GUI_DispString(".20");
-	GUI_DispDec(RTC_Date.RTC_Year,2);
 	
+	date_disp=1;
+		
 	GUI_DrawRect(409,2+SCREEN_1,437,13+SCREEN_1);
 	GUI_FillRect(438,4+SCREEN_1,440,11+SCREEN_1);
 	GUI_SetColor(GUI_DARKYELLOW);
@@ -1279,6 +1321,63 @@ void SDRAM_PinConfig(void){
 
 /*
 */
+void LCD_Change_backlight(void)
+{		uint32_t i;
+		
+		switch(backlight){
+			case BACKLIGHT_ON:	
+				LcdWriteReg(CMD_SET_PWM_CONF); 			//set PWM for Backlight. Manual p.53
+				// 6 parameters to be set
+				LcdWriteData(0x0004); 							// PWM Freq =100MHz/(256*(PWMF[7:0]+1))/256  PWMF[7:0]=4 PWM Freq=305Hz
+				LcdWriteData(brightness); 					// PWM duty cycle(50%)
+				LcdWriteData(0x0001); 							// PWM controlled by host, PWM enable
+				LcdWriteData(0x00f0); 							// brightness level 0x00 - 0xFF
+				LcdWriteData(0x0000); 							// minimum brightness level =  0x00 - 0xFF
+				LcdWriteData(0x0000);								// brightness prescalar 0x0 - 0xF
+			break;
+			case BACKLIGHT_LOW:
+				LcdWriteReg(CMD_SET_PWM_CONF); 			//set PWM for Backlight. Manual p.53
+				// 6 parameters to be set
+				LcdWriteData(0x0004); 							// PWM Freq =100MHz/(256*(PWMF[7:0]+1))/256  PWMF[7:0]=4 PWM Freq=305Hz
+				LcdWriteData(0x0010); 							// PWM duty cycle(6%)
+				LcdWriteData(0x0001); 							// PWM controlled by host, PWM disable
+				LcdWriteData(0x00f0); 							// brightness level 0x00 - 0xFF
+				LcdWriteData(0x0000); 							// minimum brightness level =  0x00 - 0xFF
+				LcdWriteData(0x0000);								// brightness prescalar 0x0 - 0xF
+			break;
+			case BACKLIGHT_OFF_SLEEP:
+				// Выключаем PWM на подсветке
+				LcdWriteReg(CMD_SET_PWM_CONF); 			//set PWM for Backlight. Manual p.53
+				// 6 parameters to be set
+				LcdWriteData(0x0004); 							// PWM Freq =100MHz/(256*(PWMF[7:0]+1))/256  PWMF[7:0]=4 PWM Freq=305Hz
+				LcdWriteData(0x0000); 							// PWM duty cycle(0%)
+				LcdWriteData(0x0001); 							// PWM controlled by host, PWM disable
+				LcdWriteData(0x00f0); 							// brightness level 0x00 - 0xFF
+				LcdWriteData(0x0000); 							// minimum brightness level =  0x00 - 0xFF
+				LcdWriteData(0x0000);								// brightness prescalar 0x0 - 0xF
+				LcdWriteReg(CMD_ENTER_SLEEP);
+			break;	
+			case BACKLIGHT_SLEEPtoON:
+				LcdWriteReg(CMD_EXIT_SLEEP);
+				for(i=0;i<100000;i++);	
+				
+				LcdWriteReg(CMD_SET_PWM_CONF); 			//set PWM for Backlight. Manual p.53
+					// 6 parameters to be set
+				LcdWriteData(0x0004); 							// PWM Freq =100MHz/(256*(PWMF[7:0]+1))/256  PWMF[7:0]=4 PWM Freq=305Hz
+				LcdWriteData(brightness); 					// PWM duty cycle(50%)
+				LcdWriteData(0x0001); 							// PWM controlled by host, PWM enable
+				LcdWriteData(0x00f0); 							// brightness level 0x00 - 0xFF
+				LcdWriteData(0x0000); 							// minimum brightness level =  0x00 - 0xFF
+				LcdWriteData(0x0000);								// brightness prescalar 0x0 - 0xF
+				backlight=BACKLIGHT_ON;
+			break;
+			
+			default:
+			break;
+		}
+		
+}
+
 	
 // USER END
 

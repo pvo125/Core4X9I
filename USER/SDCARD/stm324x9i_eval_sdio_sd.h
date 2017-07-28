@@ -331,9 +331,8 @@ typedef struct
 /**
   * @brief  SD detection IO pin
   */
-#define SD_DETECT_PORT														GPIOB	
-#define SD_DETECT_PIN                             GPIO_Pin_1 // (uint16_t)0x0002
-
+#define SD_DETECT_PORT														GPIOI	
+#define SD_DETECT_PIN                             GPIO_Pin_1
 /**
   * @brief  SD FLASH SDIO Interface
   */

@@ -45,29 +45,7 @@ void Flash_lock(void);
 void Flash_sect_erase(uint8_t numsect,uint8_t count);
 void Flash_prog(uint8_t *src,uint8_t *dst,uint32_t nbyte,uint8_t psize);
 
-/********************************************************************
-*
-*       LcdWriteReg
-*
-* Function description:
-*   Sets display register
-*/
-static __INLINE void LcdWriteReg(U16 Data) {
-  // ... TBD by user
-	LCD_REG_ADDRESS=Data;
-}
 
-/********************************************************************
-*
-*       LcdWriteData
-*
-* Function description:
-*   Writes a value to a display register
-*/
-static __INLINE  void LcdWriteData(U16 Data) {
-  // ... TBD by user
-	LCD_DATA_ADDRESS=Data;
-}
 void bxCAN_LowLevel_Init(void){
 	GPIO_InitTypeDef GPIO_InitStruct;
 /*Настройка выводов CAN  CAN1_TX=PB9   CAN1_RX=PB8  */
@@ -333,21 +311,11 @@ void CAN_RXProcess0(void){
 		TimerONOFF=1;
 		if(hWin_timer)
 		{
-			if((backlight==BACKLIGHT_OFF)||(backlight==BACKLIGHT_LOW))
-			{/* Включаем PWM на подсветке */
-					LcdWriteReg(CMD_EXIT_SLEEP);
-					for(temp=0;temp<180000;temp++);//GUI_Delay(5);
-					LcdWriteReg(CMD_SET_PWM_CONF); 			//set PWM for Backlight. Manual p.53
-					// 6 parameters to be set
-					LcdWriteData(0x0004); 							// PWM Freq =100MHz/(256*(PWMF[7:0]+1))/256  PWMF[7:0]=4 PWM Freq=305Hz
-					LcdWriteData(brightness); 					// PWM duty cycle(50%)
-					LcdWriteData(0x0001); 							// PWM controlled by host, PWM enable
-					LcdWriteData(0x00f0); 							// brightness level 0x00 - 0xFF
-					LcdWriteData(0x0000); 							// minimum brightness level =  0x00 - 0xFF
-					LcdWriteData(0x0000);								// brightness prescalar 0x0 - 0xF
-					backlight=BACKLIGHT_ON;
-					backlight_delay=0;
-				}
+			if(backlight==BACKLIGHT_OFF_SLEEP)
+				backlight=BACKLIGHT_SLEEPtoON;
+			else if(backlight==BACKLIGHT_LOW)
+				backlight=BACKLIGHT_ON;
+			backlight_delay=0;
 			TIM7->CNT=0;					// Каждый раз при получении сообщения CAN обнуляем таймер подсветки
 			hItem = WM_GetDialogItem(hWin_timer, ID_BUTTON_0);		
 			BUTTON_SetSkin(hItem, _cbButtonSkin);
@@ -359,21 +327,11 @@ void CAN_RXProcess0(void){
 		break;
 		case 6://(id=283 SET_TIMER_DATA data )
 		//
-		if((backlight==BACKLIGHT_OFF)||(backlight==BACKLIGHT_LOW))
-			{/* Включаем PWM на подсветке */
-					LcdWriteReg(CMD_EXIT_SLEEP);
-					for(temp=0;temp<180000;temp++);//GUI_Delay(5);
-					LcdWriteReg(CMD_SET_PWM_CONF); 			//set PWM for Backlight. Manual p.53
-					// 6 parameters to be set
-					LcdWriteData(0x0004); 							// PWM Freq =100MHz/(256*(PWMF[7:0]+1))/256  PWMF[7:0]=4 PWM Freq=305Hz
-					LcdWriteData(brightness); 					// PWM duty cycle(50%)
-					LcdWriteData(0x0001); 							// PWM controlled by host, PWM enable
-					LcdWriteData(0x00f0); 							// brightness level 0x00 - 0xFF
-					LcdWriteData(0x0000); 							// minimum brightness level =  0x00 - 0xFF
-					LcdWriteData(0x0000);								// brightness prescalar 0x0 - 0xF
-					backlight=BACKLIGHT_ON;
-					backlight_delay=0;
-				}
+		if(backlight==BACKLIGHT_OFF_SLEEP)
+			backlight=BACKLIGHT_SLEEPtoON;
+		else if(backlight==BACKLIGHT_LOW)
+			backlight=BACKLIGHT_ON;
+		backlight_delay=0;
 		TIM7->CNT=0;					// Каждый раз при получении сообщения CAN обнуляем таймер подсветки
 		PhaseBrez=CAN_Data_RX[0].Data[1];
 		if(PhaseBrez)
@@ -435,21 +393,11 @@ void CAN_RXProcess0(void){
 		TimerONOFF=0;
 		if(hWin_timer)
 		{
-			if((backlight==BACKLIGHT_OFF)||(backlight==BACKLIGHT_LOW))
-			{/* Включаем PWM на подсветке */
-					LcdWriteReg(CMD_EXIT_SLEEP);
-					for(temp=0;temp<180000;temp++);//GUI_Delay(5);
-					LcdWriteReg(CMD_SET_PWM_CONF); 			//set PWM for Backlight. Manual p.53
-					// 6 parameters to be set
-					LcdWriteData(0x0004); 							// PWM Freq =100MHz/(256*(PWMF[7:0]+1))/256  PWMF[7:0]=4 PWM Freq=305Hz
-					LcdWriteData(brightness); 					// PWM duty cycle(50%)
-					LcdWriteData(0x0001); 							// PWM controlled by host, PWM enable
-					LcdWriteData(0x00f0); 							// brightness level 0x00 - 0xFF
-					LcdWriteData(0x0000); 							// minimum brightness level =  0x00 - 0xFF
-					LcdWriteData(0x0000);								// brightness prescalar 0x0 - 0xF
-					backlight=BACKLIGHT_ON;
-					backlight_delay=0;
-				}
+			if(backlight==BACKLIGHT_OFF_SLEEP)
+				backlight=BACKLIGHT_SLEEPtoON;
+			else if(backlight==BACKLIGHT_LOW)
+				backlight=BACKLIGHT_ON;
+			backlight_delay=0;
 			TIM7->CNT=0;					// Каждый раз при получении сообщения CAN обнуляем таймер подсветки
 			hItem = WM_GetDialogItem(hWin_timer, ID_BUTTON_1);		
 			BUTTON_SetSkin(hItem, _cbButtonSkin);

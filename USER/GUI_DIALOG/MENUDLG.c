@@ -81,7 +81,7 @@ static void _cbMENU(WM_MESSAGE * pMsg) {
     case ID_ICON_SDCARD: 
       switch(NCode) {
       case WM_NOTIFICATION_RELEASED:
-			if(GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_1)==0)	
+			if(!(SDCARD_INSERT_PORT->IDR & SDCARD_INSERT_IDR))
 			{	
 					if(countSD_files_window<2)
 					{

@@ -42,10 +42,11 @@
 /* Private functions ---------------------------------------------------------*/
 extern RTC_TimeTypeDef								RTC_Time;
 extern RTC_DateTypeDef								RTC_Date;
-extern uint8_t sd_ins_rem;
+uint8_t sd_ins_rem;
 extern volatile uint8_t new_message;
 
 extern volatile uint8_t time_disp;
+extern volatile uint8_t date_disp;
 
 extern GUI_COLOR color_array[];
 uint8_t ADCVal_ready,bat_disp=1;
@@ -57,38 +58,17 @@ extern uint8_t move_y;
 extern uint8_t screen_scroll;
 extern uint16_t screen_x;
 
+volatile uint8_t backlight_flag=0;
+uint8_t charge_plug_unplug=0;
+extern volatile USBCONN_TypeDef usb_conn;
+
 volatile uint8_t number_array;
 
 volatile uint8_t canconnect,canerr_clr,canerr_disp;
 static volatile uint8_t count;
-	/********************************************************************
-*
-*       LcdWriteReg
-*
-* Function description:
-*   Sets display register
-*/
-static __INLINE void LcdWriteReg(U16 Data) {
-  // ... TBD by user
-	LCD_REG_ADDRESS=Data;
-}
-
-/********************************************************************
-*
-*       LcdWriteData
-*
-* Function description:
-*   Writes a value to a display register
-*/
-static __INLINE  void LcdWriteData(U16 Data) {
-  // ... TBD by user
-	LCD_DATA_ADDRESS=Data;
-}
-
-
-
-
-
+volatile uint8_t count_sd=0;
+volatile uint8_t disp_sd;
+	
 /******************************************************************************/
 /*            Cortex-M4 Processor Exceptions Handlers                         */
 /******************************************************************************/
@@ -205,17 +185,20 @@ void PendSV_Handler(void)
   */
 void RTC_WKUP_IRQHandler(void)
 {
-	
-	GUI_SetFont(&GUI_Font8x16);
+	static uint8_t number=0;
+		
+	if(sd_ins_rem)
+	{
+		count_sd++;
+		if(count_sd>2)
+		{
+			sd_ins_rem=0;
+			disp_sd=1;
+		}
+	}		
 	if(((RTC->TR&0x003F0000)==0)&&((RTC->TR&0x00007F00)==0)&&((RTC->TR&0x0000007F)==0))
 	{
-		RTC_GetDate(RTC_Format_BIN, &RTC_Date);
-		GUI_SetColor(GUI_YELLOW);
-		GUI_DispDecAt(RTC_Date.RTC_Date,5,0+SCREEN_1,2);
-		GUI_DispString(":");
-		GUI_DispDec(RTC_Date.RTC_Month,2);
-		GUI_DispString(":20");
-		GUI_DispDec(RTC_Date.RTC_Year,2);
+		date_disp=1;
 	}
 	if(time_show)
 	{
@@ -232,20 +215,65 @@ void RTC_WKUP_IRQHandler(void)
 			}
 		}
 	}
-	if(GPIOH->IDR & GPIO_IDR_IDR_9)
+	if(charge_plug_unplug)
 	{
-		if(ADCVal_ready==0)
+		number++;
+		if(number==2)
+			{
+				number=0;
+				charge_plug_unplug=0;
+				if(USB_DETECT_PORT->IDR & USB_DETECT_IDRx)
+				{
+					Bat_percent=0;
+					usb_conn=USBCONN_PLUG;
+					number_array=0;
+					ADC_Cmd(ADC1,DISABLE);
+				
+				}
+				else if(usb_conn==USBCONN_PLUG)
+				{
+					usb_conn=USBCONN_UNPLUG;
+					ADC_Cmd(ADC1,ENABLE);
+					TIM3->EGR = TIM_EGR_UG;			//генерируем "update event". ARR и PSC грузятся из предварительного в теневой регистр. 
+					TIM3->SR&=~TIM_SR_UIF; 			//Сбрасываем флаг UIF	
+				}
+				backlight_flag=1;
+				if(backlight==BACKLIGHT_OFF_SLEEP)
+					backlight=BACKLIGHT_SLEEPtoON;
+				else
+					backlight=BACKLIGHT_ON;
+				backlight_delay=0;
+				TIM7->CNT=0;
+			}
+	}
+	if((usb_conn==USBCONN_PLUG)&&(!(CHARGE_INDIC_PORT->IDR & CHARGE_INDIC_IDRx)))
+	{
+		if((ADCVal_ready==0)&&(bat_disp))
 		{
 			Bat_percent+=20;
-			if(Bat_percent>100) Bat_percent=0;
+			if(Bat_percent>100) 
+				Bat_percent=20;
 			bat_color=color_array[number_array];
-			number_array--;
-			if(number_array==0)	number_array=6;
+			number_array++;
+			if(number_array>4)	
+				number_array=0;
 			ADCVal_ready=1;
 		}
 	}
-	RTC_GetTime(RTC_Format_BIN, &RTC_Time);
-	
+	else if((usb_conn==USBCONN_PLUG)&&(CHARGE_INDIC_PORT->IDR & CHARGE_INDIC_IDRx))
+	{
+		if((ADCVal_ready==0)&&(bat_disp))
+		{
+			if(Bat_percent!=100)
+			{
+				Bat_percent+=20;
+				number_array++;
+				bat_color=color_array[number_array];
+			}
+			ADCVal_ready=1;
+		}
+	}
+		
 	RTC->ISR&=~RTC_ISR_WUTF;//RTC->ISR&=~(RTC_ISR_WUTF|0x00000080);//RTC_ClearITPendingBit(RTC_IT_WUT);//RTC->ISR&=~RTC_ISR_WUTF;
 	EXTI_ClearITPendingBit(EXTI_Line22);
 }
@@ -263,18 +291,20 @@ void ADC_IRQHandler (void)
 	Bat_percent=(VBat-3100)/10;
 	if(Bat_percent>80)
 	{
-		bat_color=color_array[1];
+		bat_color=color_array[4];
 		if(Bat_percent>100) Bat_percent=100;
 	}
-	else if(60<Bat_percent<=80)	bat_color=color_array[2];
+	else if((60<Bat_percent)&&(Bat_percent<=80))	
+		bat_color=color_array[3];
 		
-	else if(50<Bat_percent<=60)	bat_color=color_array[3];
+	else if((40<Bat_percent)&&(Bat_percent<=60))	
+		bat_color=color_array[2];
 		
-	else if(30<Bat_percent<=50)	bat_color=color_array[4];
+	else if((20<Bat_percent)&&(Bat_percent<=40))	
+		bat_color=color_array[1];
 		
-	else if(10<Bat_percent<=30)	bat_color=color_array[5];
-		
-	else	bat_color=color_array[6];
+	else if((10<Bat_percent)&&(Bat_percent<=20))	
+		bat_color=color_array[0];
 		
 	if(bat_disp)
 		ADCVal_ready=1;	
@@ -286,30 +316,8 @@ void ADC_IRQHandler (void)
   */
 void EXTI1_IRQHandler (void)
 {
-	uint32_t i;
-	for(i=0;i<50000000;i++);
-	if(GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_1)==0)
-	{
-		sd_error=SD_Init();
-		/*if(sd_error==SD_OK)
-			sd_error=SD_GetCardInfo(&sd_cardinfo);
-		if(sd_error==SD_OK)
-			sd_error=SD_SelectDeselect((u32)sd_cardinfo.RCA<<16);
-		if(sd_error==SD_OK)
-			sd_error=SD_EnableWideBusOperation(SDIO_BusWide_4b);*/
-		if(sd_error==SD_OK)
-		{
-			f_mount(0,&fs);
-			sd_ins_rem=1;
-		}
-	}	
-	else	
-	{
-		SDIO_DeInit();
-		f_mount(0,NULL);
-		sd_ins_rem=1;
-	}
-	
+	count_sd=0;
+	sd_ins_rem=1;
 	EXTI_ClearITPendingBit(EXTI_Line1);
 	NVIC_ClearPendingIRQ(EXTI1_IRQn);
 	
@@ -319,12 +327,12 @@ void EXTI1_IRQHandler (void)
   * @param  None
   * @retval None
   */
-void EXTI4_IRQHandler (void)
+void EXTI2_IRQHandler (void)
 {
 	uint32_t i;
 	for(i=0;i<100000;i++);
-	EXTI_ClearITPendingBit(EXTI_Line4);
-	NVIC_ClearPendingIRQ(EXTI4_IRQn);
+	EXTI_ClearITPendingBit(EXTI_Line2);
+	NVIC_ClearPendingIRQ(EXTI2_IRQn);
 	
 }
 
@@ -335,53 +343,11 @@ void EXTI4_IRQHandler (void)
   */
 void EXTI9_5_IRQHandler (void)
 {
-	uint32_t i;
-	for(i=0;i<10000000;i++);
-	
-	if(GPIOH->IDR & GPIO_IDR_IDR_9)
-	{
-		backlight_delay=0;
-		if(backlight==BACKLIGHT_LOW)	
-			{
-				LcdWriteReg(CMD_SET_PWM_CONF); 			//set PWM for Backlight. Manual p.53
-					// 6 parameters to be set
-				LcdWriteData(0x0004); 							// PWM Freq =100MHz/(256*(PWMF[7:0]+1))/256  PWMF[7:0]=4 PWM Freq=305Hz
-				LcdWriteData(brightness); 					// PWM duty cycle(50%)
-				LcdWriteData(0x0001); 							// PWM controlled by host, PWM enable
-				LcdWriteData(0x00f0); 							// brightness level 0x00 - 0xFF
-				LcdWriteData(0x0000); 							// minimum brightness level =  0x00 - 0xFF
-				LcdWriteData(0x0000);								// brightness prescalar 0x0 - 0xF
-				backlight=BACKLIGHT_ON;
-			}
-			else if(backlight==BACKLIGHT_OFF)
-			{
-				LcdWriteReg(CMD_EXIT_SLEEP);
-				for(i=0;i<1000000;i++);	
-				LcdWriteReg(CMD_SET_PWM_CONF); 			//set PWM for Backlight. Manual p.53
-					// 6 parameters to be set
-				LcdWriteData(0x0004); 							// PWM Freq =100MHz/(256*(PWMF[7:0]+1))/256  PWMF[7:0]=4 PWM Freq=305Hz
-				LcdWriteData(brightness); 					// PWM duty cycle(50%)
-				LcdWriteData(0x0001); 							// PWM controlled by host, PWM enable
-				LcdWriteData(0x00f0); 							// brightness level 0x00 - 0xFF
-				LcdWriteData(0x0000); 							// minimum brightness level =  0x00 - 0xFF
-				LcdWriteData(0x0000);								// brightness prescalar 0x0 - 0xF
-				backlight=BACKLIGHT_ON;
-			}
-			TIM7->CNT=0;					
-		
-		number_array=6;
-		Bat_percent=0;
-		ADC_Cmd(ADC1,DISABLE);
-	}
-	else
-	{
-		ADC_Cmd(ADC1,ENABLE);
-		TIM3->EGR = TIM_EGR_UG;			//генерируем "update event". ARR и PSC грузятся из предварительного в теневой регистр. 
-		TIM3->SR&=~TIM_SR_UIF; 			//Сбрасываем флаг UIF	
-	}
-	EXTI_ClearITPendingBit(EXTI_Line9);
+	charge_plug_unplug=1;
+	EXTI_ClearITPendingBit(EXTI_Line6);
 	NVIC_ClearPendingIRQ(EXTI9_5_IRQn);
-
+	
+	
 }
 /**
   * @brief  This function handles TIM2_IRQHandler interrupt request.
@@ -476,7 +442,7 @@ void TIM6_DAC_IRQHandler (void){
 			{
 				usedbytes=GUI_ALLOC_GetNumUsedBytes();
 				PROGBAR_SetValue(PROGBAR_MEM,usedbytes);
-				WM_Paint(PROGBAR_MEM);
+				//WM_Paint(PROGBAR_MEM);
 			}
 		}
 		TIM6->SR &= ~TIM_SR_UIF; 			//Сбрасываем флаг UIF
@@ -490,43 +456,24 @@ void TIM6_DAC_IRQHandler (void){
 void TIM7_IRQHandler (void)
 {
 		backlight_delay++;
+		backlight_flag=1;
+	
 	if(backlight==BACKLIGHT_ON)
-		{	
-			LcdWriteReg(CMD_SET_PWM_CONF); 			//set PWM for Backlight. Manual p.53
-			// 6 parameters to be set
-			LcdWriteData(0x0004); 							// PWM Freq =100MHz/(256*(PWMF[7:0]+1))/256  PWMF[7:0]=4 PWM Freq=305Hz
-			LcdWriteData(0x0010); 							// PWM duty cycle(6%)
-			LcdWriteData(0x0001); 							// PWM controlled by host, PWM disable
-			LcdWriteData(0x00f0); 							// brightness level 0x00 - 0xFF
-			LcdWriteData(0x0000); 							// minimum brightness level =  0x00 - 0xFF
-			LcdWriteData(0x0000);								// brightness prescalar 0x0 - 0xF
-			backlight=BACKLIGHT_LOW;
-		}		
+		backlight=BACKLIGHT_LOW;
 	else if((backlight==BACKLIGHT_LOW)&&(backlight_delay==2))
-		{
-		/* Выключаем PWM на подсветке */
-			LcdWriteReg(CMD_SET_PWM_CONF); 			//set PWM for Backlight. Manual p.53
-			// 6 parameters to be set
-			LcdWriteData(0x0004); 							// PWM Freq =100MHz/(256*(PWMF[7:0]+1))/256  PWMF[7:0]=4 PWM Freq=305Hz
-			LcdWriteData(0x0000); 							// PWM duty cycle(0%)
-			LcdWriteData(0x0001); 							// PWM controlled by host, PWM disable
-			LcdWriteData(0x00f0); 							// brightness level 0x00 - 0xFF
-			LcdWriteData(0x0000); 							// minimum brightness level =  0x00 - 0xFF
-			LcdWriteData(0x0000);								// brightness prescalar 0x0 - 0xF
-			backlight=BACKLIGHT_OFF;
-			
-			LcdWriteReg(CMD_ENTER_SLEEP);
+	{
+		backlight=BACKLIGHT_OFF_SLEEP;
+		backlight_delay=0;
+	}
+	else if((backlight==BACKLIGHT_OFF_SLEEP)&&(backlight_delay==1))
+	{
+		if((canconnect==0)&&(!(USB_DETECT_PORT->IDR & USB_DETECT_IDRx)))
+			sleep_mode=1;
+		else
 			backlight_delay=0;
-		}
-	else if((backlight==BACKLIGHT_OFF)&&(backlight_delay==1))
-		{
-				if((canconnect==0)&&(!(GPIOH->IDR&GPIO_IDR_IDR_9)))
-					sleep_mode=1;
-				else
-					backlight_delay=0;
-		}
-		TIM7->SR &= ~TIM_SR_UIF; 			//Сбрасываем флаг UIF
-		NVIC_ClearPendingIRQ(TIM7_IRQn);
+	}
+	TIM7->SR &= ~TIM_SR_UIF; 			//Сбрасываем флаг UIF
+	NVIC_ClearPendingIRQ(TIM7_IRQn);
 		
 }
 /**

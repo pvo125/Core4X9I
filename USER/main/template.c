@@ -31,7 +31,9 @@ SD_Error sd_error=SD_ERROR;
 
 uint8_t sleep_mode=0;
 
-BACKLIGHT_TypeDef backlight=BACKLIGHT_ON;
+uint8_t sd_insert=0;
+
+BACKLIGHT_TypeDef/*volatile uint8_t*/ backlight=BACKLIGHT_ON;
 uint16_t brightness;
 uint8_t backlight_delay=0;
 

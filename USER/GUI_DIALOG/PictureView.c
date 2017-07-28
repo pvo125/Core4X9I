@@ -40,6 +40,8 @@
 #define RAD 1
 int Time_1;
 extern uint8_t bat_disp;
+extern volatile uint8_t date_disp;
+
 extern volatile int Time;
 GUI_MEMDEV_Handle hMem;
 WM_HWIN hWin_photo;
@@ -576,12 +578,7 @@ static void _cbPhoto(WM_MESSAGE * pMsg) {
 							GUI_SetBkColor(GUI_DARKBLUE);
 							GUI_ClearRect(0,0,470,15);
 							
-							RTC_GetDate(RTC_Format_BIN, &RTC_Date);
-							GUI_DispDecAt(RTC_Date.RTC_Date,5,0,2);
-							GUI_DispString(".");
-							GUI_DispDec(RTC_Date.RTC_Month,2);
-							GUI_DispString(".20");
-							GUI_DispDec(RTC_Date.RTC_Year,2);
+							date_disp=1;
 							
 							GUI_DrawRect(409,2+SCREEN_1,437,13+SCREEN_1);
 							GUI_FillRect(438,4+SCREEN_1,440,11+SCREEN_1);

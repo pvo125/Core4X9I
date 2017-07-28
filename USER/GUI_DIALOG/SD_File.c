@@ -62,6 +62,7 @@ extern void _cbBkWin(WM_MESSAGE* pMsg);
 extern int _cbButtonEXIT(const WIDGET_ITEM_DRAW_INFO *pDrawItemInfo);
 
 extern uint8_t bat_disp;
+extern volatile uint8_t date_disp;
 
 WM_HWIN hWin_SD;
 extern WM_HWIN hWin_menu;
@@ -200,6 +201,7 @@ static void _cbEXIT(WM_MESSAGE *pMsg){
 						switch(NCode){
 							case WM_NOTIFICATION_RELEASED:
 								hButton=WM_GetDialogItem(pMsg->hWin, ID_BUTTON_EXIT);
+								date_disp=1;
 								bat_disp=1;
 								time_show=1;
 								WM_DeleteWindow(hButton);

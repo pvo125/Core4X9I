@@ -322,14 +322,14 @@ void SSD1963_LowLevel_Init(void){
 	GPIO_PinAFConfig(GPIOE, GPIO_PinSource15,GPIO_AF_FMC);
 	
 	// LCD RESET 
-	GPIO_InitStruct.GPIO_Pin = GPIO_Pin_2;
+	GPIO_InitStruct.GPIO_Pin = LCD_RESET_PIN;
 	GPIO_InitStruct.GPIO_Mode = GPIO_Mode_OUT;
 	GPIO_InitStruct.GPIO_OType = GPIO_OType_PP;
 	GPIO_InitStruct.GPIO_Speed = GPIO_Speed_50MHz;
 	GPIO_InitStruct.GPIO_PuPd=GPIO_PuPd_DOWN;//NOPULL
-	GPIO_Init(GPIOE, &GPIO_InitStruct);
+	GPIO_Init(LCD_RESET_PORT, &GPIO_InitStruct);
 	
-	GPIO_ResetBits(GPIOE, GPIO_Pin_2);
+	GPIO_ResetBits(LCD_RESET_PORT, LCD_RESET_PIN);
 	/*            Настройка FMC                   */
 #ifdef NAND
 	FMC_NANDTiming.FMC_HiZSetupTime=4;//3;//2;//1;
@@ -386,9 +386,9 @@ void SSD1963_LowLevel_Init(void){
 void ssd1963_Init(void){
 	uint16_t temp=0;
 	
-	GPIO_ResetBits(GPIOE, GPIO_Pin_2);
+	GPIO_ResetBits(LCD_RESET_PORT, LCD_RESET_PIN);
 	GUI_Delay(10);
-	GPIO_SetBits(GPIOE, GPIO_Pin_2);
+	GPIO_SetBits(LCD_RESET_PORT, LCD_RESET_PIN);
 	GUI_Delay(10);
 	// Set up the Phase Lock Loop circuits. This only has to be done once.
 	LcdWriteReg(CMD_SET_PLL_MN); 				// PLL multiplier, set PLL clock to 100MHz

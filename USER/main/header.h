@@ -26,19 +26,30 @@
 
 
 #define SDCARD_INSERT_PIN		GPIO_Pin_1
-#define SDCARD_INSERT_PORT	GPIOB	
+#define WKUP_BUTTON_PIN			GPIO_Pin_2
+#define LCD_RESET_PIN				GPIO_Pin_8
+#define ADC_IN3_PIN					GPIO_Pin_3
+#define USB_DETECT_PIN			GPIO_Pin_6
+#define SWPOWER_LCD_PIN			GPIO_Pin_6
+#define ADC_SWITCH_PIN			GPIO_Pin_8
+#define CHARGE_INDIC_PIN		GPIO_Pin_10
 
-#define ADC_IN3_PIN				GPIO_Pin_3
-#define ADC_SWITCH_PIN		GPIO_Pin_8
-#define USB_DETECT_PIN		GPIO_Pin_9
-#define CHARGE_INDIC_PIN	GPIO_Pin_10
-#define ADC_IN3_PORT			GPIOA	
-#define ADC_SWITCH_PORT		GPIOH	
-#define USB_DETECT_PORT		GPIOH
-#define CHARGE_INDIC_PORT	GPIOH
+#define SDCARD_INSERT_IDR		GPIO_IDR_IDR_1
+#define USB_DETECT_IDRx			GPIO_IDR_IDR_6
+#define CHARGE_INDIC_IDRx		GPIO_IDR_IDR_10
 
-#define SWPOWER_LCD_PIN		GPIO_Pin_6
-#define SWPOWER_LCD_PORT	GPIOB	
+#define ADC_IN3_PORT				GPIOA	
+#define SWPOWER_LCD_PORT		GPIOB
+#define WKUP_BUTTON_PORT		GPIOE
+#define LCD_RESET_PORT			GPIOF
+#define ADC_SWITCH_PORT			GPIOH
+#define CHARGE_INDIC_PORT		GPIOH
+#define USB_DETECT_PORT			GPIOI
+#define SDCARD_INSERT_PORT	GPIOI
+
+
+
+	
 
 #ifdef SRAM 
 #define LCD_BASE           ((uint32_t)(0x60000000))
@@ -98,11 +109,19 @@
 #define BRIGHTNESS_LOW  0x0030
 #define BRIGHTNESS_MED  0x0090
 #define BRIGHTNESS_HIGH 0x00f0
+
 typedef enum{
-	 BACKLIGHT_OFF=0,
+	USBCONN_UNPLUG=0,
+	USBCONN_PLUG
+}USBCONN_TypeDef;
+
+typedef enum{
+	 BACKLIGHT_OFF_SLEEP=0,
 	 BACKLIGHT_LOW,
-	 BACKLIGHT_ON
+	 BACKLIGHT_ON,
+	 BACKLIGHT_SLEEPtoON
 }BACKLIGHT_TypeDef;
+
 
 
 typedef enum{
@@ -133,7 +152,7 @@ extern char Path[256];
 extern char drawmode;
 
 extern uint8_t sleep_mode;
-extern BACKLIGHT_TypeDef  backlight;
+extern /*volatile uint8_t*/BACKLIGHT_TypeDef backlight;
 extern uint16_t brightness;//brightness;
 extern uint8_t backlight_delay;
 extern char start;
@@ -142,6 +161,7 @@ extern  uint8_t days [2][13];
 extern GUI_PID_STATE State;
 
 extern uint8_t count_SD_open;
+extern uint8_t sd_insert;
 
 extern uint8_t SD_buff[];
 
