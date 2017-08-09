@@ -332,9 +332,9 @@ void SSD1963_LowLevel_Init(void){
 	GPIO_ResetBits(LCD_RESET_PORT, LCD_RESET_PIN);
 	/*            Настройка FMC                   */
 #ifdef NAND
-	FMC_NANDTiming.FMC_HiZSetupTime=4;//3;//2;//1;
-	FMC_NANDTiming.FMC_HoldSetupTime=4;//3;//2;//2;
-	FMC_NANDTiming.FMC_SetupTime=3;//2;//1;//1;
+	FMC_NANDTiming.FMC_HiZSetupTime=2;//3;//2;//1;
+	FMC_NANDTiming.FMC_HoldSetupTime=2;//3;//2;//2;
+	FMC_NANDTiming.FMC_SetupTime=1;//2;//1;//1;
 	FMC_NANDTiming.FMC_WaitSetupTime=7;//5;//4;//3;
 	
 	FMC_NAND.FMC_AttributeSpaceTimingStruct=&FMC_NANDTiming;
