@@ -29,8 +29,12 @@
 #define WKUP_BUTTON_PIN			GPIO_Pin_2
 #define LCD_RESET_PIN				GPIO_Pin_8
 #define ADC_IN3_PIN					GPIO_Pin_3
+
 #define USB_DETECT_PIN			GPIO_Pin_6
 #define SWPOWER_LCD_PIN			GPIO_Pin_6
+
+#define CAN_SWITCH_PIN			GPIO_Pin_7
+
 #define ADC_SWITCH_PIN			GPIO_Pin_8
 #define CHARGE_INDIC_PIN		GPIO_Pin_10
 
@@ -46,6 +50,7 @@
 #define CHARGE_INDIC_PORT		GPIOH
 #define USB_DETECT_PORT			GPIOI
 #define SDCARD_INSERT_PORT	GPIOI
+#define CAN_SWITCH_PORT			GPIOI
 
 
 

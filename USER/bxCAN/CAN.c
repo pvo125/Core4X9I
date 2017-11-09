@@ -87,9 +87,9 @@ void bxCAN_Init(void){
 	CAN1->MCR|=CAN_MCR_ABOM;		// Контроллер выходит из состояния «Bus-Off» автоматически 
 	CAN1->MCR&=~CAN_MCR_TTCM;
 	CAN1->MCR&=~CAN_MCR_AWUM;
-	CAN1->MCR&=~CAN_MCR_NART;	
+	CAN1->MCR&=~CAN_MCR_NART;		// запрет автоматической повторной передачи снят(повтор передач).
 	CAN1->MCR&=~CAN_MCR_RFLM;
-	CAN1->MCR&=~CAN_MCR_TXFP;	
+	CAN1->MCR|=CAN_MCR_TXFP;		//	сообщения отправляются в хроног. порядке.
 	/*Тестовый режиим работы выключен CAN  SILM=0  LBKM=0 */
 	
 	CAN1->BTR&=~CAN_BTR_LBKM;	

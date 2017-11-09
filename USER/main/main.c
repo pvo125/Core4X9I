@@ -301,7 +301,19 @@ void Periph_Init(void){
 		GPIO_InitStruct.GPIO_PuPd=GPIO_PuPd_NOPULL;
 		GPIO_Init(SWPOWER_LCD_PORT,&GPIO_InitStruct);
 		
-		GPIO_SetBits(SWPOWER_LCD_PORT, SWPOWER_LCD_PIN);		// Включаем  LDO для LCD + CAN transsiver
+		GPIO_SetBits(SWPOWER_LCD_PORT, SWPOWER_LCD_PIN);		// Включаем  LDO для LCD 
+	
+/********************************************************************/
+/*								CAN_SWITCH 				  															*/
+/********************************************************************/			
+		GPIO_InitStruct.GPIO_Pin=CAN_SWITCH_PIN;
+		GPIO_InitStruct.GPIO_Speed=GPIO_Speed_2MHz;
+		GPIO_InitStruct.GPIO_Mode=GPIO_Mode_OUT;
+		GPIO_InitStruct.GPIO_OType=GPIO_OType_PP;
+		GPIO_InitStruct.GPIO_PuPd=GPIO_PuPd_NOPULL;
+		GPIO_Init(CAN_SWITCH_PORT,&GPIO_InitStruct);
+		
+		GPIO_ResetBits(CAN_SWITCH_PORT, CAN_SWITCH_PIN);		// Включаем  CAN transsiver
 	
 	// Задержка на дальнейшую инициализацию модуля LCD пока напряжение не установится 
 		for(i=0;i<2000000;i++);

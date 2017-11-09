@@ -196,7 +196,7 @@ void RTC_WKUP_IRQHandler(void)
 			disp_sd=1;
 		}
 	}		
-	if(((RTC->TR&0x003F0000)==0)&&((RTC->TR&0x00007F00)==0)&&((RTC->TR&0x0000007F)==0))
+	if(RTC->TR==0)//if(((RTC->TR&0x003F0000)==0)&&((RTC->TR&0x00007F00)==0)&&((RTC->TR&0x0000007F)==0))
 	{
 		date_disp=1;
 	}

@@ -1060,6 +1060,9 @@ void Suspend(void){
 											 FMC_SDCMR_NRFS_0;													// 2 Auto-refresh cycles*/
 	
 	
+	GPIO_SetBits(CAN_SWITCH_PORT, CAN_SWITCH_PIN);		// Выключаем  CAN transsiver
+	
+	
 	GPIO_InitStruct.GPIO_Mode=GPIO_Mode_AIN;
 	GPIO_InitStruct.GPIO_Speed=GPIO_Speed_2MHz;	
 	
@@ -1076,7 +1079,7 @@ void Suspend(void){
 													 GPIO_Pin_9|GPIO_Pin_10|GPIO_Pin_11|GPIO_Pin_12|GPIO_Pin_13|GPIO_Pin_14|GPIO_Pin_15;
 	GPIO_Init(GPIOH, &GPIO_InitStruct);
 	
-	GPIO_InitStruct.GPIO_Pin=GPIO_Pin_0|GPIO_Pin_1|GPIO_Pin_2|GPIO_Pin_3|GPIO_Pin_4|GPIO_Pin_5/*|GPIO_Pin_6*/|GPIO_Pin_7|GPIO_Pin_8|
+	GPIO_InitStruct.GPIO_Pin=GPIO_Pin_0|GPIO_Pin_1|GPIO_Pin_2|GPIO_Pin_3|GPIO_Pin_4|GPIO_Pin_5/*|GPIO_Pin_6|GPIO_Pin_7*/|GPIO_Pin_8|
 													 GPIO_Pin_9|GPIO_Pin_10|GPIO_Pin_11|GPIO_Pin_12|GPIO_Pin_13|GPIO_Pin_14|GPIO_Pin_15;
 	GPIO_Init(GPIOI, &GPIO_InitStruct);
 	
@@ -1140,8 +1143,15 @@ void Suspend(void){
 	GPIO_InitStruct.GPIO_PuPd=GPIO_PuPd_NOPULL;
 	GPIO_Init(SWPOWER_LCD_PORT,&GPIO_InitStruct);
 	
-	GPIO_SetBits(SWPOWER_LCD_PORT, SWPOWER_LCD_PIN);		// Включаем  LDO для LCD + CAN transsiver	
+	GPIO_SetBits(SWPOWER_LCD_PORT, SWPOWER_LCD_PIN);		// Включаем  LDO для LCD 
 	
+/********************************************************************/
+/*								CAN_SWITCH 				  															*/
+/********************************************************************/			
+	GPIO_ResetBits(CAN_SWITCH_PORT, CAN_SWITCH_PIN);		// Включаем  CAN transsiver
+
+
+
 	RCC->CR|= RCC_CR_HSEON;
 	while((RCC->CR&RCC_CR_HSERDY)!=RCC_CR_HSERDY) {}
 	RCC->CR|= RCC_CR_PLLON;
