@@ -30,6 +30,11 @@
 #define LCD_RESET_PIN				GPIO_Pin_8
 #define ADC_IN3_PIN					GPIO_Pin_3
 
+#define LEDPIN							GPIO_Pin_7
+#define LEDPORT							GPIOF
+#define LEDPIN_IDR					GPIO_IDR_IDR_7
+#define LEDPIN_BSSR					GPIO_BSRR_BS_7
+
 #define USB_DETECT_PIN			GPIO_Pin_6
 #define SWPOWER_LCD_PIN			GPIO_Pin_6
 

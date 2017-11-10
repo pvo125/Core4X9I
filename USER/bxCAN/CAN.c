@@ -14,6 +14,8 @@ volatile uint32_t count;
 volatile int size_firmware;
 volatile uint8_t write_flashflag=0;
 
+extern volatile uint8_t backlight_flag;
+
 extern ICONVIEW_Handle hALARMA, hALARMB;
 
 extern int _cbButtonSkin(const WIDGET_ITEM_DRAW_INFO *pDrawItemInfo);
@@ -309,14 +311,16 @@ void CAN_RXProcess0(void){
 		TIM2->CCER |=TIM_CCER_CC2E;												// Enable канал сравнения CC2
 		TIM2->CCER|=TIM_CCER_CC1E;												// Enable capture CC1
 		TimerONOFF=1;
-		if(hWin_timer)
-		{
-			if(backlight==BACKLIGHT_OFF_SLEEP)
+		if(backlight==BACKLIGHT_OFF_SLEEP)
 				backlight=BACKLIGHT_SLEEPtoON;
 			else if(backlight==BACKLIGHT_LOW)
 				backlight=BACKLIGHT_ON;
+			backlight_flag=1;
 			backlight_delay=0;
 			TIM7->CNT=0;					// Каждый раз при получении сообщения CAN обнуляем таймер подсветки
+		if(hWin_timer)
+		{
+			
 			hItem = WM_GetDialogItem(hWin_timer, ID_BUTTON_0);		
 			BUTTON_SetSkin(hItem, _cbButtonSkin);
 			WM_SetFocus(hItem);	
@@ -331,6 +335,7 @@ void CAN_RXProcess0(void){
 			backlight=BACKLIGHT_SLEEPtoON;
 		else if(backlight==BACKLIGHT_LOW)
 			backlight=BACKLIGHT_ON;
+		backlight_flag=1;
 		backlight_delay=0;
 		TIM7->CNT=0;					// Каждый раз при получении сообщения CAN обнуляем таймер подсветки
 		PhaseBrez=CAN_Data_RX[0].Data[1];
@@ -391,14 +396,15 @@ void CAN_RXProcess0(void){
 		Brez_Count=0;
 		BrezErr=0;
 		TimerONOFF=0;
+		if(backlight==BACKLIGHT_OFF_SLEEP)
+			backlight=BACKLIGHT_SLEEPtoON;
+		else if(backlight==BACKLIGHT_LOW)
+			backlight=BACKLIGHT_ON;
+		backlight_flag=1;
+		backlight_delay=0;
+		TIM7->CNT=0;					// Каждый раз при получении сообщения CAN обнуляем таймер подсветки
 		if(hWin_timer)
 		{
-			if(backlight==BACKLIGHT_OFF_SLEEP)
-				backlight=BACKLIGHT_SLEEPtoON;
-			else if(backlight==BACKLIGHT_LOW)
-				backlight=BACKLIGHT_ON;
-			backlight_delay=0;
-			TIM7->CNT=0;					// Каждый раз при получении сообщения CAN обнуляем таймер подсветки
 			hItem = WM_GetDialogItem(hWin_timer, ID_BUTTON_1);		
 			BUTTON_SetSkin(hItem, _cbButtonSkin);
 			WM_SetFocus(hItem);	
@@ -519,10 +525,10 @@ void CAN_RXProcess1(void){
 				
 				if((count%240)==0)
 				{	
-					if(GPIOF->IDR & GPIO_IDR_IDR_7)
-						GPIOF->BSRRH=GPIO_BSRR_BS_7;
+					if(LEDPORT->IDR & LEDPIN_IDR)
+						LEDPORT->BSRRH=LEDPIN_BSSR;
 					else
-						GPIOF->BSRRL=GPIO_BSRR_BS_7;	
+						LEDPORT->BSRRL=LEDPIN_BSSR;	
 				}
 			}
 			else 

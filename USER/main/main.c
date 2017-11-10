@@ -319,12 +319,12 @@ void Periph_Init(void){
 		for(i=0;i<2000000;i++);
 		
 // PF7 выход push-pull без подтяжки для моргания светодиодом
-		GPIO_InitStruct.GPIO_Pin=GPIO_Pin_7;
+		GPIO_InitStruct.GPIO_Pin=LEDPIN;
 		GPIO_InitStruct.GPIO_Mode=GPIO_Mode_OUT;
 		GPIO_InitStruct.GPIO_OType=GPIO_OType_PP;
 		GPIO_InitStruct.GPIO_PuPd=GPIO_PuPd_NOPULL;
 		GPIO_InitStruct.GPIO_Speed=GPIO_Low_Speed;
-		GPIO_Init(GPIOF,&GPIO_InitStruct);	
+		GPIO_Init(LEDPORT,&GPIO_InitStruct);	
 
 /********************************************************************/
 /*								SYSCFG						 																*/
