@@ -35,7 +35,9 @@ extern uint16_t Bat_percent;
 extern GUI_COLOR bat_color;
 
 uint32_t button_color;
+extern volatile int size_firmware;
 
+extern volatile uint32_t count;
 extern volatile uint8_t write_flashflag;
 extern volatile uint8_t new_message;
 
@@ -713,8 +715,9 @@ void CreateStart(void)
 
 void MainTask(void)
 {
-	uint8_t flag=0xA7;
-	uint16_t count;
+	uint8_t flag=0xA7,temp;
+	uint16_t count1;
+	
 		
 	NVIC_SetPriority(SysTick_IRQn,1);
 	WM_SetCallback(WM_HBKWIN, _cbBkWin);
@@ -828,17 +831,17 @@ void MainTask(void)
 		if(canerr_clr)
 		{
 			GUI_SetBkColor(GUI_DARKBLUE);
-			GUI_ClearRect(120,5+SCREEN_1,290,15+SCREEN_1);
+			GUI_ClearRect(190,5+SCREEN_1,340,15+SCREEN_1);
 			canerr_clr=0;
 		}
 		if(canerr_disp)	
 		{
 				GUI_SetFont(&GUI_Font6x8);
-				GUI_DispStringAt("REC ",120,5+SCREEN_1);
+				GUI_DispStringAt("REC ",190,5+SCREEN_1);
 				GUI_DispDec((uint8_t)((CAN1->ESR)>>24),3);
-				GUI_DispStringAt("TEC ",190,5+SCREEN_1);
+				GUI_DispStringAt("TEC ",250,5+SCREEN_1);
 				GUI_DispDec((uint8_t)((CAN1->ESR)>>16),3);
-				GUI_DispStringAt("ERF ",260,5+SCREEN_1);
+				GUI_DispStringAt("ERF ",310,5+SCREEN_1);
 				GUI_DispDec((uint8_t)(CAN1->ESR),1);
 				canerr_disp=0;
 		}
@@ -855,6 +858,8 @@ void MainTask(void)
 			GUI_DispDecAt(RTC_Time.RTC_Hours,350,0+SCREEN_1,2);
 			GUI_DispString(":");
 			GUI_DispDec(RTC_Time.RTC_Minutes,2);
+			if(count)
+				GUI_DispDecAt(count,100,0+SCREEN_1,6);
 			time_disp=0;	
 		}
 		if(date_disp)
@@ -895,19 +900,25 @@ void MainTask(void)
 			
 		if(write_flashflag)
 		{
-			count=0;
-			while(*(uint8_t*)(FLAG_STATUS_SECTOR+count)!=0xFF)		// Перебираем байты пока не дойдем до неписанного поля 0xFF 
+			Flash_unlock();
+			if(size_firmware<=131072)			 temp=1;
+			else if(size_firmware<=262144) temp=2;
+			else if(size_firmware<=393216) temp=3;
+			else	temp=4;
+			Flash_sect_erase(NAMBER_UPD_SECTOR,temp);		// Очистим 8,9... сектора ((размер bin)/128K)+1 max 4 сектора
+			Flash_prog((uint8_t*)0xD0030000,(uint8_t*)FIRM_UPD_SECTOR,size_firmware,4);
+			count1=0;
+			while(*(uint8_t*)(FLAG_STATUS_SECTOR+count1)!=0xFF)		// Перебираем байты пока не дойдем до неписанного поля 0xFF 
 			{
-				count++;
-				if(count>=0x3fff)
+				count1++;
+				if(count1>=0x3fff)
 				{
-					count=0;
+					count1=0;
 					Flash_sect_erase(NAMBER_FLAG_STATUS_SECTOR,1);		// Очистим 		FLAG_STATUS_SECTOR
 					break;
 				}
 			}		
-				
-			Flash_prog(&flag,(uint8_t*)(FLAG_STATUS_SECTOR+count),1,1);		// В ячейке где 0xFF лежит запишем значения флага для bootloader flag=0xA7
+			Flash_prog(&flag,(uint8_t*)(FLAG_STATUS_SECTOR+count1),1,1);		// В ячейке где 0xFF лежит запишем значения флага для bootloader flag=0xA7
 			GUI_Delay(1000);
 			NVIC_SystemReset();
 		}
@@ -1151,7 +1162,6 @@ void Suspend(void){
 	GPIO_ResetBits(CAN_SWITCH_PORT, CAN_SWITCH_PIN);		// Включаем  CAN transsiver
 
 
-
 	RCC->CR|= RCC_CR_HSEON;
 	while((RCC->CR&RCC_CR_HSERDY)!=RCC_CR_HSERDY) {}
 	RCC->CR|= RCC_CR_PLLON;
@@ -1192,6 +1202,13 @@ void Suspend(void){
 		GPIO_Init(ADC_SWITCH_PORT,&GPIO_InitStruct);
 		GPIO_ResetBits(ADC_SWITCH_PORT,ADC_SWITCH_PIN);			// Enable ADC_SWITCH Vbat/2 input for ADC1_IN3
 		
+		// PF7 выход push-pull без подтяжки для моргания светодиодом
+		GPIO_InitStruct.GPIO_Pin=LEDPIN;
+		GPIO_InitStruct.GPIO_Mode=GPIO_Mode_OUT;
+		GPIO_InitStruct.GPIO_OType=GPIO_OType_PP;
+		GPIO_InitStruct.GPIO_PuPd=GPIO_PuPd_NOPULL;
+		GPIO_InitStruct.GPIO_Speed=GPIO_Low_Speed;
+		GPIO_Init(LEDPORT,&GPIO_InitStruct);	
 	
 	SysTick->VAL=0;
 	SysTick->CTRL|=SysTick_CTRL_ENABLE_Msk|SysTick_CTRL_TICKINT_Msk;

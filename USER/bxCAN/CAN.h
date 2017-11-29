@@ -16,7 +16,15 @@
 #define STM32f429  0x2
 #define F103_KIT	 0x3
 
-#define FLAG_STATUS_SECTOR	0x08004000		//sector 1
+#define NETNAME_INDEX  01   //Core4X9I 
+
+#define FLAG_STATUS_SECTOR	0x08004000			//sector 1
+#define FIRM_UPD_SECTOR 		0x08080000			//sector12		firmware update base
+
+#define NAMBER_WORK_SECTOR			2						//	первый work сектор 				2
+																						//  последний work сектор   	7
+#define NAMBER_UPD_SECTOR				8						//	первый update	 сектор 		8
+#define NAMBER_SECT_U_END 			12					//  последний update сектор		11
 #define NAMBER_FLAG_STATUS_SECTOR  1
 
 typedef enum
@@ -59,6 +67,8 @@ void CAN_Receive_IRQHandler(uint8_t FIFONumber);
 void CAN_RXProcess0(void);
 void CAN_RXProcess1(void);
 
+void Flash_unlock(void);
+void Flash_lock(void);
 extern void Flash_prog(uint8_t * src,uint8_t * dst,uint32_t nbyte,uint8_t psize);
 extern void Flash_sect_erase(uint8_t numsect,uint8_t count);
 

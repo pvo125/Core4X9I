@@ -30,15 +30,6 @@ extern WM_HWIN hWin_timer;
 #define ID_PROGBAR_1     (GUI_ID_USER + 0x17)
 #define ID_DROPDOWN_0    (GUI_ID_USER + 0x18)
 
-#define FLAG_STATUS_SECTOR	0x08004000		//sector 1
-#define FIRM_UPD_SECTOR 		0x08080000			//sector12		firmware update base
-
-#define NAMBER_WORK_SECTOR			2						//	первый work сектор 				2
-																						//  последний work сектор   	7
-#define NAMBER_UPD_SECTOR				8						//	первый update	 сектор 		8
-#define NAMBER_SECT_U_END 			12					//  последний update сектор		11
-
-#define NETNAME_INDEX  01   //Core4X9I 
 
 extern const uint32_t crc32_table[];
 uint32_t crc32_check(const uint8_t *buff,uint32_t count);
@@ -267,11 +258,13 @@ void CAN_Receive_IRQHandler(uint8_t FIFONumber){
 void CAN_RXProcess0(void){
 	WM_HWIN hItem;
 	int temp;
+		
 	switch(CAN_Data_RX[0].FMI) {
 		case 0://(id=280 )
 		//
 		break;
 		case 1://(id=080 GET_RTC remote )
+		
 		CAN_Data_TX.ID=(NETNAME_INDEX<<8)|0x80;
 		CAN_Data_TX.DLC=6;
 		CAN_Data_TX.Data[0]=NETNAME_INDEX;  // netname_index для Core4X9I
@@ -410,7 +403,6 @@ void CAN_RXProcess0(void){
 			WM_SetFocus(hItem);	
 			hItem = WM_GetDialogItem(hWin_timer, ID_BUTTON_0);	
 			BUTTON_SetSkin(hItem, BUTTON_SKIN_FLEX);
-			
 		}
 		break;
 		case 8://(id=284 GET_ALARM_A data )
@@ -480,7 +472,7 @@ void CAN_RXProcess0(void){
 
 void CAN_RXProcess1(void){
 	uint32_t crc;
-	uint8_t temp;
+	uint8_t temp,i;
 	switch(CAN_Data_RX[1].FMI) {
 		case 4:	//(id=271 UPDATE_FIRMWARE_REQ)
 			// если получили запрос на обновление 
@@ -494,18 +486,7 @@ void CAN_RXProcess1(void){
 		size_firmware|=CAN_Data_RX[1].Data[1]<<8;
 		size_firmware|=CAN_Data_RX[1].Data[2]<<16;
 		size_firmware|=CAN_Data_RX[1].Data[3]<<24;
-		
-		Flash_unlock();
-		if(size_firmware<=131072)
-			temp=1;
-		else if(size_firmware<=262144)
-			temp=2;
-		else if(size_firmware<=393216)
-			temp=3;
-		else
-			temp=4;
-		
-		Flash_sect_erase(NAMBER_UPD_SECTOR,temp);		// Очистим 8,9... сектора ((размер bin)/128K)+1 max 4 сектора
+				
 		CAN_Data_TX.ID=(NETNAME_INDEX<<8)|0x72;
 		CAN_Data_TX.DLC=2;
 		CAN_Data_TX.Data[0]=NETNAME_INDEX;
@@ -515,8 +496,10 @@ void CAN_RXProcess1(void){
 		case 6:	//(id=273 DOWNLOAD_FIRMWARE)
 			if((size_firmware-count)>=8)
 			{
-				Flash_prog(&CAN_Data_RX[1].Data[0],(uint8_t*)(FIRM_UPD_SECTOR+count),8,4);		
-				count+=8;
+				*(uint32_t*)(0xD0030000+count)=*(uint32_t*)CAN_Data_RX[1].Data;
+				count+=4;
+				*(uint32_t*)(0xD0030000+count)=*(uint32_t*)(CAN_Data_RX[1].Data+4);
+				count+=4;
 				CAN_Data_TX.ID=(NETNAME_INDEX<<8)|0x72;
 				CAN_Data_TX.DLC=2;
 				CAN_Data_TX.Data[0]=NETNAME_INDEX;
@@ -533,25 +516,23 @@ void CAN_RXProcess1(void){
 			}
 			else 
 			{
-				Flash_prog(&CAN_Data_RX[1].Data[0],(uint8_t*)(FIRM_UPD_SECTOR+count),(size_firmware-count),4);
-				count+=(size_firmware-count);
-			}
-			
+				i=size_firmware-count;
+				for(temp=0;temp<i;temp++)
+				{	*(uint8_t*)(0xD0030000+count)=CAN_Data_RX[1].Data[temp];
+					count++;
+				}
+			}		
 			if(size_firmware==count)	
 			{
-				
-				crc=crc32_check((const uint8_t*)FIRM_UPD_SECTOR,(size_firmware-4));
-				if(crc==*(uint32_t*)(FIRM_UPD_SECTOR+size_firmware-4))
+				crc=crc32_check((const uint8_t*)0xD0030000,(size_firmware-4));
+				if(crc==*(uint32_t*)(0xD0030000+size_firmware-4))
 				{
 					CAN_Data_TX.ID=(NETNAME_INDEX<<8)|0x72;
 					CAN_Data_TX.DLC=2;
 					CAN_Data_TX.Data[0]=NETNAME_INDEX;
 					CAN_Data_TX.Data[1]='c';								// CRC OK!	
 					CAN_Transmit_DataFrame(&CAN_Data_TX);
-					
-					write_flashflag=1;
-					
-					
+					//write_flashflag=1;
 				}
 				else
 				{
@@ -567,6 +548,10 @@ void CAN_RXProcess1(void){
 		break;
 		case 11://(id=088 GET_NETNAME remote)
 		//
+			if(LEDPORT->IDR & LEDPIN_IDR)
+				LEDPORT->BSRRH=LEDPIN_BSSR;
+			else
+				LEDPORT->BSRRL=LEDPIN_BSSR;	
 			CAN_Data_TX.ID=(NETNAME_INDEX<<8)|0x88;
 			CAN_Data_TX.DLC=1;
 			CAN_Data_TX.Data[0]=NETNAME_INDEX;  // // netname_index для Core4X9I
