@@ -532,7 +532,7 @@ void CAN_RXProcess1(void){
 					CAN_Data_TX.Data[0]=NETNAME_INDEX;
 					CAN_Data_TX.Data[1]='c';								// CRC OK!	
 					CAN_Transmit_DataFrame(&CAN_Data_TX);
-					//write_flashflag=1;
+					write_flashflag=1;
 				}
 				else
 				{
