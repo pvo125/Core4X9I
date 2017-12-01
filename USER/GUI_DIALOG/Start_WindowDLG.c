@@ -831,8 +831,9 @@ void MainTask(void)
 		if(canerr_clr)
 		{
 			GUI_SetBkColor(GUI_DARKBLUE);
-			GUI_ClearRect(190,5+SCREEN_1,340,15+SCREEN_1);
+			GUI_ClearRect(110,5+SCREEN_1,290,15+SCREEN_1);
 			canerr_clr=0;
+			count=0;
 		}
 		if(canerr_disp)	
 		{
@@ -841,8 +842,8 @@ void MainTask(void)
 				GUI_DispDec((uint8_t)((CAN1->ESR)>>24),3);
 				GUI_DispStringAt("TEC ",250,5+SCREEN_1);
 				GUI_DispDec((uint8_t)((CAN1->ESR)>>16),3);
-				GUI_DispStringAt("ERF ",310,5+SCREEN_1);
-				GUI_DispDec((uint8_t)(CAN1->ESR),1);
+				if(count)
+					GUI_DispDecAt(count,110,5+SCREEN_1,6);
 				canerr_disp=0;
 		}
 #ifdef DEBUG_MODE
@@ -858,8 +859,6 @@ void MainTask(void)
 			GUI_DispDecAt(RTC_Time.RTC_Hours,350,0+SCREEN_1,2);
 			GUI_DispString(":");
 			GUI_DispDec(RTC_Time.RTC_Minutes,2);
-			if(count)
-				GUI_DispDecAt(count,100,0+SCREEN_1,6);
 			time_disp=0;	
 		}
 		if(date_disp)
